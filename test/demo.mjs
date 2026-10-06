@@ -1,8 +1,8 @@
 // Clicks through the hero demo in real Chrome and screenshots each stage: node test/demo.mjs [url] [outdir]
-import { chromium } from '/Users/shanur/Documents/manul/node_modules/playwright-core/index.mjs'
+import { chromium } from 'playwright-core'
 const url = process.argv[2] || 'http://localhost:4321/'
 const out = process.argv[3] || '/tmp/manul-site-shots'
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const { mkdirSync } = await import('node:fs'); mkdirSync(out, { recursive: true })
 const browser = await chromium.launch({ executablePath: CHROME, args: ['--autoplay-policy=no-user-gesture-required'] })
 const errors = []
