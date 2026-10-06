@@ -69,16 +69,24 @@
       </aside>
     </div>
   </div>
-  <p class="credit">Clip: Timofey the Pallas's cat, Moscow Zoo (CC BY 4.0). Every edit here is real.</p>
 </div>
 
 <style>
-  .demo { position: relative; }
+  /* the app's own look: dark shades and amber, as Manul really is */
+  .demo {
+    position: relative;
+    --bg-2: #141210; --panel: #1a1714; --panel-2: #221e1a; --panel-3: #2b2621;
+    --ink: #f3ece3; --ink-2: #c9bfb2; --ink-3: #8f8577;
+    --amber: #f2a541; --amber-ink: #1b1206; --amber-soft: rgba(242,165,65,.14);
+    --sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-family: var(--sans); font-variation-settings: normal; color: var(--ink);
+  }
   .win {
     background: var(--panel);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 50px 120px -40px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.05), 0 -1px 0 0 rgba(255,255,255,.06) inset;
+    box-shadow: 0 40px 80px -40px rgba(40,25,10,.55), 0 2px 6px rgba(40,25,10,.18);
   }
   .chrome { display: flex; align-items: center; gap: 14px; height: 40px; padding: 0 14px; background: #110f0d; }
   .lights { display: flex; gap: 7px; }
@@ -160,8 +168,6 @@
   .input.typing { color: var(--ink); }
   .send { width: 30px; height: 30px; border-radius: 50%; background: var(--panel-3); }
   .input.typing .send { background: var(--amber); }
-
-  .credit { margin: 12px 4px 0; font-size: 12.5px; color: var(--ink-3); }
 
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } }

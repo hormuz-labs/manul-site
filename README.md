@@ -2,11 +2,14 @@
 
 The website for [Manul](https://github.com/hormuz-labs/manul), the agentic video editor. Astro, static, no framework JS: the only script is the hero demo (`src/components/Demo.astro`), a working miniature of Manul's editor.
 
+The look is a cutting room: paper, ink, and one china-marker red for the notes (circles, arrows, strike-throughs). Type is Archivo (condensed for headlines) and IBM Plex Mono. The demo inside keeps the app's own dark shades and amber, so it looks like Manul really does.
+
 ```bash
 npm install
 npm run dev          # http://localhost:4321
 npm run build        # → dist/
 node test/demo.mjs   # clicks through the demo in Chrome, screenshots each stage to /tmp/manul-site-shots
+node test/sizes.mjs  # checks 18 screen sizes, phone to 2560 wide, for anything spilling off screen
 ```
 
 Deployed by Cloudflare Pages on every push to `main` (build `npm run build`, output `dist`).

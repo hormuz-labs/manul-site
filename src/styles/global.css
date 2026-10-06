@@ -1,22 +1,19 @@
-/* Manul: warm dark shades, one amber. Sections are separated by shade, never by lines. */
+/* Manul: the cutting room. Paper, ink, and one china-marker red for the notes.
+   The editor itself (the demo) keeps the app's own dark shades and amber. */
 :root {
-  --bg: #0e0d0c;
-  --bg-2: #141210;
-  --panel: #1a1714;
-  --panel-2: #221e1a;
-  --panel-3: #2b2621;
-  --ink: #f3ece3;
-  --ink-2: #c9bfb2;
-  --ink-3: #8f8577;
-  --amber: #f2a541;
-  --amber-ink: #1b1206;
-  --amber-soft: rgba(242, 165, 65, 0.14);
-  --radius: 14px;
-  --serif: 'Instrument Serif', ui-serif, Georgia, serif;
-  --sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --mono: ui-monospace, 'SF Mono', Menlo, monospace;
-  --max: 1180px;
-  color-scheme: dark;
+  --paper: #ece6da;
+  --paper-2: #e3dccd;
+  --paper-3: #d8d0bf;
+  --ink: #17140f;
+  --ink-2: #4a443b;
+  --ink-3: #82796b;
+  --red: #d2381c;
+  --red-soft: rgba(210, 56, 28, 0.1);
+  --wide: 'Archivo Variable', 'Arial Narrow', sans-serif;
+  --sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --max: 1240px;
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -25,45 +22,47 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--paper);
   color: var(--ink);
   font: 400 17px/1.55 var(--sans);
-  font-feature-settings: 'cv11', 'ss01';
+  font-variation-settings: 'wdth' 100;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 img, video { display: block; max-width: 100%; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
-::selection { background: var(--amber); color: var(--amber-ink); }
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--red); color: var(--paper); }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 
 .wrap { width: min(var(--max), 100% - 32px); margin-inline: auto; }
 
-.serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; }
-.eyebrow {
-  font: 600 12.5px/1 var(--sans);
-  letter-spacing: 0.14em;
+/* condensed, heavy: the type on a slate or a reel can */
+.slate {
+  font-family: var(--wide);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 62;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: .86;
+}
+.mono { font-family: var(--mono); }
+.label {
+  font: 500 12.5px/1 var(--mono);
+  letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
+.label b { color: var(--red); font-weight: 600; }
 
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
-  height: 50px; padding: 0 22px;
-  border-radius: 12px; border: 0; cursor: pointer;
-  font: 600 16px/1 var(--sans); text-decoration: none;
-  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+  height: 52px; padding: 0 24px;
+  border: 0; border-radius: 4px; cursor: pointer;
+  background: var(--ink); color: var(--paper);
+  font: 650 16px/1 var(--sans); text-decoration: none;
+  transition: background .15s ease, transform .15s ease;
 }
+.btn:hover { background: var(--red); }
 .btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--amber); color: var(--amber-ink); box-shadow: 0 10px 30px -10px rgba(242,165,65,.55); }
-.btn-primary:hover { background: #f6b257; }
-.btn-ghost { background: var(--panel-2); color: var(--ink); }
-.btn-ghost:hover { background: var(--panel-3); }
 .btn svg { width: 18px; height: 18px; flex: none; }
-
-.kbd {
-  font: 500 14px/1 var(--mono);
-  background: var(--panel-2); color: var(--ink-2);
-  padding: 4px 7px; border-radius: 6px;
-}
