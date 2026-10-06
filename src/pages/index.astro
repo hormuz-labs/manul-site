@@ -23,7 +23,8 @@ const faqs = [
   { q: 'Does my video get uploaded anywhere?', a: `No. Cutting, rendering and transcription happen on your computer. The model only receives text (your notes, the transcript) and, when it needs to look, a few still frames.` },
   { q: 'Which AI does it use?', a: `Your pick, per project: Claude, Gemini or GPT. Add a key in Settings. A single Manul key that covers every model is coming.` },
   { q: 'Do I need to know video editing?', a: `No. If you can describe what you want to a person, you can direct Manul. If you do know editing, you’ll get there faster: it understands “J-cut”, “punch in” and “duck the music”.` },
-  { q: 'What can’t it do yet?', a: `Multi-camera sync, handing the cut to Premiere, Resolve or Final Cut, and Windows. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
+  { q: 'Does Manul generate video?', a: `Not yet, and it’s next. Generated shots are on the roadmap: b-roll on the fly, extending a frame to a new aspect ratio, and filling in a spot you box. They go only where you ask, through the video model you choose, and each one is labelled as generated. Everything else Manul does works on the footage you shot.` },
+  { q: 'What can’t it do yet?', a: `Generated shots, multi-camera sync, handing the cut to Premiere, Resolve or Final Cut, and Windows. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
   { q: 'How is it different from CapCut, Descript or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript lets you edit by editing the transcript. HyperFrames and Remotion turn video into code that an agent writes. Manul is a desktop app where you give notes in plain words, point at the frame, and review each change as a before and after, without code or a timeline.` },
   { q: 'Who makes it?', a: `Hormuz Labs, in the open. Issues, ideas and pull requests are welcome on <a href="${gh}">GitHub</a>.` },
 ]
@@ -36,7 +37,9 @@ const faqs = [
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta name="theme-color" content="#ece6da" />
-  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+  <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="canonical" href="https://manul.si/" />
   <meta property="og:type" content="website" />
@@ -157,7 +160,7 @@ const faqs = [
         <p class="label"><b>■</b> House rules</p>
         <h2 class="slate">Four things it won’t do.</h2>
         <ol>
-          <li><span class="n mono">1</span><h3 class="slate"><s>Invent pixels</s></h3><p>It cuts, crops and grades the footage you shot. It never generates frames. Titles and captions are real type.</p></li>
+          <li><span class="n mono">1</span><h3 class="slate"><s>Swap your shots for fakes</s></h3><p>It cuts, crops and grades the footage you shot. Titles and captions are real type. Generated shots, when they come, go only where you ask, labelled as generated.</p></li>
           <li><span class="n mono">2</span><h3 class="slate"><s>Overwrite your work</s></h3><p>Every edit arrives as a new version. Scrub before and after, then keep it or send it back. Old versions stay one click away.</p></li>
           <li><span class="n mono">3</span><h3 class="slate"><s>Upload your footage</s></h3><p>Cutting, rendering and transcription run on your computer. The model you bring a key for sees text and the odd still frame.</p></li>
           <li><span class="n mono">4</span><h3 class="slate"><s>Hand you a timeline</s></h3><p>Point at the frame, drag across a sentence, click the wrong word in a title. That’s the whole interface.</p></li>
@@ -175,10 +178,26 @@ const faqs = [
         <div class="row" role="row"><span role="rowheader">You</span><span role="cell" data-h="Timeline editors">operate it, cut by cut</span><span role="cell" data-h="Video as code">describe it; an agent writes HTML</span><span role="cell" data-h="AI generators">prompt, hope, re-roll</span><span role="cell" data-h="Manul" class="us">say it, point at it</span></div>
         <div class="row" role="row"><span role="rowheader">You look at</span><span role="cell" data-h="Timeline editors">a timeline</span><span role="cell" data-h="Video as code">a terminal and code</span><span role="cell" data-h="AI generators">a prompt box</span><span role="cell" data-h="Manul" class="us">your film, before and after</span></div>
         <div class="row" role="row"><span role="rowheader">Your footage</span><span role="cell" data-h="Timeline editors">yours</span><span role="cell" data-h="Video as code">yours, plus coded layers</span><span role="cell" data-h="AI generators">swapped for generated frames</span><span role="cell" data-h="Manul" class="us">yours, untouched</span></div>
+        <div class="row" role="row"><span role="rowheader">Generated shots</span><span role="cell" data-h="Timeline editors">some, built in</span><span role="cell" data-h="Video as code">no</span><span role="cell" data-h="AI generators">the whole film</span><span role="cell" class="us" data-h="Manul">only where you ask (soon)</span></div>
         <div class="row" role="row"><span role="rowheader">Runs on</span><span role="cell" data-h="Timeline editors">your computer</span><span role="cell" data-h="Video as code">your computer</span><span role="cell" data-h="AI generators">their cloud</span><span role="cell" data-h="Manul" class="us">your computer</span></div>
         <div class="row" role="row"><span role="rowheader">Undo</span><span role="cell" data-h="Timeline editors">Ctrl-Z, until it isn’t</span><span role="cell" data-h="Video as code">git, if you use it</span><span role="cell" data-h="AI generators">start over</span><span role="cell" data-h="Manul" class="us">every version, kept</span></div>
         <div class="row" role="row"><span role="rowheader">Costs</span><span role="cell" data-h="Timeline editors">a subscription, mostly</span><span role="cell" data-h="Video as code">free, plus your agent</span><span role="cell" data-h="AI generators">credits</span><span role="cell" data-h="Manul" class="us">free, plus any model key</span></div>
       </div>
+    </section>
+
+    <section class="next wrap" id="next">
+      <div class="head">
+        <p class="label"><b>■</b> Coming next</p>
+        <h2 class="slate">The next reel.</h2>
+        <p class="aside">Generated shots, for the moments your camera missed. Your footage stays the film; generation fills the gaps you point at, through the model you pick.</p>
+      </div>
+      <ol class="reel">
+        <li><span class="tag mono">soon</span><h3 class="slate">B-roll on the fly</h3><p>Say <q>cut to the city at night here</q>. Manul generates a few takes; you pick one and it lands on that sentence.</p></li>
+        <li><span class="tag mono">soon</span><h3 class="slate">Extend the frame</h3><p>Turn a 16:9 shot into a 9:16 Short without cropping anyone out. The new edges are filled to match the shot.</p></li>
+        <li><span class="tag mono">soon</span><h3 class="slate">Complete the shot</h3><p>Box a spot and say what belongs there. Only that box, only for that moment, is generated.</p></li>
+        <li><span class="tag mono">later</span><h3 class="slate">Hand off the cut</h3><p>Open Manul’s edit in Premiere Pro, DaVinci Resolve or Final Cut Pro, and publish to YouTube.</p></li>
+      </ol>
+      <p class="alt">The whole <a href={`${gh}/blob/main/ROADMAP.md`}>roadmap</a> is public, and open to ideas.</p>
     </section>
 
     <section class="get" id="get">
@@ -229,8 +248,7 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
 
     <section class="cat wrap">
       <figure>
-        <img src="/timofey.jpg" width="960" height="720" alt="Timofey, a Pallas's cat, staring flatly at the camera" loading="lazy" />
-        <svg class="ring" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg>
+        <video id="cat" src="/timofey.mp4" poster="/timofey.jpg" width="960" height="720" muted loop playsinline preload="none" aria-label="Timofey, a Pallas's cat, sitting in a doorway and staring flatly at the camera"></video>
         <figcaption class="label">Timofey. Unimpressed.</figcaption>
       </figure>
       <div>
@@ -296,7 +314,13 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
 
     // china-marker notes draw themselves once they're on screen
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: 0.4 })
-    document.querySelectorAll('.ringed, .marks, .rules li, .cat figure, .edl .row').forEach(el => io.observe(el))
+    document.querySelectorAll('.ringed, .marks, .rules li, .edl .row').forEach(el => io.observe(el))
+
+    // the cat plays only while he's on screen, and not at all for people who'd rather nothing moved
+    const cat = document.getElementById('cat') as HTMLVideoElement
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      new IntersectionObserver(([e]) => { if (e.isIntersecting) cat.play().catch(() => {}); else cat.pause() }, { rootMargin: '200px' }).observe(cat)
+    }
 
     // the timecode: one frame per pixel scrolled, 24 fps
     const tc = document.getElementById('tc')!, bar = document.getElementById('bar')!
@@ -326,13 +350,13 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
 
   <style>
     /* the china marker: hand strokes that draw in */
-    .ringed svg path, .marks path, .cat .ring path { fill: none; stroke: var(--red); stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-    .ringed.in svg path, .marks.in path, .cat figure.in .ring path { transition: stroke-dashoffset .9s cubic-bezier(.6,.1,.3,1); stroke-dashoffset: 0; }
+    .ringed svg path, .marks path { fill: none; stroke: var(--red); stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+    .ringed.in svg path, .marks.in path { transition: stroke-dashoffset .9s cubic-bezier(.6,.1,.3,1); stroke-dashoffset: 0; }
     .marks.in .m1 path:last-child, .marks.in .m2 path:last-child { transition-delay: .7s; }
     s { text-decoration: line-through transparent .1em; text-decoration-skip-ink: none; transition: text-decoration-color .5s ease .2s; }
     .in s { text-decoration-color: var(--red); }
     @media (prefers-reduced-motion: reduce) {
-      .ringed svg path, .marks path, .cat .ring path { stroke-dashoffset: 0; }
+      .ringed svg path, .marks path { stroke-dashoffset: 0; }
       s { text-decoration-color: var(--red); transition: none; }
     }
 
@@ -421,6 +445,16 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
     .cmp .us { color: var(--ink) !important; font-weight: 650; background: var(--red-soft) !important; }
     .cmp .th .us { color: var(--red) !important; padding-top: 16px; }
 
+    .next { padding: 0 0 130px; }
+    .reel { list-style: none; margin: 52px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+    .reel li { position: relative; padding: 30px 28px 32px; background: var(--paper-2); }
+    .reel li:nth-child(2), .reel li:nth-child(3) { background: var(--paper-3); }
+    .reel h3 { margin: 0; padding-right: 72px; font-size: clamp(36px, 3.6vw, 52px); }
+    .reel p { margin: 14px 0 0; max-width: 460px; color: var(--ink-2); }
+    .reel q { quotes: '“' '”'; color: var(--ink); font-weight: 600; }
+    .reel .tag { position: absolute; top: 24px; right: 24px; padding: 3px 8px; border: 2px solid var(--red); color: var(--red); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; transform: rotate(4deg); }
+    .reel li:last-child .tag { border-color: var(--ink-3); color: var(--ink-3); }
+    .next > .alt { margin-top: 24px; }
     .get { padding: 120px 0; background: var(--paper-2); }
     .get-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 48px; align-items: end; }
     .first { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; counter-reset: none; }
@@ -449,9 +483,7 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
 
     .cat { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; align-items: center; padding: 130px 0; }
     .cat figure { position: relative; margin: 0; }
-    .cat img { width: 100%; height: auto; border-radius: 3px; filter: saturate(.85); }
-    .cat .ring { position: absolute; left: 17%; top: 24%; width: 37%; height: 37%; overflow: visible; }
-    .cat .ring path { stroke-width: 4px; vector-effect: non-scaling-stroke; }
+    .cat video { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; background: var(--paper-3); }
     .cat figcaption { margin-top: 12px; text-transform: none; }
     .cat h2 { margin: 18px 0 26px; font-size: clamp(52px, 6.6vw, 92px); }
     .cat p:not(.label) { margin: 0 0 16px; font-size: 18px; color: var(--ink-2); max-width: 520px; }
@@ -484,6 +516,9 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
       .cat { grid-template-columns: 1fr; gap: 40px; }
       .qs { grid-template-columns: 1fr; }
       .get-top { grid-template-columns: 1fr; gap: 32px; }
+      .reel { grid-template-columns: 1fr; }
+      .reel li:nth-child(3) { background: var(--paper-2); }
+      .reel li:nth-child(even) { background: var(--paper-3); }
     }
     @media (max-width: 360px) { .tc { display: none; } }
     @media (max-width: 760px) {
@@ -495,6 +530,8 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
       .lede { font-size: 17.5px; }
       .stage { padding-bottom: 80px; }
       .notes, .rules, .fits, .get, .cat, .faq { padding-block: 80px; }
+      .next { padding-bottom: 80px; }
+      .reel li { padding: 24px 18px 26px; }
       .edl { margin-top: 36px; }
       .edl .row { padding: 20px 12px; }
       .cmp { margin-top: 36px; }
