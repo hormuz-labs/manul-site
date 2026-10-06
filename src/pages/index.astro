@@ -55,6 +55,11 @@ const faqs = [
     downloadUrl: `${gh}/releases/latest`, softwareVersion: version, license: 'https://www.gnu.org/licenses/gpl-3.0.html',
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'VideoObject', name: 'Manul: you direct, it edits',
+    description: 'An 88-second film about Manul, the video editor you talk to: drop in footage, say what you want, point at the frame, keep or send back each edit.',
+    thumbnailUrl: 'https://manul.si/film/poster.jpg', contentUrl: 'https://manul.si/film/manul.mp4', uploadDate: '2026-10-07', duration: 'PT1M28S',
+  })} />
+  <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') } })),
   })} />
@@ -87,10 +92,13 @@ const faqs = [
       <div class="pitch">
         <p class="lede">Manul is a video editor you talk to. Drop in your footage, say what you want, circle what’s wrong on the frame. It makes the edit on your own computer and shows you before and after. You never touch a timeline.</p>
         <div class="cta">
-          <a href="#get" class="btn" data-os-cta>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg>
-            <span data-os-label>Get Manul, free</span>
-          </a>
+          <div class="cta-row">
+            <a href="#get" class="btn" data-os-cta>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg>
+              <span data-os-label>Get Manul, free</span>
+            </a>
+            <button class="film-open" type="button" data-film><i aria-hidden="true"></i>Watch the film <span class="mono">1:28</span></button>
+          </div>
           <button class="brew mono" data-copy={brew} aria-label="Copy the Homebrew install command"><span>$ {brew}</span><em>copy</em></button>
         </div>
         <p class="trust label">No account · nothing uploaded · open source</p>
@@ -277,6 +285,13 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
     </section>
   </main>
 
+  <dialog class="film" id="film" aria-label="Manul, the film">
+    <video id="film-v" controls playsinline preload="none" poster="/film/poster.jpg" width="1920" height="1080">
+      <source src="/film/manul.mp4" type="video/mp4" />
+    </video>
+    <button class="film-close" type="button" aria-label="Close the film">×</button>
+  </dialog>
+
   <footer class="wrap label">
     <span>© Hormuz Labs · <a href={`${gh}/blob/main/LICENSE`}>GPL-3.0</a> · <a href={gh}>GitHub</a> · <a href="https://apt.manul.si">apt.manul.si</a></span>
     <span>Demo clip: “Manul Timofey”, Moscow Zoo, <a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D0%BD%D1%83%D0%BB_%D0%A2%D0%B8%D0%BC%D0%BE%D1%84%D0%B5%D0%B9_%D0%BD%D0%B0_%D1%80%D0%B0%D0%B7%D0%B6%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B5.webm">CC BY 4.0</a>, edited.</span>
@@ -311,6 +326,13 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
       try { await navigator.clipboard.writeText(text); out.textContent = 'copied'; b.classList.add('ok') } catch { out.textContent = 'select & copy' }
       setTimeout(() => { out.textContent = was; b.classList.remove('ok') }, 1800)
     }))
+
+    // the film opens in a player over the page
+    const film = document.getElementById('film') as HTMLDialogElement, filmV = document.getElementById('film-v') as HTMLVideoElement
+    document.querySelectorAll('[data-film]').forEach(b => b.addEventListener('click', () => { film.showModal(); filmV.play().catch(() => {}) }))
+    film.querySelector('.film-close')!.addEventListener('click', () => film.close())
+    film.addEventListener('click', e => { if (e.target === film) film.close() })
+    film.addEventListener('close', () => filmV.pause())
 
     // china-marker notes draw themselves once they're on screen
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: 0.4 })
@@ -392,6 +414,17 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
     .brew em { font-style: normal; color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
     .brew.ok em { text-decoration: none; }
     .trust { margin: 22px 0 0; line-height: 1.6; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .film-open { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 18px 0 14px; border: 2px solid var(--ink); border-radius: 4px; background: none; cursor: pointer; font: 650 16px/1 var(--sans); }
+    .film-open i { width: 24px; height: 24px; border-radius: 50%; background: var(--red); position: relative; }
+    .film-open i::after { content: ''; position: absolute; left: 9px; top: 7px; border-left: 9px solid var(--paper); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+    .film-open span { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+    .film-open:hover { background: var(--ink); color: var(--paper); }
+    .film-open:hover span { color: #b8ae9f; }
+    .film { width: min(1200px, 100vw - 32px); max-width: none; max-height: none; padding: 0; border: 0; background: #000; color: var(--paper); overflow: visible; }
+    .film::backdrop { background: rgba(23, 20, 15, .88); }
+    .film video { display: block; width: 100%; height: auto; }
+    .film-close { position: absolute; right: 0; top: -48px; width: 40px; height: 40px; border: 0; border-radius: 3px; background: var(--paper); color: var(--ink); font-size: 26px; line-height: 1; cursor: pointer; }
     .phone-only { display: none; margin: 10px 0 0; text-transform: none; letter-spacing: .02em; line-height: 1.6; }
 
     .stage { padding-bottom: 120px; }
