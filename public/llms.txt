@@ -14,6 +14,8 @@ How it compares: timeline editors (Premiere Pro, Final Cut Pro, DaVinci Resolve,
 
 ## Docs
 
+- [Install Manul (agent skill)](https://manul.si/skills/install-manul/SKILL.md): steps a coding agent can follow to install Manul on this machine
+
 - [README](https://github.com/hormuz-labs/manul/blob/main/README.md): what Manul is, features, install, and a prompt to give a coding agent so it installs Manul for you
 - [Roadmap](https://github.com/hormuz-labs/manul/blob/main/ROADMAP.md): phases, what's done, what's next (generated shots, hand-off to Premiere/Resolve/Final Cut, Windows)
 - [Contributing](https://github.com/hormuz-labs/manul/blob/main/CONTRIBUTING.md): run Manul from source

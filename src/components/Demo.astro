@@ -20,10 +20,10 @@
     <div class="body">
       <div class="stage-col">
         <div class="stage" id="stage">
-          <video class="v-before" id="v-before" src="/demo/before.mp4" poster="/demo/before.jpg" muted loop playsinline autoplay preload="auto" aria-label="Original clip: a Pallas cat walking toward the camera"></video>
+          <video class="v-before" id="v-before" poster="/demo/before.webp" muted loop playsinline preload="none" aria-label="Original clip: a Pallas cat walking toward the camera"><track kind="captions" src="/captions/silent.vtt" srclang="en" label="No sound" /></video>
           <div class="after" id="after" hidden>
-            <video class="v-blur" id="v-blur" muted loop playsinline preload="none" aria-hidden="true"></video>
-            <video class="v-after" id="v-after" muted loop playsinline preload="none" aria-label="Edited clip"></video>
+            <video class="v-blur" id="v-blur" muted loop playsinline preload="none" aria-hidden="true"><track kind="captions" src="/captions/silent.vtt" srclang="en" label="No sound" /></video>
+            <video class="v-after" id="v-after" muted loop playsinline preload="none" aria-label="Edited clip"><track kind="captions" src="/captions/silent.vtt" srclang="en" label="No sound" /></video>
           </div>
           <div class="split" id="split" hidden>
             <span class="tag l">Before</span><span class="tag r">After</span>
@@ -249,7 +249,13 @@
   }
   requestAnimationFrame(tick)
   // autoplay can be refused (low power mode); the poster still shows and any tap starts it
-  vb.play().catch(() => demo.addEventListener('pointerdown', () => vb.play(), { once: true }))
+  // the clip loads only as the demo comes into view, so it never competes with the first paint
+  new IntersectionObserver((es, io) => {
+    if (!es[0].isIntersecting) return
+    io.disconnect()
+    vb.src = '/demo/before.mp4'
+    vb.play().catch(() => demo.addEventListener('pointerdown', () => vb.play(), { once: true }))
+  }, { rootMargin: '300px' }).observe(demo)
 
   const say = (html: string, who: 'manul' | 'you' = 'manul') => {
     const p = document.createElement('p'); p.className = `m ${who}`; p.innerHTML = html
@@ -335,7 +341,7 @@
     asks.hidden = true; decide.hidden = true
     hideAfter()
     // start fetching the edit while the agent "works"
-    va.src = `/demo/${edit}.mp4`; va.poster = `/demo/${edit}.jpg`; va.preload = 'auto'; va.load()
+    va.src = `/demo/${edit}.mp4`; va.poster = `/demo/${edit}.webp`; va.preload = 'auto'; va.load()
     if (e.vertical) { vblur.src = `/demo/${edit}.mp4`; vblur.preload = 'auto'; vblur.load() }
 
     await type(e.ask)

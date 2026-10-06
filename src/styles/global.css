@@ -6,15 +6,23 @@
   --paper-3: #d8d0bf;
   --ink: #17140f;
   --ink-2: #4a443b;
-  --ink-3: #82796b;
-  --red: #d2381c;
+  --ink-3: #5f574b;
+  --red: #d2381c;        /* the marker: circles, strikes, arrows, big type */
+  --red-ink: #9e2812;    /* red small text: passes 4.5:1 on every paper shade */
   --red-soft: rgba(210, 56, 28, 0.1);
-  --wide: 'Archivo Variable', 'Arial Narrow', sans-serif;
-  --sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --wide: 'Archivo Variable', 'Slate Fallback', sans-serif;
+  --sans: 'Archivo Variable', 'Archivo Fallback', ui-sans-serif, system-ui, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --max: 1240px;
   color-scheme: light;
 }
+
+/* Archivo, cut down to what this site uses (weights 400–800, widths 62–100, Latin): 52 KB instead of 90.
+   Rebuild with fontTools if the page ever needs other characters. */
+@font-face { font-family: 'Archivo Variable'; src: url('/fonts/archivo.woff2') format('woff2'); font-weight: 400 800; font-stretch: 62% 100%; font-display: swap; }
+/* Stand-ins sized to Archivo's widths, so nothing rewraps or jumps when the real font arrives */
+@font-face { font-family: 'Slate Fallback'; src: local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Roboto-Bold'), local('Arial'); font-weight: 100 900; size-adjust: 68.3%; ascent-override: 120%; descent-override: 30%; }
+@font-face { font-family: 'Archivo Fallback'; src: local('Arial'), local('ArialMT'), local('Roboto'), local('Roboto-Regular'); font-weight: 100 900; size-adjust: 97.6%; }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -53,7 +61,7 @@ button { font: inherit; color: inherit; }
   text-transform: uppercase;
   color: var(--ink-3);
 }
-.label b { color: var(--red); font-weight: 600; }
+.label b { color: var(--red-ink); font-weight: 600; }
 
 .btn {
   display: inline-flex; align-items: center; gap: 10px;

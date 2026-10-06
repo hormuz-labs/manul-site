@@ -6,25 +6,50 @@
   },
   "entries": [
     {
-      "identifier": "urn:ai:manul.si:knowledge:llms-txt",
-      "displayName": "Manul knowledge index (llms.txt)",
-      "type": "text/plain",
-      "url": "https://manul.si/llms.txt",
-      "description": "What Manul is (a free, open-source video editor you talk to, for macOS and Linux), how to install it with Homebrew or apt, and links to its README, roadmap and source."
+      "identifier": "urn:air:manul.si:skills:install-manul",
+      "displayName": "Install Manul (agent skill)",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
+      "url": "https://manul.si/skills/install-manul/SKILL.md",
+      "description": "Steps a coding agent can follow to install Manul on macOS (Homebrew), Debian/Ubuntu (signed apt repository) or other Linux (AppImage).",
+      "representativeQueries": [
+        "Install Manul for me",
+        "How do I install the Manul video editor on Ubuntu?",
+        "Set up Manul with Homebrew"
+      ]
     },
     {
-      "identifier": "urn:ai:manul.si:knowledge:readme",
+      "identifier": "urn:air:manul.si:knowledge:llms-txt",
+      "displayName": "Manul knowledge index (llms.txt)",
+      "type": "text/markdown",
+      "url": "https://manul.si/llms.txt",
+      "description": "What Manul is (a free, open-source video editor you talk to, for macOS and Linux), how to install it with Homebrew or apt, and links to its README, roadmap and source.",
+      "representativeQueries": [
+        "What is Manul, the video editor you talk to?",
+        "How do I install Manul on macOS or Linux?",
+        "Is there a free open-source alternative to CapCut or Premiere that edits by talking?"
+      ]
+    },
+    {
+      "identifier": "urn:air:manul.si:knowledge:readme",
       "displayName": "Manul README",
       "type": "text/markdown",
       "url": "https://raw.githubusercontent.com/hormuz-labs/manul/main/README.md",
-      "description": "Features, install steps for macOS and Linux, and a ready-made prompt that lets a coding agent install Manul."
+      "description": "Features, install steps for macOS and Linux, and a ready-made prompt that lets a coding agent install Manul.",
+      "representativeQueries": [
+        "What can Manul edit?",
+        "How can a coding agent install Manul for me?"
+      ]
     },
     {
-      "identifier": "urn:ai:manul.si:knowledge:roadmap",
+      "identifier": "urn:air:manul.si:knowledge:roadmap",
       "displayName": "Manul roadmap",
       "type": "text/markdown",
       "url": "https://raw.githubusercontent.com/hormuz-labs/manul/main/ROADMAP.md",
-      "description": "Manul's public plan: product principles, architecture decisions, and phases including generated shots and hand-off to other editors."
+      "description": "Manul's public plan: product principles, architecture decisions, and phases including generated shots and hand-off to other editors.",
+      "representativeQueries": [
+        "Will Manul generate b-roll or extend a frame?",
+        "Is Manul coming to Windows?"
+      ]
     }
   ]
 }

@@ -1,0 +1,22 @@
+# Keeps the site's download links on the latest Manul release: when a new release ships, this writes
+# src/release.json and pushes, and Cloudflare Pages rebuilds. Hourly, like the Homebrew tap.
+name: Follow Manul releases
+on:
+  schedule: [{ cron: '17 * * * *' }]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  follow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the latest release
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          v=$(gh api repos/hormuz-labs/manul/releases/latest --jq .tag_name | sed 's/^v//')
+          echo "{ \"version\": \"$v\" }" > src/release.json
+          git diff --quiet && { echo "already on $v"; exit 0; }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Manul $v" && git push
