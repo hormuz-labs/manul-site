@@ -1,0 +1,25 @@
+# Manul
+
+> Manul is a free, open-source (GPL-3.0) desktop video editor you talk to, for macOS and Linux. Drop in footage, say what you want in plain words, and draw a box on the frame when something's off. Manul makes the edit on your own computer with ffmpeg, and every change comes back as a new version you can compare before and after, then keep or send back. It uses your own Claude, Gemini or OpenAI key.
+
+What it does today: cuts on transcribed words, punch-ins and reframes, titles, lower thirds and captions in real type, music ducked under speech, 16:9 / 9:16 / 1:1 exports, version history. It never replaces your footage with generated frames. Generated shots (b-roll on the fly, extending a frame to a new aspect ratio, filling a boxed spot) are on the roadmap, only where the user asks, labelled as generated.
+
+How it compares: timeline editors (Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut) are operated cut by cut; Descript edits through the transcript; HyperFrames and Remotion turn video into code an agent writes; AI generators (Runway, Sora, Veo) produce new footage. Manul is a desktop app where you give notes and review each edit.
+
+## Install
+
+- [macOS (Homebrew)](https://github.com/hormuz-labs/homebrew-tap): `brew install hormuz-labs/tap/manul`
+- [Debian and Ubuntu (apt)](https://apt.manul.si): add the signed repository, then `sudo apt install manul`
+- [All downloads (.dmg, .deb, AppImage)](https://github.com/hormuz-labs/manul/releases/latest)
+
+## Docs
+
+- [README](https://github.com/hormuz-labs/manul/blob/main/README.md): what Manul is, features, install, and a prompt to give a coding agent so it installs Manul for you
+- [Roadmap](https://github.com/hormuz-labs/manul/blob/main/ROADMAP.md): phases, what's done, what's next (generated shots, hand-off to Premiere/Resolve/Final Cut, Windows)
+- [Contributing](https://github.com/hormuz-labs/manul/blob/main/CONTRIBUTING.md): run Manul from source
+
+## Optional
+
+- [Website](https://manul.si/): live demo, comparison, FAQ, and the 88-second film
+- [Source code](https://github.com/hormuz-labs/manul)
+- [License (GPL-3.0)](https://github.com/hormuz-labs/manul/blob/main/LICENSE)

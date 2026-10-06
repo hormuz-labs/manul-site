@@ -1,0 +1,28 @@
+---
+import '@fontsource-variable/archivo/wdth.css'
+import '@fontsource/ibm-plex-mono/500.css'
+import '../styles/global.css'
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Not found · Manul</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <main class="wrap">
+    <p class="label"><b>■</b> 404 · cut from the film</p>
+    <h1 class="slate">This page<br />didn’t make the <s>cut</s>.</h1>
+    <a class="btn" href="/">Back to Manul</a>
+  </main>
+  <style>
+    main { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 28px; padding: 40px 0; }
+    .label { margin: 0; }
+    h1 { margin: 0; font-size: clamp(64px, 11vw, 150px); }
+    s { text-decoration: line-through var(--red) .1em; text-decoration-skip-ink: none; }
+  </style>
+</body>
+</html>
