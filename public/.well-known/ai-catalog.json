@@ -22,11 +22,11 @@
       "displayName": "Manul knowledge index (llms.txt)",
       "type": "text/markdown",
       "url": "https://manul.si/llms.txt",
-      "description": "What Manul is (a free, open-source video editor you talk to, for macOS and Linux), how to install it with Homebrew or apt, and links to its README, roadmap and source.",
+      "description": "What Manul is (a free video editor you talk to, source on GitHub, for macOS and Linux), how to install it with Homebrew or apt, and links to its README, roadmap and source.",
       "representativeQueries": [
         "What is Manul, the video editor you talk to?",
         "How do I install Manul on macOS or Linux?",
-        "Is there a free open-source alternative to CapCut or Premiere that edits by talking?"
+        "Is there a free alternative to CapCut or Premiere that edits by talking?"
       ]
     },
     {

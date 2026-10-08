@@ -12,16 +12,83 @@ const dl = (f: string) => `https://github.com/hormuz-labs/manul/releases/downloa
 const agentPrompt = 'Install Manul from https://github.com/hormuz-labs/manul. On macOS run `brew install hormuz-labs/tap/manul`. On Linux, add the apt repository at https://apt.manul.si (instructions on that page) and `sudo apt install manul`, or download the .deb or AppImage for this machine from the latest GitHub release. Then open Manul.'
 const brew = 'brew install hormuz-labs/tap/manul'
 const title = 'Manul: the AI video editor you talk to. Free for Mac and Linux'
-const description = 'A video editor you talk to. Drop in footage, say what you want, circle what’s wrong. Manul edits on your own computer and shows you a before / after of every change. Free and open source, for macOS and Linux: an alternative to CapCut, Premiere Pro, Descript and HyperFrames.'
+const description = 'A video editor you talk to. Drop in footage, say what you want, circle what’s wrong. Manul edits on your own computer and shows you a before / after of every change. Free for macOS and Linux, with the source on GitHub: an alternative to CapCut, Premiere Pro, Descript and HyperFrames.'
 const gh = 'https://github.com/hormuz-labs/manul'
+// a trace under each line of the readout, drawn here so the page ships no script for it (600 × 28, seeded so it never changes)
+let seed = 7
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647)
+const W = 600, H = 28
+const f1 = (n: number) => Math.round(n * 10) / 10
+function wordsTrace() {
+  let x = 0, out = '', i = 0
+  while (x < W) {
+    const um = i === 4 || i === 17, w = um ? 9 : 6 + rnd() * 22
+    i++
+    out += `<rect x="${f1(x)}" y="${um ? 9 : 10}" width="${f1(w)}" height="${um ? 10 : 8}" class="${um ? 'r' : 'p'}"/>`
+    x += w + (rnd() < .12 ? 14 + rnd() * 16 : 3)
+  }
+  return out
+}
+const voicesTrace = () => [[0, 70, 0], [70, 190, 1], [190, 240, 0], [240, 380, 1], [380, 470, 0], [470, 530, 1], [530, 600, 0]]
+  .map(([a, b, v]) => `<rect x="${a}" y="${v ? 15 : 7}" width="${b - a - 2}" height="6" class="${v ? 'q' : 'p'}"/>`).join('')
+function shotsTrace() {
+  const cuts = [0, 46, 118, 150, 230, 268, 342, 400, 455, 520, 600]
+  let out = ''
+  cuts.slice(0, -1).forEach((a, i) => {
+    const b = cuts[i + 1], shaky = i === 2 || i === 6, frozen = i === 8
+    if (shaky) {
+      let d = `M${a + 3} 14`
+      for (let x = a + 3; x < b - 3; x += 4) d += ` L${x} ${f1(14 + (rnd() - .5) * 14)}`
+      out += `<path d="${d}" class="rl"/>`
+    } else out += `<rect x="${a + 2}" y="${frozen ? 6 : 12}" width="${b - a - 4}" height="${frozen ? 16 : 4}" class="${frozen ? 'h' : 'p'}"/>`
+    if (i) out += `<rect x="${a - 1}" y="2" width="2" height="24" class="p"/>`
+  })
+  return out
+}
+function subjectTrace() {
+  let d = '', band = ''
+  for (let x = 0; x <= W; x += 10) {
+    const y = 14 + Math.sin(x / 70) * 7 + Math.sin(x / 23) * 2
+    d += `${x ? 'L' : 'M'}${x} ${f1(y)} `
+    if (x % 60 === 0) band += `<rect x="${x - 4}" y="${f1(y - 10)}" width="8" height="20" class="h"/>`
+  }
+  return band + `<path d="${d}" class="rl"/>`
+}
+function musicTrace() {
+  let out = ''
+  for (let i = 0, x = 4; x < W; i++, x += 9.4) {
+    const bar = i % 4 === 0, drop = i === 40
+    out += `<rect x="${f1(x)}" y="${drop ? 0 : bar ? 4 : 10}" width="${drop ? 3 : 1.5}" height="${drop ? 28 : bar ? 20 : 8}" class="${drop ? 'r' : 'p'}"/>`
+  }
+  return out
+}
+function soundTrace() {
+  let d = 'M0 26', x = 0
+  while (x < W) {
+    const quiet = rnd() < .1, w = quiet ? 10 + rnd() * 18 : 4
+    d += ` L${f1(x)} ${quiet ? 26 : f1(26 - 6 - rnd() * 18)}`
+    x += w
+  }
+  return `<path d="${d} L${W} 26 Z" class="pf"/>`
+}
+const svg = (inner: string) => `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${inner}</svg>`
+// the readout: what the agent reads about a film before it cuts (one 6-minute interview, with a song under it)
+const log = [
+  { k: 'Words', trace: svg(wordsTrace()), found: '2,417 words, each with its start and end; cut points moved into the quiet between them', say: 'cut the ums' },
+  { k: 'Voices', trace: svg(voicesTrace()), found: 'two speakers, told apart by voice <i>A 61% · B 39%</i>', say: 'keep only Ravi’s answers' },
+  { k: 'Shots', trace: svg(shotsTrace()), found: '38 shots <i>shaky at 00:52 and 02:10</i> <i>frozen 03:31–03:35</i> and the exposure and colour of each', say: 'lose the shaky bits' },
+  { k: 'Subject', trace: svg(subjectTrace()), found: 'a face, followed through 37 of 38 shots, with a crop that keeps it in frame at 9:16, 1:1 and 4:5', say: 'now a vertical one for Reels' },
+  { k: 'Music', trace: svg(musicTrace()), found: 'low-light.mp3 <i>92 BPM · 64 bars</i> builds at 01:08, drops at 01:24', say: 'cut to the beat after the drop' },
+  { k: 'Sound', trace: svg(soundTrace()), found: '<i>−19 LUFS</i> 14 pauses over half a second, the loudest at 04:12', say: 'tighten the pauses' },
+]
 const faqs = [
-  { q: 'Is it really free?', a: `Yes. Manul is open source under the GPL-3.0. You pay your model provider directly for what the agent uses, usually cents per edit, and Manul shows the running cost as you go.` },
+  { q: 'Is it really free?', a: `Yes. The source is open under the <a href="${gh}/blob/main/LICENSE">Functional Source License</a>: use it, change it, edit paid work with it; just don’t build a competing product from it. Every release becomes Apache-2.0 two years after it ships. You pay your model provider directly for what the agent uses, usually cents per edit.` },
   { q: 'Does my video get uploaded anywhere?', a: `No. Cutting, rendering and transcription happen on your computer. The model only receives text (your notes, the transcript) and, when it needs to look, a few still frames.` },
-  { q: 'Which AI does it use?', a: `Your pick, per project: Claude, Gemini or GPT. Add a key in Settings. A single Manul key that covers every model is coming.` },
+  { q: 'Which AI does it use?', a: `Your pick, per project: Claude, Gemini or GPT, or any OpenAI- or Anthropic-compatible endpoint. Add a key in Settings; it stays in your system’s keychain. A single Manul key that covers every model is coming.` },
   { q: 'Do I need to know video editing?', a: `No. If you can describe what you want to a person, you can direct Manul. If you do know editing, you’ll get there faster: it understands “J-cut”, “punch in” and “duck the music”.` },
   { q: 'Does Manul generate video?', a: `Not yet, and it’s next. Generated shots are on the roadmap: b-roll on the fly, extending a frame to a new aspect ratio, and filling in a spot you box. They go only where you ask, through the video model you choose, and each one is labelled as generated. Everything else Manul does works on the footage you shot.` },
   { q: 'What can’t it do yet?', a: `Generated shots, multi-camera sync, handing the cut to Premiere, Resolve or Final Cut, and Windows. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
-  { q: 'How is it different from CapCut, Descript or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript lets you edit by editing the transcript. HyperFrames and Remotion turn video into code that an agent writes. Manul is a desktop app where you give notes in plain words, point at the frame, and review each change as a before and after, without code or a timeline.` },
+  { q: 'How is it different from CapCut, Descript or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript lets you edit by editing the transcript. HyperFrames and Remotion turn video into code that an agent writes. Manul is a desktop app where you give notes in plain words, point at the frame, and review each change as a before and after. There’s a timeline if you want one, and no code.` },
   { q: 'Who makes it?', a: `Hormuz Labs, in the open. Issues, ideas and pull requests are welcome on <a href="${gh}">GitHub</a>.` },
 ]
 ---
@@ -48,7 +115,7 @@ const faqs = [
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Manul', applicationCategory: 'MultimediaApplication',
     operatingSystem: 'macOS, Linux', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, url: 'https://manul.si/',
-    downloadUrl: `${gh}/releases/latest`, softwareVersion: version, license: 'https://www.gnu.org/licenses/gpl-3.0.html',
+    downloadUrl: `${gh}/releases/latest`, softwareVersion: version, license: `${gh}/blob/main/LICENSE`,
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'VideoObject', name: 'Manul: you direct, it edits',
@@ -72,7 +139,7 @@ const faqs = [
 
   <header class="top wrap">
     <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span class="slate">Manul</span></a>
-    <p class="label meta">v<span data-version>{version}</span> · macOS &amp; Linux · free, GPL-3.0</p>
+    <p class="label meta">v<span data-version>{version}</span> · macOS &amp; Linux · free</p>
     <nav>
       <a href="#notes">Notes</a>
       <a href="#get">Install</a>
@@ -86,7 +153,7 @@ const faqs = [
         Give notes.<br />Get <span class="ringed">cuts.<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg></span>
       </h1>
       <div class="pitch">
-        <p class="lede">Manul is a video editor you talk to. Drop in your footage, say what you want, circle what’s wrong on the frame. It makes the edit on your own computer and shows you before and after. You never touch a timeline.</p>
+        <p class="lede">Manul is a video editor you talk to. Drop in your footage, say what you want, circle what’s wrong on the frame. It makes the edit on your own computer and shows you before and after. You never have to touch a timeline.</p>
         <div class="cta">
           <div class="cta-row">
             <a href="#get" class="btn" data-os-cta>
@@ -97,7 +164,7 @@ const faqs = [
           </div>
           <button class="brew mono" data-copy={brew} aria-label="Copy the Homebrew install command"><span>$ {brew}</span><em>copy</em></button>
         </div>
-        <p class="trust label">No account · nothing uploaded · open source</p>
+        <p class="trust label">No account · nothing uploaded · source on GitHub</p>
         <p class="phone-only label">A desktop app for macOS and Linux. Open this page on your computer to install.</p>
       </div>
     </section>
@@ -135,7 +202,7 @@ const faqs = [
             <span class="n mono" role="cell">002</span>
             <q role="cell"><i class="boxed">box</i> blur this <span class="circled">number plate</span></q>
             <span class="at mono" role="cell">00:18 · box</span>
-            <span class="did" role="cell">Blurred only what’s inside your box, and followed it while the car moved.</span>
+            <span class="did" role="cell">Blurred only what’s inside your box, from 00:18 to 00:24. The rest of the shot is untouched.</span>
           </div>
           <div class="row" role="row">
             <span class="n mono" role="cell">003</span>
@@ -153,29 +220,43 @@ const faqs = [
             <span class="n mono" role="cell">005</span>
             <q role="cell">now a vertical one for Shorts, captions burned in</q>
             <span class="at mono" role="cell">9:16</span>
-            <span class="did" role="cell">Same film, reframed on whoever’s talking, with captions timed to the word.</span>
+            <span class="did" role="cell">Same film, the crop following whoever’s in frame, with captions timed to the word.</span>
+          </div>
+          <div class="row" role="row">
+            <span class="n mono" role="cell">006</span>
+            <q role="cell">put <span class="ref">@logo.png</span> bottom right, and <span class="ref">@song.mp3</span> under the intro</q>
+            <span class="at mono" role="cell">your files</span>
+            <span class="did" role="cell">Type @ and pick anything you dropped in, a version you kept or a title it made. The note points at it by name.</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="rules">
+    <section class="log" id="log">
       <div class="wrap">
-        <p class="label"><b>■</b> House rules</p>
-        <h2 class="slate">Four things it won’t do.</h2>
-        <ol>
-          <li><span class="n mono">1</span><h3 class="slate"><s>Swap your shots for fakes</s></h3><p>It cuts, crops and grades the footage you shot. Titles and captions are real type. Generated shots, when they come, go only where you ask, labelled as generated.</p></li>
-          <li><span class="n mono">2</span><h3 class="slate"><s>Overwrite your work</s></h3><p>Every edit arrives as a new version. Scrub before and after, then keep it or send it back. Old versions stay one click away.</p></li>
-          <li><span class="n mono">3</span><h3 class="slate"><s>Upload your footage</s></h3><p>Cutting, rendering and transcription run on your computer. The model you bring a key for sees text and the odd still frame.</p></li>
-          <li><span class="n mono">4</span><h3 class="slate"><s>Hand you a timeline</s></h3><p>Point at the frame, drag across a sentence, click the wrong word in a title. That’s the whole interface.</p></li>
-        </ol>
+        <div class="head">
+          <p class="label"><b>■</b> Before the first cut</p>
+          <h2 class="slate">It watches the whole film first.</h2>
+          <p class="aside">Before it edits a frame, Manul measures your footage on your own computer: every word and when it’s said, who says it, every shot, where the subject is, every beat of the music. That’s how a note in plain words turns into an exact cut.</p>
+        </div>
+        <div class="readout" role="table" aria-label="What Manul measures, and what that lets you say">
+          <div class="row th" role="row"><span role="columnheader">Track</span><span role="columnheader">What it found</span><span role="columnheader">So you can say</span></div>
+          {log.map(r => (
+            <div class="row" role="row">
+              <span class="k mono" role="rowheader">{r.k}</span>
+              <span class="found" role="cell"><span class="mono" set:html={r.found} /><span class="trace" set:html={r.trace} /></span>
+              <q role="cell">{r.say}</q>
+            </div>
+          ))}
+        </div>
+        <p class="craft">And it knows the craft of the film you’re making: talking heads, tutorials, Shorts and Reels, promos and montages, motion graphics, cleanup and repair.</p>
       </div>
     </section>
 
     <section class="fits wrap">
       <div class="head">
         <p class="label"><b>■</b> Where it fits</p>
-        <h2 class="slate">Not a timeline.<br />Not a slot machine.<br />Not code.</h2>
+        <h2 class="slate">Not a slot machine.<br />Not code.<br />A timeline only if you want it.</h2>
       </div>
       <div class="cmp" role="table" aria-label="Manul compared with timeline editors, code-to-video tools and AI video generators">
         <div class="row th" role="row"><span role="columnheader"></span><span role="columnheader">Timeline editors<small>Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut</small></span><span role="columnheader">Video as code<small>HyperFrames, Remotion</small></span><span role="columnheader">AI generators<small>Runway, Sora, Veo</small></span><span role="columnheader" class="us">Manul<small>agentic editor</small></span></div>
@@ -210,7 +291,7 @@ const faqs = [
           <div class="head">
             <p class="label"><b>■</b> Install · v<span data-version>{version}</span></p>
             <h2 class="slate">Get it.</h2>
-            <p class="aside">Free and open source, for macOS 12+ and Debian or Ubuntu.</p>
+            <p class="aside">Free, for macOS 12+ and Debian or Ubuntu. The source is on GitHub.</p>
           </div>
           <ol class="first">
             <li><span class="mono">01</span><span>Open Manul and drop in a video.</span></li>
@@ -290,7 +371,7 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
   </dialog>
 
   <footer class="wrap label">
-    <span>© Hormuz Labs · <a href={`${gh}/blob/main/LICENSE`}>GPL-3.0</a> · <a href={gh}>GitHub</a> · <a href="https://apt.manul.si">apt.manul.si</a></span>
+    <span>© Hormuz Labs · <a href={`${gh}/blob/main/LICENSE`}>FSL-1.1</a> · <a href={gh}>GitHub</a> · <a href="https://apt.manul.si">apt.manul.si</a></span>
     <span>Demo clip: “Manul Timofey”, Moscow Zoo, <a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D0%BD%D1%83%D0%BB_%D0%A2%D0%B8%D0%BC%D0%BE%D1%84%D0%B5%D0%B9_%D0%BD%D0%B0_%D1%80%D0%B0%D0%B7%D0%B6%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B5.webm">CC BY 4.0</a>, edited.</span>
   </footer>
 
@@ -333,7 +414,7 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
 
     // china-marker notes draw themselves once they're on screen
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: 0.4 })
-    document.querySelectorAll('.ringed, .marks, .rules li, .edl .row').forEach(el => io.observe(el))
+    document.querySelectorAll('.ringed, .marks, .readout .row, .edl .row').forEach(el => io.observe(el))
 
     // the cat plays only while he's on screen, and not at all for people who'd rather nothing moved
     const cat = document.getElementById('cat') as HTMLVideoElement
@@ -443,17 +524,32 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
     .edl .at { font-size: 13.5px; color: var(--red-ink); }
     .edl .did { font-size: 16px; color: var(--ink-2); }
     .boxed { display: inline-block; vertical-align: .25em; margin-right: 8px; padding: 2px 7px; border: 2px dashed var(--red); color: var(--red-ink); font: 600 12px/1.3 var(--mono); font-style: normal; }
+    .ref { font: 600 .82em/1 var(--mono); color: var(--red-ink); background: var(--red-soft); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
     .circled { padding: 0 .12em; box-shadow: inset 0 0 0 2.5px var(--red); border-radius: 3px; transform: rotate(-.6deg); display: inline-block; }
 
-    .rules { padding: 120px 0; background: var(--ink); color: var(--paper); }
-    .rules .label { color: #9a9081; }
-    .rules .label b { color: #f0775a; }
-    .rules h2 { margin-top: 18px; }
-    .rules ol { list-style: none; margin: 64px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 56px 64px; }
-    .rules li { display: grid; grid-template-columns: 36px 1fr; gap: 6px 14px; align-items: baseline; align-content: start; }
-    .rules .n { color: #f0775a; font-size: 14px; }
-    .rules h3 { margin: 0; font-size: clamp(38px, 4.2vw, 58px); line-height: .95; color: #d9d1c3; }
-    .rules p { grid-column: 2; margin: 10px 0 0; max-width: 440px; color: #b8ae9f; font-size: 17px; }
+    .log { padding: 120px 0; background: var(--ink); color: var(--paper); }
+    .log .label { color: #9a9081; }
+    .log .label b { color: #f0775a; }
+    .log .aside { color: #b8ae9f; }
+    .readout { margin-top: 56px; border-top: 1px solid #2e2a24; }
+    .readout .row { display: grid; grid-template-columns: 110px minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #2e2a24; }
+    .readout .th { padding: 14px 0; font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: #9a9081; }
+    .readout .k { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #f0775a; }
+    .readout .found { font-size: 14.5px; line-height: 1.65; color: #d9d1c3; }
+    .readout .found :global(i) { font-style: normal; color: var(--paper); background: #2e2a24; padding: 1px 6px; margin: 0 2px; border-radius: 2px; white-space: nowrap; }
+    .readout q { quotes: '“' '”'; font: 550 clamp(20px, 2vw, 25px)/1.25 var(--sans); font-variation-settings: 'wdth' 88; color: var(--paper); }
+    .readout .row:not(.th) { opacity: 0; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease; }
+    .readout .row.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .readout .row:not(.th) { opacity: 1; transform: none; transition: none; } }
+    .readout .found { display: grid; gap: 10px; }
+    .trace :global(svg) { display: block; width: 100%; height: 28px; }
+    .trace :global(.p) { fill: #5f574b; }
+    .trace :global(.q) { fill: #9a9081; }
+    .trace :global(.r) { fill: #f0775a; }
+    .trace :global(.h) { fill: rgba(240, 119, 90, .22); }
+    .trace :global(.rl) { fill: none; stroke: #f0775a; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+    .trace :global(.pf) { fill: #3c362f; }
+    .craft { margin: 36px 0 0; max-width: 720px; font-size: 18px; color: #b8ae9f; }
 
     .fits { padding: 120px 0; }
     .cmp { margin-top: 52px; }
@@ -533,7 +629,8 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
       .edl .row { grid-template-columns: 44px minmax(0, 1fr); gap: 8px 16px; }
       .edl .row > :nth-child(n+3) { grid-column: 2; }
       .edl .th { display: none; }
-      .rules ol { grid-template-columns: 1fr; gap: 40px; }
+      .readout .row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
+      .readout .th { display: none; }
       .cat { grid-template-columns: 1fr; gap: 40px; }
       .qs { grid-template-columns: 1fr; }
       .get-top { grid-template-columns: 1fr; gap: 32px; }
@@ -550,7 +647,7 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
       .hero { padding-top: 24px; }
       .lede { font-size: 17.5px; }
       .stage { padding-bottom: 80px; }
-      .notes, .rules, .fits, .get, .cat, .faq { padding-block: 80px; }
+      .notes, .log, .fits, .get, .cat, .faq { padding-block: 80px; }
       .next { padding-bottom: 80px; }
       .reel li { padding: 24px 18px 26px; }
       .edl { margin-top: 36px; }
