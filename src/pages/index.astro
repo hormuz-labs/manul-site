@@ -141,8 +141,13 @@ const faqs = [
   <header class="top wrap">
     <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span class="slate">Manul</span></a>
     <p class="label meta">v<span data-version>{version}</span> · macOS &amp; Linux · free</p>
-    <nav>
-      <a href="#notes">Notes</a>
+    <nav aria-label="On this page">
+      <a href="#try">Try it</a>
+      <a href="#notes" class="more">Notes</a>
+      <a href="#log" class="more">What it measures</a>
+      <a href="#fits" class="more">Where it fits</a>
+      <a href="#next" class="more">Coming next</a>
+      <a href="#faq" class="more">FAQ</a>
       <a href="#get">Install</a>
       <a href={gh}>GitHub ↗</a>
     </nav>
@@ -170,7 +175,7 @@ const faqs = [
       </div>
     </section>
 
-    <section class="stage wrap" aria-label="Try Manul">
+    <section class="stage wrap" id="try" aria-label="Try Manul">
       <div class="marks above" aria-hidden="true">
         <p class="mark m1"><span><b>1</b> give it a note</span>
           <svg viewBox="0 0 120 70"><path pathLength="1" d="M100 6C70 10 48 26 44 60"/><path pathLength="1" d="M33 48l11 13 10-14"/></svg></p>
@@ -254,7 +259,7 @@ const faqs = [
       </div>
     </section>
 
-    <section class="fits wrap">
+    <section class="fits wrap" id="fits">
       <div class="head">
         <p class="label"><b>■</b> Where it fits</p>
         <h2 class="slate">Not a slot machine.<br />Not code.<br />A timeline only if you want it.</h2>
@@ -467,7 +472,7 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
     .brand img { border-radius: 6px; }
     .brand .slate { font-size: 30px; line-height: 1; letter-spacing: .01em; }
     .meta { flex: 1; margin: 0; text-align: center; }
-    nav { display: flex; gap: 22px; }
+    nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 22px; }
     nav a { text-decoration: none; font: 500 14px/1 var(--mono); color: var(--ink-2); }
     nav a:hover { color: var(--red-ink); }
 
@@ -640,11 +645,13 @@ sudo apt update && sudo apt install manul</code><button class="copy" data-copy-f
       .reel li:nth-child(even) { background: var(--paper-3); }
     }
     @media (max-width: 360px) { .tc { display: none; } }
+    /* every section in the nav while there's room for it; the version line gives way first */
+    @media (max-width: 1240px) { .meta { display: none; } .top { justify-content: space-between; } }
+    @media (max-width: 1000px) { nav a.more { display: none; } }
     @media (max-width: 760px) {
       .meta { display: none; }
       .top { justify-content: space-between; }
       nav { gap: 16px; }
-      nav a:first-child { display: none; }
       .hero { padding-top: 24px; }
       .lede { font-size: 17.5px; }
       .stage { padding-bottom: 80px; }

@@ -1,29 +1,13 @@
 ---
 // The hero: Manul, live and in miniature. Pick a request, point at the frame, compare, keep.
-// As in the app: the conversation first, the film beside it, the project's chats and files in the sidebar.
+// As in the app: the conversation first, the film beside it.
 // Every "after" is a real edit of the same clip (rendered with ffmpeg, the engine Manul drives).
 ---
 <div class="demo" id="demo" data-state="idle">
   <div class="win" role="group" aria-label="Interactive Manul demo">
-    <aside class="side" aria-label="Projects">
-      <div class="side-top">
-        <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
-      </div>
-      <div class="side-search" aria-hidden="true">Search projects</div>
-      <div class="side-nav" aria-hidden="true"><span>+</span>New project</div>
-      <div class="side-h" aria-hidden="true">Projects</div>
-      <div class="side-row on" aria-hidden="true"><i></i>timofey</div>
-      <div class="tree" aria-hidden="true">
-        <div class="tree-h">Chats</div>
-        <div class="tree-row on">Make him a star</div>
-        <div class="tree-h">Files</div>
-        <div class="tree-row">timofey.mp4<span>0:04</span></div>
-      </div>
-      <div class="side-row" aria-hidden="true"><i></i>Launch film, final</div>
-      <div class="side-row" aria-hidden="true"><i></i>Podcast ep. 12</div>
-    </aside>
     <div class="main">
     <div class="bar">
+      <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
       <span class="name">timofey.mp4</span>
       <span class="ver" id="ver"><b>v1</b><span id="ver-label">Original</span></span>
       <span class="spacer"></span>
@@ -74,6 +58,7 @@
           <button type="button" class="ask" data-edit="zoom">Punch in on his face</button>
           <button type="button" class="ask" data-edit="short">Make it a Short with a caption</button>
           <button type="button" class="ask" data-edit="cinema">Make it cinematic, add his name</button>
+          <button type="button" class="restart" id="restart" hidden>Start over from the original</button>
         </div>
         <div class="decide" id="decide" hidden>
           <button type="button" class="keep" id="keep">Keep</button>
@@ -87,12 +72,13 @@
 </div>
 
 <style>
-  /* the app's own look: near-white neutrals, amber for what Manul does, a serif for its replies */
+  /* the app's own look (its near-white neutrals, warmed a touch to sit on the page's paper), amber for what Manul does,
+     a serif for its replies */
   .demo {
     position: relative;
-    --side: #fbfbf9; --panel: #fcfcfb; --canvas: #f3f3f1; --surface: #fff;
-    --panel-2: #f0f0ee; --panel-3: #e4e4e2; --line: #e4e4e2;
-    --ink: #141413; --ink-2: #52514f; --ink-3: #6b6863;
+    --panel: #f8f5ef; --canvas: #efeae1; --surface: #fffdf9;
+    --panel-2: #eee8de; --panel-3: #e2dacc; --line: #e0d8ca;
+    --ink: #17140f; --ink-2: #4f4a42; --ink-3: #69635a;
     --amber: #c06f12; --amber-ink: #fff; --amber-soft: rgba(192,111,18,.12);
     --sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
     --serif: ui-serif, 'New York', Georgia, 'Times New Roman', serif;
@@ -100,32 +86,16 @@
     font-family: var(--sans); font-variation-settings: normal; color: var(--ink);
   }
   .win {
-    display: grid; grid-template-columns: 196px minmax(0, 1fr);
     background: var(--panel);
-    border: 1px solid var(--line);
+    border: 1px solid var(--paper-3, #d8d0bf);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 40px 80px -40px rgba(40,25,10,.45), 0 2px 6px rgba(40,25,10,.12);
   }
 
-  /* the sidebar: the projects, the one open showing its chats and files */
-  .side { display: flex; flex-direction: column; gap: 2px; padding: 0 10px 12px; background: var(--side); border-right: 1px solid var(--line); font-size: 13px; }
-  .side-top { display: flex; align-items: center; justify-content: space-between; height: 48px; }
-  .lights { display: flex; gap: 7px; }
+  .lights { display: flex; gap: 7px; margin-right: 6px; }
   .lights i { width: 11px; height: 11px; border-radius: 50%; }
   .lights i:nth-child(1) { background: #ff5f57; } .lights i:nth-child(2) { background: #febc2e; } .lights i:nth-child(3) { background: #28c840; }
-  .side-search { height: 30px; margin-bottom: 6px; padding: 0 10px; display: flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink-3); }
-  .side-nav, .side-row { display: flex; align-items: center; gap: 9px; height: 30px; padding: 0 10px; border-radius: 8px; color: var(--ink); white-space: nowrap; overflow: hidden; }
-  .side-nav span { width: 14px; color: var(--ink-2); font-size: 16px; text-align: center; }
-  .side-h { padding: 12px 10px 4px; font-size: 12px; font-weight: 500; color: var(--ink-3); }
-  .side-row i { flex: none; width: 6px; height: 6px; border-radius: 50%; }
-  .side-row.on { background: var(--panel-3); }
-  .side-row.on i { background: var(--amber); }
-  .tree { margin: 2px 0 0 15px; padding-left: 8px; border-left: 1px solid var(--line); font-size: 12.5px; }
-  .tree-h { padding: 6px 8px 2px; font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
-  .tree-row { display: flex; align-items: center; height: 26px; padding: 0 8px; border-radius: 6px; color: var(--ink-2); white-space: nowrap; overflow: hidden; }
-  .tree-row.on { background: var(--panel-2); color: var(--ink); }
-  .tree-row span { margin-left: auto; font: 11px var(--mono); color: var(--ink-3); }
 
   .main { min-width: 0; display: flex; flex-direction: column; }
   .bar { display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 16px; border-bottom: 1px solid var(--line); background: var(--panel); font-size: 14px; }
@@ -192,6 +162,10 @@
   .ask { text-align: left; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); font-size: 14px; cursor: pointer; transition: background .15s, border-color .15s, transform .15s; }
   .ask::before { content: '→'; color: var(--amber); margin-right: 8px; }
   .ask:hover { border-color: var(--panel-3); background: var(--panel-2); transform: translateX(2px); }
+  .ask.done::before { content: '✓'; }
+  .ask.done { color: var(--ink-2); }
+  .restart { align-self: flex-start; margin-top: 2px; padding: 4px 2px; border: 0; background: none; color: var(--ink-3); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .restart:hover { color: var(--ink); }
   .demo[data-state='idle'] .ask:first-child { animation: nudge 2.4s ease 1.8s infinite; }
   .decide { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .decide button { height: 42px; border-radius: 10px; border: 0; font-weight: 600; cursor: pointer; }
@@ -208,10 +182,6 @@
   @keyframes nudge { 0%, 70%, 100% { box-shadow: 0 0 0 0 rgba(192,111,18,0); } 80% { box-shadow: 0 0 0 4px rgba(192,111,18,.25); } }
   @media (prefers-reduced-motion: reduce) { .log :global(.m), .log :global(.card), .hint { animation: none; } .demo[data-state='idle'] .ask:first-child { animation: none; } }
 
-  @media (max-width: 1100px) {
-    .win { grid-template-columns: minmax(0, 1fr); }
-    .side { display: none; }
-  }
   @media (max-width: 900px) {
     .body { grid-template-columns: 1fr; }
     .chat { order: 0; min-height: 0; border: 0; border-top: 1px solid var(--line); padding: 12px 14px 14px; }
@@ -220,6 +190,7 @@
     .tools .tool:not(#boxtool) { display: none; }
   }
   @media (max-width: 520px) {
+    .lights { display: none; }
     .stage-col { padding: 10px 8px; }
     .bar { gap: 8px; padding: 0 10px; }
     .hint { font-size: 12.5px; white-space: normal; width: max-content; max-width: 90%; text-align: center; }
@@ -434,16 +405,29 @@
     say('Sent back. Nothing changed: still on v' + version + '. Try another?')
     offerNext()
   }
+  // every request stays open, in any order: the ones kept are ticked, and any of them can be tried again
+  let toldAll = false
   function offerNext() {
     current = null; demo.dataset.state = 'idle'
-    const left = (Object.keys(EDITS) as Edit[]).filter(k => !kept.has(k))
-    asks.querySelectorAll<HTMLButtonElement>('.ask').forEach(b => { b.hidden = !left.includes(b.dataset.edit as Edit) })
-    if (!left.length) {
+    asks.querySelectorAll<HTMLButtonElement>('.ask').forEach(b => {
+      const done = kept.has(b.dataset.edit as Edit)
+      b.classList.toggle('done', done); b.title = done ? 'Kept. Try it again' : ''
+    })
+    $('restart').hidden = kept.size === 0
+    if (kept.size === Object.keys(EDITS).length && !toldAll) {
+      toldAll = true
       say('That\'s the whole idea. Now try it on your own footage. <a href="#get" style="color:var(--amber);font-weight:600">Get Manul →</a>')
-      asks.hidden = true
-      return
     }
     asks.hidden = false
+  }
+  $('restart').onclick = () => {
+    if (busy) return
+    kept.clear(); version = 1; toldAll = false
+    ver.querySelector('b')!.textContent = 'v1'; verLabel.textContent = 'Original'
+    vb.src = '/demo/before.mp4'; vb.poster = '/demo/before.webp'; vb.style.objectFit = 'cover'; vb.play().catch(() => {})
+    hideAfter(); decide.hidden = true
+    log.innerHTML = '<p class="m manul">Here\'s your clip again, as it came. What should I do with it?</p>'
+    offerNext()
   }
   asks.addEventListener('click', ev => {
     const b = (ev.target as HTMLElement).closest<HTMLButtonElement>('.ask'); if (b) run(b.dataset.edit as Edit)
