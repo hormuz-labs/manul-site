@@ -9,7 +9,10 @@ import release from '../release.json'
 // the latest release; .github/workflows/release.yml refreshes src/release.json when Manul ships
 const version = release.version
 const dl = (f: string) => `https://github.com/hormuz-labs/manul/releases/download/v${version}/${f}`
-const agentPrompt = 'Install Manul from https://github.com/hormuz-labs/manul. On macOS run `brew install hormuz-labs/tap/manul`. On Linux, add the apt repository at https://apt.manul.si (instructions on that page) and `sudo apt install manul`, or download the .deb or AppImage for this machine from the latest GitHub release. Then open Manul.'
+const apt = `curl -fsSL https://apt.manul.si/manul.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/manul.gpg &&
+echo "deb [signed-by=/usr/share/keyrings/manul.gpg] https://apt.manul.si stable main" | sudo tee /etc/apt/sources.list.d/manul.list &&
+sudo apt update && sudo apt install manul`
+const agentPrompt = `Install Manul from https://github.com/hormuz-labs/manul. On macOS run \`brew install hormuz-labs/tap/manul\`. On Debian or Ubuntu run:\n\n${apt}\n\nOr download the .deb or AppImage for this machine from the latest GitHub release. Then open Manul.`
 const brew = 'brew install hormuz-labs/tap/manul'
 const title = 'Manul: the AI video editor you talk to. Free for Mac and Linux'
 const description = 'A video editor you talk to. Drop in footage, say what you want, circle what’s wrong. Manul edits on your own computer and shows you a before / after of every change. Free for macOS and Linux, with the source on GitHub: an alternative to CapCut, Premiere Pro, Descript and HyperFrames.'
@@ -320,9 +323,7 @@ const faqs = [
         </div>
         <div class="panel" role="tabpanel" id="p-linux" aria-labelledby="t-linux" hidden>
           <p class="how">Debian and Ubuntu: add the signed repository once, and apt keeps Manul up to date.</p>
-          <div class="cmd multi"><code>curl -fsSL https://apt.manul.si/manul.gpg | sudo gpg --dearmor -o /usr/share/keyrings/manul.gpg
-echo "deb [signed-by=/usr/share/keyrings/manul.gpg] https://apt.manul.si stable main" | sudo tee /etc/apt/sources.list.d/manul.list
-sudo apt update && sudo apt install manul</code><button class="copy" data-copy-from="prev">Copy</button></div>
+          <div class="cmd multi"><code>{apt}</code><button class="copy" data-copy-from="prev">Copy</button></div>
           <p class="alt">Or download:
             <a href={dl(`manul_${version}_amd64.deb`)} data-file="manul_{v}_amd64.deb">.deb x64</a> ·
             <a href={dl(`manul_${version}_arm64.deb`)} data-file="manul_{v}_arm64.deb">.deb ARM</a> ·
