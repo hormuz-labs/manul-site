@@ -1,0 +1,77 @@
+---
+import LegalPage from '../components/LegalPage.astro'
+---
+<LegalPage
+  title="Privacy Policy"
+  eyebrow="Your footage stays yours"
+  description="How Hormuz Labs handles information on the Manul website and in the Manul desktop application."
+>
+  <p class="intro">Manul is designed to edit on your computer, not in our cloud. This policy explains the limited information involved when you visit manul.si, install Manul, or choose to send diagnostics.</p>
+
+  <section>
+    <h2 class="slate">Scope</h2>
+    <p>This policy applies to the Manul website, the Manul desktop application, and infrastructure operated by Hormuz Labs for Manul. Services run by others—including GitHub, your AI model provider, and sites opened in a browser—have their own privacy policies.</p>
+  </section>
+
+  <section>
+    <h2 class="slate">The website</h2>
+    <p>manul.si has no accounts, contact forms, advertising, or first-party analytics. We do not set cookies on the website.</p>
+    <p>The site is hosted on Cloudflare Pages. Like other web hosts, Cloudflare may process standard request and security data when it serves a page, such as your IP address, request time, requested URL, browser or user-agent information, referring page, and signals used to detect abuse. Cloudflare processes that data under its own privacy commitments and may make limited operational logs available to us.</p>
+    <p>Links and downloads may take you to GitHub, Homebrew, the Manul apt repository, or another site. Those services receive the information ordinarily sent when your browser connects to them.</p>
+  </section>
+
+  <section>
+    <h2 class="slate">The desktop app</h2>
+    <h3>Your projects stay local</h3>
+    <p>Manul stores and processes your projects, footage, audio, transcripts, edits, settings, and exports on your computer. Hormuz Labs does not receive those files merely because you use the app.</p>
+
+    <h3>AI providers you choose</h3>
+    <p>Manul connects directly to the AI provider or compatible endpoint you select. That provider may receive your instructions, relevant transcript text, and a limited number of still frames when the model needs visual context. It does not receive your full video through Manul. Your provider’s terms and privacy policy govern its processing. API keys are stored in your operating system’s keychain.</p>
+
+    <h3>Browser and external tools</h3>
+    <p>When Manul searches the web, downloads a tool, or connects to a service at your direction, that service receives ordinary network request data and any information needed for the requested action. Manul uses its own browser by default; it accesses your browser only if you enable that option.</p>
+  </section>
+
+  <section>
+    <h2 class="slate">Optional diagnostics</h2>
+    <p>On first run, release builds ask separately whether you want to send crash reports and usage statistics. Both choices start off, closing the prompt means no, and either choice can be changed at any time in <strong>Settings → About</strong>. Builds made from source send neither.</p>
+
+    <h3>Usage statistics</h3>
+    <p>If enabled, Manul sends a fixed set of product events through a Hormuz Labs Cloudflare Worker to PostHog. These events describe actions such as opening the app, creating a project, active time, the selected model and tool names used in an agent run, accepting an edit, completing an export, and installing a tool. Events also include app version, operating system, architecture, and a random installation ID that is not tied to an account or identity.</p>
+
+    <h3>Crash reports</h3>
+    <p>If enabled, Manul sends uncaught errors and crash information to Sentry. Local variables, console output, network requests, and screenshots are excluded. File paths, computer names, and user details are removed.</p>
+
+    <h3>What diagnostics never include</h3>
+    <p>Diagnostics do not include your footage, file or folder names, paths, project titles, prompts, agent replies, transcripts, API keys, or visited URLs. We do not pass your IP address to PostHog, and Sentry is configured not to retain it. The complete, current event list is published in Manul’s <a href="https://github.com/hormuz-labs/manul/blob/main/telemetry/README.md">telemetry documentation</a>.</p>
+  </section>
+
+  <section>
+    <h2 class="slate">How we use information</h2>
+    <p>We use the limited information described above to deliver and secure the website, distribute Manul, diagnose crashes, understand whether features work, improve the product, prevent abuse, and meet legal obligations. We do not sell personal information or use it for targeted advertising.</p>
+    <p>Where data-protection law requires a legal basis, we process data as necessary to provide the services you request, for our legitimate interests in operating and improving Manul without overriding your rights, with your consent for optional diagnostics, or to comply with law.</p>
+  </section>
+
+  <section>
+    <h2 class="slate">Sharing and retention</h2>
+    <p>We share information only with service providers needed for the purposes above, such as Cloudflare, PostHog, and Sentry; when you direct us to connect to a third party; or when required to protect rights, safety, and the integrity of the service or to comply with law. These providers may process information in countries other than yours.</p>
+    <p>We retain information only as long as reasonably needed for those purposes, security, and legal obligations. Optional usage events may wait on your computer while offline, up to 500 events. Turning usage statistics off deletes unsent events and the random installation ID. A later opt-in creates a new ID.</p>
+  </section>
+
+  <section>
+    <h2 class="slate">Your choices and rights</h2>
+    <ul>
+      <li>Leave crash reports and usage statistics off, or change either setting at any time.</li>
+      <li>Choose which AI provider Manul uses and manage data with that provider.</li>
+      <li>Delete local Manul projects and application data from your computer.</li>
+      <li>Depending on where you live, request access, correction, deletion, restriction, objection, or portability for personal information we control, and complain to your local data-protection authority.</li>
+    </ul>
+    <p>Diagnostic installation IDs are intentionally not linked to an account or identity, so we may be unable to identify a particular event as yours.</p>
+  </section>
+
+  <section>
+    <h2 class="slate">Changes and contact</h2>
+    <p>We may update this policy as Manul changes. We will post the revised policy here and change the effective date.</p>
+    <p>For privacy questions or requests, open an issue in the <a href="https://github.com/hormuz-labs/manul/issues">Manul repository</a>. Do not include sensitive personal information in a public issue; ask for a private contact channel instead.</p>
+  </section>
+</LegalPage>
