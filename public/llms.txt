@@ -1,6 +1,6 @@
 # Manul
 
-> Manul is a free desktop video editor (source on GitHub, Functional Source License) you talk to, for macOS and Linux. Drop in footage, say what you want in plain words, and draw a box on the frame when something's off. Manul makes the edit on your own computer with ffmpeg, and every change comes back as a new version you can compare before and after, then keep or send back. It uses your own Claude, Gemini or OpenAI key.
+> Manul is a free desktop video editor (source on GitHub, Apache-2.0) you talk to, for macOS and Linux. Drop in footage, say what you want in plain words, and draw a box on the frame when something's off. Manul makes the edit on your own computer with ffmpeg, and every change comes back as a new version you can compare before and after, then keep or send back. It uses your own Claude, Gemini or OpenAI key. With no footage at all it makes motion videos: start from one of 233 examples (each with the prompt that made it), a video whose look to match, or a description.
 
 What it does today: measures the footage before editing (word timings, who speaks, shots and camera shake, where the subject is, the music's beats and bars, loudness), cuts on transcribed words, punch-ins and reframes that follow the subject, titles, lower thirds and captions in real type, music ducked under speech, the conversation with the film beside it, instructions typed right at a box or range on the film, light and dark themes, @-mentions of the project's files, versions and clips, 16:9 / 9:16 / 1:1 exports, version history. It never replaces your footage with generated frames. Generated shots (b-roll on the fly, extending a frame to a new aspect ratio, filling a boxed spot) are on the roadmap, only where the user asks, labelled as generated.
 
@@ -30,4 +30,4 @@ sudo apt update && sudo apt install manul
 
 - [Website](https://manul.si/): live demo, comparison, FAQ, and the 88-second film
 - [Source code](https://github.com/hormuz-labs/manul)
-- [License (FSL-1.1, Apache-2.0 after two years)](https://github.com/hormuz-labs/manul/blob/main/LICENSE)
+- [License (Apache-2.0)](https://github.com/hormuz-labs/manul/blob/main/LICENSE)

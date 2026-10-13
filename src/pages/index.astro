@@ -5,6 +5,7 @@ import '@fontsource/ibm-plex-mono/600.css'
 import '../styles/global.css'
 import Demo from '../components/Demo.astro'
 import release from '../release.json'
+import motion from '../data/motion.json'
 
 // the latest release; .github/workflows/release.yml refreshes src/release.json when Manul ships
 const version = release.version
@@ -17,6 +18,10 @@ const brew = 'brew install hormuz-labs/tap/manul'
 const title = 'Manul: the AI video editor you talk to. Free for Mac and Linux'
 const description = 'A video editor you talk to. Drop in footage, say what you want, circle what’s wrong. Manul edits on your own computer and shows you a before / after of every change. Free for macOS and Linux, with the source on GitHub: an alternative to CapCut, Premiere Pro, Descript and HyperFrames.'
 const gh = 'https://github.com/hormuz-labs/manul'
+// motion examples from the gallery inside Manul: made by the people credited, with Claude; collected by prompt-motion.com.
+// Videos and posters stream from Manul's bucket (scripts/publish-motion-gallery.mjs in the app's repo).
+const media = 'https://storage.googleapis.com/manul-gallery/v1'
+const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`
 // a trace under each line of the readout, drawn here so the page ships no script for it (600 × 28, seeded so it never changes)
 let seed = 7
 const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647)
@@ -85,7 +90,7 @@ const log = [
   { k: 'Sound', trace: svg(soundTrace()), found: '<i>−19 LUFS</i> 14 pauses over half a second, the loudest at 04:12', say: 'tighten the pauses' },
 ]
 const faqs = [
-  { q: 'Is it really free?', a: `Yes. The source is open under the <a href="${gh}/blob/main/LICENSE">Functional Source License</a>: use it, change it, edit paid work with it; just don’t build a competing product from it. Every release becomes Apache-2.0 two years after it ships. You pay your model provider directly for what the agent uses, usually cents per edit.` },
+  { q: 'Is it really free?', a: `Yes. The source is open under the <a href="${gh}/blob/main/LICENSE">Apache License 2.0</a>: use it, change it, edit paid work with it, build on it. You pay your model provider directly for what the agent uses, usually cents per edit.` },
   { q: 'Does my video get uploaded anywhere?', a: `No. Cutting, rendering and transcription happen on your computer. The model only receives text (your notes, the transcript) and, when it needs to look, a few still frames.` },
   { q: 'Which AI does it use?', a: `Your pick, per project: Claude, Gemini or GPT, or any OpenAI- or Anthropic-compatible endpoint. Add a key in Settings; it stays in your system’s keychain. A single Manul key that covers every model is coming.` },
   { q: 'Do I need to know video editing?', a: `No. If you can describe what you want to a person, you can direct Manul. If you do know editing, you’ll get there faster: it understands “J-cut”, “punch in” and “duck the music”.` },
@@ -146,6 +151,7 @@ const faqs = [
     <p class="label meta">v<span data-version>{version}</span> · macOS &amp; Linux · free</p>
     <nav aria-label="On this page">
       <a href="#try">Try it</a>
+      <a href="#motion" class="more">Motion</a>
       <a href="#notes" class="more">Notes</a>
       <a href="#log" class="more">What it measures</a>
       <a href="#fits" class="more">Where it fits</a>
@@ -190,6 +196,25 @@ const faqs = [
           <span><b>2</b> drag across the frame to compare,<br />then keep it or send it back</span></p>
         <p class="credit label">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0.<br />Each “after” was rendered by the same engine Manul drives.</p>
       </div>
+    </section>
+
+    <section class="motion wrap" id="motion">
+      <div class="head">
+        <p class="label"><b>■</b> Motion</p>
+        <h2 class="slate">No footage?<br />Start from these.</h2>
+      </div>
+      <ul class="reels" role="list">
+        {motion.map((m, i) => (
+          <li>
+            <button type="button" class="reel-tile" data-ex={i} aria-label={`Play “${m.title}” by @${m.handle}`}>
+              <video src={`${media}/${m.id}.mp4`} poster={`${media}/posters/${m.id}.jpg`} muted loop playsinline preload="none" width="1920" height="1080" aria-hidden="true"></video>
+              <span class="slug mono"><span>@{m.handle}</span><span>{clock(m.duration)}</span></span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p class="motion-say">Pick any of 233 in Manul, each with the prompt that made it. Say what yours is about; Manul makes it the same way.</p>
+      <p class="credit label">Made with Claude by the people credited, collected by <a href="https://prompt-motion.com">prompt-motion.com</a>.</p>
     </section>
 
     <section class="notes" id="notes">
@@ -377,8 +402,18 @@ const faqs = [
     <button class="film-close" type="button" aria-label="Close the film">×</button>
   </dialog>
 
+  <dialog class="film ex" id="ex" aria-label="A motion example">
+    <video id="ex-v" controls playsinline preload="none" width="1920" height="1080"></video>
+    <div class="ex-info">
+      <div><p class="slate" id="ex-title"></p><p class="mono ex-by">by <a id="ex-who"></a> · <a id="ex-post">View post ↗</a></p></div>
+      <details><summary class="mono">The prompt that made it</summary><pre id="ex-prompt"></pre></details>
+    </div>
+    <button class="film-close" type="button" aria-label="Close">×</button>
+  </dialog>
+  <script type="application/json" id="ex-data" set:html={JSON.stringify(motion.map(m => ({ ...m, video: `${media}/${m.id}.mp4`, poster: `${media}/posters/${m.id}.jpg` })))} />
+
   <footer class="wrap label">
-    <span>© Hormuz Labs · <a href={`${gh}/blob/main/LICENSE`}>FSL-1.1</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href={gh}>GitHub</a> · <a href="https://apt.manul.si">apt.manul.si</a></span>
+    <span>© Hormuz Labs · <a href={`${gh}/blob/main/LICENSE`}>Apache-2.0</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href={gh}>GitHub</a> · <a href="https://apt.manul.si">apt.manul.si</a></span>
     <span>Demo clip: “Manul Timofey”, Moscow Zoo, <a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D0%BD%D1%83%D0%BB_%D0%A2%D0%B8%D0%BC%D0%BE%D1%84%D0%B5%D0%B9_%D0%BD%D0%B0_%D1%80%D0%B0%D0%B7%D0%B6%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B5.webm">CC BY 4.0</a>, edited.</span>
   </footer>
 
@@ -418,6 +453,30 @@ const faqs = [
     film.querySelector('.film-close')!.addEventListener('click', () => film.close())
     film.addEventListener('click', e => { if (e.target === film) film.close() })
     film.addEventListener('close', () => filmV.pause())
+
+    // motion examples play, silently, while they're on screen; a click opens one with sound and the prompt behind it
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reels = new IntersectionObserver(es => es.forEach(e => {
+      const v = e.target as HTMLVideoElement
+      if (e.isIntersecting && !still) v.play().catch(() => {}); else v.pause()
+    }), { threshold: 0.35 })
+    document.querySelectorAll<HTMLVideoElement>('.reel-tile video').forEach(v => reels.observe(v))
+    const exs = JSON.parse(document.getElementById('ex-data')!.textContent!)
+    const ex = document.getElementById('ex') as HTMLDialogElement, exV = document.getElementById('ex-v') as HTMLVideoElement
+    document.querySelectorAll<HTMLButtonElement>('[data-ex]').forEach(b => b.addEventListener('click', () => {
+      const m = exs[Number(b.dataset.ex)]
+      exV.src = m.video; exV.poster = m.poster
+      document.getElementById('ex-title')!.textContent = m.title
+      const who = document.getElementById('ex-who') as HTMLAnchorElement
+      who.textContent = '@' + m.handle; who.href = 'https://x.com/' + m.handle
+      ;(document.getElementById('ex-post') as HTMLAnchorElement).href = m.post
+      document.getElementById('ex-prompt')!.textContent = m.prompt
+      ex.querySelector('details')!.open = false
+      ex.showModal(); exV.play().catch(() => {})
+    }))
+    ex.querySelector('.film-close')!.addEventListener('click', () => ex.close())
+    ex.addEventListener('click', e => { if (e.target === ex) ex.close() })
+    ex.addEventListener('close', () => exV.pause())
 
     // china-marker notes draw themselves once they're on screen
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: 0.4 })
@@ -521,6 +580,27 @@ const faqs = [
     h2 { margin: 0; font-size: clamp(50px, 6.8vw, 96px); }
     .aside { margin: 4px 0 0; max-width: 620px; font-size: 18px; color: var(--ink-2); }
 
+    .motion { padding: 110px 0 100px; }
+    .reels { list-style: none; margin: 44px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .reel-tile { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--ink); cursor: pointer; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 3px; box-shadow: 0 0 0 1px rgba(23, 20, 15, .12); }
+    .reel-tile video { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.16, 1, .3, 1); }
+    .reel-tile:hover video, .reel-tile:focus-visible video { transform: scale(1.03); }
+    .reel-tile:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+    .slug { position: absolute; inset: auto 0 0; display: flex; justify-content: space-between; padding: 22px 12px 9px; font-size: 12.5px; color: var(--paper); background: linear-gradient(transparent, rgba(23, 20, 15, .7)); pointer-events: none; }
+    .motion-say { margin: 34px 0 0; max-width: 680px; font: 550 clamp(21px, 2.1vw, 26px)/1.3 var(--sans); font-variation-settings: 'wdth' 88; }
+    .motion .credit { margin-top: 14px; }
+    .motion .credit a { color: inherit; }
+    .ex { width: min(1100px, 100vw - 32px, 108vh); } /* the video ≤ 61vh tall, so it and the prompt fit the window */
+    .ex-info { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 18px 22px 20px; background: var(--ink); }
+    .ex-info .slate { margin: 0; font-size: 28px; line-height: 1.05; }
+    .ex-by { margin: 8px 0 0; font-size: 13px; color: #b8ae9f; }
+    .ex-by a { color: var(--paper); }
+    .ex .film-close { top: 10px; right: 10px; z-index: 1; background: rgba(23, 20, 15, .55); color: var(--paper); }
+    .ex-info summary { cursor: pointer; font-size: 13px; color: #f0775a; }
+    .ex-info pre { margin: 10px 0 0; max-height: 22vh; overflow: auto; white-space: pre-wrap; font: 400 12.5px/1.55 var(--mono); color: #d9d0c3; }
+    @media (prefers-reduced-motion: reduce) { .reel-tile video { transition: none; } }
+    @media (max-width: 980px) { .reels { grid-template-columns: repeat(2, 1fr); } .ex-info { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .reels { grid-template-columns: 1fr; gap: 14px; } .motion { padding: 80px 0 70px; } }
     .notes { padding: 110px 0; background: var(--paper-2); }
     .edl { margin-top: 56px; }
     .edl .row { display: grid; grid-template-columns: 56px minmax(0, 1.25fr) 150px minmax(0, 1fr); gap: 28px; align-items: baseline; padding: 26px 20px; }
