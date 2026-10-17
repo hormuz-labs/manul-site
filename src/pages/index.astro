@@ -542,7 +542,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
       if (!e.isIntersecting) return
       const v = e.target as HTMLVideoElement
       v.preload = 'auto'; v.src = v.dataset.src!; warm.unobserve(v)
-    }), { rootMargin: '120% 0px' })
+    }), { rootMargin: '120% 60%' })
     const reels = new IntersectionObserver(es => es.forEach(e => {
       const v = e.target as HTMLVideoElement
       if (e.isIntersecting && move) { if (!v.src) v.src = v.dataset.src!; v.play().catch(() => {}) } else v.pause()
@@ -923,7 +923,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
       .view { grid-template-columns: 1fr; gap: 10px; padding: 18px 0; }
       .cat .panel { grid-template-columns: 1fr; }
       .faq { grid-template-columns: 1fr; gap: 20px; }
-      .faq-side { position: static; min-height: 180px; }
+      .faq-side { position: relative; top: auto; min-height: 180px; } /* not static: the painting layer is positioned against it */
       .first { grid-template-columns: 1fr; }
       .bento { grid-template-columns: 1fr 1fr; grid-template-rows: none; grid-auto-rows: 180px; }
       .t1 { grid-column: 1 / 3; }
@@ -974,7 +974,11 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
       .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 560px) {
-      .reels { grid-template-columns: 1fr; gap: 12px; }
+      /* the motion tiles: a row you swipe, the next one peeking in, instead of three screens of stacked video */
+      .reels { display: flex; gap: 12px; margin: 0 -10px; padding: 6px 10px 10px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 10px; scrollbar-width: none; overscroll-behavior-x: contain; }
+      .reels::-webkit-scrollbar { display: none; }
+      .reels li { flex: 0 0 84%; scroll-snap-align: start; }
+      .js.move .reels li[data-r] { transform: none; }
       .bento { grid-template-columns: 1fr; grid-auto-rows: 160px; }
       .t1, .t5 { grid-column: auto; }
       .acts .btn { padding: 0 14px; }
