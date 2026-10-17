@@ -1,4 +1,5 @@
 ---
+import '@fontsource-variable/albert-sans'
 import '@fontsource/ibm-plex-mono/500.css'
 import '../styles/global.css'
 
@@ -18,7 +19,7 @@ const canonical = new URL(Astro.url.pathname, 'https://manul.si')
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title} · Manul</title>
   <meta name="description" content={description} />
-  <meta name="theme-color" content="#ece6da" />
+  <meta name="theme-color" content="#fdfdf6" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -26,7 +27,7 @@ const canonical = new URL(Astro.url.pathname, 'https://manul.si')
 </head>
 <body>
   <header class="top wrap">
-    <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span class="slate">Manul</span></a>
+    <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>Manul</span></a>
     <nav aria-label="Legal pages">
       <a href="/privacy/">Privacy</a>
       <a href="/terms/">Terms</a>
@@ -36,7 +37,7 @@ const canonical = new URL(Astro.url.pathname, 'https://manul.si')
 
   <main class="wrap">
     <header class="title">
-      <p class="label"><b>■</b> {eyebrow}</p>
+      <p class="eyebrow"><span aria-hidden="true"></span>{eyebrow}</p>
       <h1 class="slate">{title}</h1>
       <p class="effective">Effective October 11, 2026</p>
     </header>
@@ -51,44 +52,43 @@ const canonical = new URL(Astro.url.pathname, 'https://manul.si')
   </footer>
 
   <style>
-    .top { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 72px; }
-    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand img { border-radius: 6px; }
-    .brand .slate { font-size: 30px; line-height: 1; letter-spacing: .01em; }
-    nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 22px; }
-    nav a { color: var(--ink-2); font: 500 14px/1 var(--mono); text-decoration: none; }
-    nav a:hover { color: var(--red-ink); }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font: 800 19px/1 var(--sans); letter-spacing: -.02em; }
+    .brand img { border-radius: 7px; }
+    nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+    nav a { padding: 8px 12px; border-radius: 8px; color: var(--ink); font: 500 14px/1 var(--sans); text-decoration: none; }
+    nav a:hover { background: rgba(38, 38, 38, .06); }
 
-    main { padding-block: 72px 110px; }
-    .title { max-width: 900px; padding-bottom: 52px; border-bottom: 2px solid var(--ink); }
-    .title .label { margin: 0 0 24px; }
-    h1 { margin: 0; max-width: 850px; color: var(--red); font-size: clamp(68px, 10vw, 132px); }
-    .effective { margin: 26px 0 0; color: var(--ink-3); font: 500 13px/1.5 var(--mono); }
-    article { max-width: 820px; padding-top: 52px; }
-    article :global(.intro) { margin: 0 0 56px; color: var(--ink-2); font-size: clamp(21px, 2.2vw, 28px); line-height: 1.42; }
-    article :global(section) { margin-top: 48px; }
-    article :global(h2) { margin: 0 0 16px; font-size: clamp(30px, 4vw, 44px); font-variation-settings: 'wdth' 82; line-height: 1; }
-    article :global(h3) { margin: 28px 0 8px; font-size: 20px; line-height: 1.25; }
+    main { padding-block: 24px 110px; }
+    .title { display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(56px, 8vw, 96px) 20px; border-radius: var(--r-lg); background: url(/paint/steppe.webp) center 35% / cover, #bcd6ef; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; padding: 7px 14px; border-radius: 999px; background: rgba(255, 255, 255, .6); font: 600 13.5px/1.2 var(--sans); }
+    .eyebrow span { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+    h1 { margin: 0; font-size: clamp(42px, 6vw, 72px); letter-spacing: -.035em; }
+    .effective { margin: 16px 0 0; color: var(--ink-2); font: 500 14px/1.5 var(--sans); }
+    article { max-width: 760px; margin: 0 auto; padding-top: 64px; }
+    article :global(.intro) { margin: 0 0 48px; color: var(--ink-2); font-size: clamp(20px, 2vw, 24px); line-height: 1.45; }
+    article :global(section) { margin-top: 44px; padding-top: 32px; border-top: 1px solid var(--line); }
+    article :global(h2) { margin: 0 0 16px; font-size: clamp(26px, 3vw, 32px); }
+    article :global(h3) { margin: 28px 0 8px; font-size: 19px; line-height: 1.25; }
     article :global(p), article :global(li) { color: var(--ink-2); }
     article :global(p) { margin: 0 0 16px; }
     article :global(ul) { margin: 14px 0 20px; padding-left: 24px; }
     article :global(li) { margin: 8px 0; padding-left: 4px; }
-    article :global(a) { color: var(--ink); text-decoration-color: var(--red-ink); text-underline-offset: 3px; }
-    article :global(a:hover) { color: var(--red-ink); }
+    article :global(a) { color: var(--ink); text-decoration-color: var(--amber); text-underline-offset: 3px; }
+    article :global(a:hover) { color: var(--amber-ink); }
     article :global(strong) { color: var(--ink); }
 
-    footer { display: flex; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; padding-block: 26px 80px; border-top: 1px solid var(--paper-3); text-transform: none; letter-spacing: .02em; line-height: 1.6; }
+    footer { display: flex; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; padding-block: 26px 80px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.6; }
     footer a { color: var(--ink-2); text-underline-offset: 3px; }
-    footer a:hover { color: var(--red-ink); }
+    footer a:hover { color: var(--ink); }
 
     @media (max-width: 640px) {
-      .top { align-items: flex-start; padding-block: 20px; }
-      nav { gap: 12px; }
+      .top { padding-block: 10px; }
       nav a:last-child { display: none; }
-      main { padding-block: 46px 80px; }
-      .title { padding-bottom: 38px; }
-      article { padding-top: 38px; }
-      article :global(.intro) { margin-bottom: 44px; }
+      main { padding-block: 12px 80px; }
+      .title { border-radius: 22px; }
+      article { padding-top: 44px; }
+      article :global(.intro) { margin-bottom: 40px; }
     }
   </style>
 </body>

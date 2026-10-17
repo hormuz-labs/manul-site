@@ -1,4 +1,5 @@
 ---
+import '@fontsource-variable/albert-sans'
 import '@fontsource/ibm-plex-mono/400.css'
 import '@fontsource/ibm-plex-mono/500.css'
 import '@fontsource/ibm-plex-mono/600.css'
@@ -108,7 +109,7 @@ const faqs = [
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="theme-color" content="#ece6da" />
+  <meta name="theme-color" content="#fdfdf6" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
   <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
@@ -120,7 +121,7 @@ const faqs = [
   <meta property="og:description" content={description} />
   <meta property="og:image" content="https://manul.si/og.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preload" href="/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/paint/steppe.webp" as="image" type="image/webp" />
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Manul', applicationCategory: 'MultimediaApplication',
     operatingSystem: 'macOS, Linux', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, url: 'https://manul.si/',
@@ -137,160 +138,147 @@ const faqs = [
   })} />
 </head>
 <body>
-  <!-- a running timecode: the page is a reel, scrolling plays it -->
-  <div class="bar" id="bar">
-    <div class="wrap">
-      <a class="brand" href="#" aria-label="Back to top"><span class="slate">Manul</span></a>
-      <span class="tc mono" aria-hidden="true"><i></i><span id="tc">00:00:00:00</span></span>
-      <a href="#get" class="btn sm">Get Manul</a>
+  <header class="top" id="top">
+    <div class="top-in">
+      <nav aria-label="On this page">
+        <a href="#try">Try it</a>
+        <a href="#motion">Motion</a>
+        <a href="#notes">Notes</a>
+        <a href="#fits" class="more">Compare</a>
+        <a href="#next" class="more">Roadmap</a>
+        <a href="#faq" class="more">FAQ</a>
+      </nav>
+      <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>Manul</span></a>
+      <div class="acts">
+        <a class="gh" href={gh} aria-label="Manul on GitHub">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>
+          <span>Star</span>
+        </a>
+        <a href="#get" class="btn sm">Download</a>
+      </div>
     </div>
-  </div>
-
-  <header class="top wrap">
-    <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span class="slate">Manul</span></a>
-    <p class="label meta">v<span data-version>{version}</span> · macOS &amp; Linux · free</p>
-    <nav aria-label="On this page">
-      <a href="#try">Try it</a>
-      <a href="#motion" class="more">Motion</a>
-      <a href="#notes" class="more">Notes</a>
-      <a href="#log" class="more">What it measures</a>
-      <a href="#fits" class="more">Where it fits</a>
-      <a href="#next" class="more">Coming next</a>
-      <a href="#faq" class="more">FAQ</a>
-      <a href="#get">Install</a>
-      <a href={gh}>GitHub ↗</a>
-    </nav>
   </header>
 
   <main>
-    <section class="hero wrap">
-      <h1 class="slate">
-        Give notes.<br />Get <span class="ringed">cuts.<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg></span>
-      </h1>
-      <div class="pitch">
-        <p class="lede">Manul is a video editor you talk to. Drop in your footage, say what you want, circle what’s wrong on the frame. It makes the edit on your own computer and shows you before and after. You never have to touch a timeline.</p>
-        <div class="cta">
+    <section class="hero" aria-label="Manul">
+      <div class="sky">
+        <div class="hero-copy">
+          <a class="eyebrow" href="#get"><span class="dot-live" aria-hidden="true"></span><span>v<span data-version>{version}</span> · free and open source · macOS &amp; Linux</span></a>
+          <h1 class="slate">Give notes. Get <span class="ringed">cuts.<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg></span></h1>
+          <p class="lede">Manul is a video editor you talk to. Drop in your footage, say what you want, circle what’s wrong on the frame. It makes the edit on your own computer and shows you before and after.</p>
           <div class="cta-row">
-            <a href="#get" class="btn" data-os-cta>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg>
+            <a href="#get" class="btn dot" data-os-cta>
+              <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
               <span data-os-label>Get Manul, free</span>
             </a>
-            <button class="film-open" type="button" data-film><i aria-hidden="true"></i>Watch the film <span class="mono">1:28</span></button>
+            <button class="btn light" type="button" data-film><i class="play" aria-hidden="true"></i>Watch the film <span class="mono dur">1:28</span></button>
           </div>
           <button class="brew mono" data-copy={brew} aria-label="Copy the Homebrew install command"><span>$ {brew}</span><em>copy</em></button>
+          <p class="phone-only">A desktop app for macOS and Linux. Open this page on your computer to install.</p>
         </div>
-        <p class="trust label">No account · nothing uploaded · source on GitHub</p>
-        <p class="phone-only label">A desktop app for macOS and Linux. Open this page on your computer to install.</p>
-      </div>
-    </section>
 
-    <section class="stage wrap" id="try" aria-label="Try Manul">
-      <div class="marks above" aria-hidden="true">
-        <p class="mark m1"><span><b>1</b> give it a note</span>
-          <svg viewBox="0 0 120 70"><path pathLength="1" d="M100 6C70 10 48 26 44 60"/><path pathLength="1" d="M33 48l11 13 10-14"/></svg></p>
+        <div class="stage" id="try" aria-label="Try Manul">
+          <ol class="steps" aria-hidden="true">
+            <li><b>1</b>Give it a note</li>
+            <li><b>2</b>Drag across the frame to compare</li>
+            <li><b>3</b>Keep it, or send it back</li>
+          </ol>
+          <div class="glass"><Demo /></div>
+        </div>
       </div>
-      <p class="mark phone" aria-hidden="true"><b>1</b> tap a note under the video. Every edit is real.</p>
-      <Demo />
-      <div class="marks below" aria-hidden="true">
-        <p class="mark m2"><svg viewBox="0 0 120 70"><path pathLength="1" d="M8 62C44 60 66 42 72 8"/><path pathLength="1" d="M60 18l12-11 8 14"/></svg>
-          <span><b>2</b> drag across the frame to compare,<br />then keep it or send it back</span></p>
-        <p class="credit label">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0.<br />Each “after” was rendered by the same engine Manul drives.</p>
-      </div>
+      <p class="credit wrap">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0. Each “after” was rendered by the same engine Manul drives.</p>
     </section>
 
     <section class="motion wrap" id="motion">
-      <div class="head">
-        <p class="label"><b>■</b> Motion</p>
-        <h2 class="slate">No footage?<br />Start from these.</h2>
+      <div class="sh">
+        <h2 class="slate">No footage? Start from these.</h2>
+        <p>Pick any of 233 motion videos in Manul, each with the prompt that made it. Say what yours is about; Manul makes it the same way.</p>
       </div>
       <ul class="reels" role="list">
         {motion.map((m, i) => (
           <li>
             <button type="button" class="reel-tile" data-ex={i} aria-label={`Play “${m.title}” by @${m.handle}`}>
               <video src={`${media}/${m.id}.mp4`} poster={`${media}/posters/${m.id}.jpg`} muted loop playsinline preload="none" width="1920" height="1080" aria-hidden="true"></video>
-              <span class="slug mono"><span>@{m.handle}</span><span>{clock(m.duration)}</span></span>
+              <span class="slug"><span>@{m.handle}</span><span class="mono">{clock(m.duration)}</span></span>
             </button>
           </li>
         ))}
       </ul>
-      <p class="motion-say">Pick any of 233 in Manul, each with the prompt that made it. Say what yours is about; Manul makes it the same way.</p>
-      <p class="credit label">Made with Claude by the people credited, collected by <a href="https://prompt-motion.com">prompt-motion.com</a>.</p>
+      <p class="credit">Made with Claude by the people credited, collected by <a href="https://prompt-motion.com">prompt-motion.com</a>.</p>
     </section>
 
-    <section class="notes" id="notes">
-      <div class="wrap">
-        <div class="head">
-          <p class="label"><b>■</b> The notes</p>
-          <h2 class="slate">Say it like there’s an editor in the room.</h2>
-          <p class="aside">Every word you recorded is transcribed with its timing, and every box you draw is pinned to a spot and a moment. So a note lands exactly where you meant it.</p>
+    <section class="notes wrap" id="notes">
+      <div class="sh">
+        <h2 class="slate">Say it like there’s an editor in the room.</h2>
+        <p>Every word you recorded is transcribed with its timing, and every box you draw is pinned to a spot and a moment. So a note lands exactly where you meant it.</p>
+      </div>
+      <div class="edl" role="table" aria-label="Notes and what Manul did with them">
+        <div class="row th" role="row"><span role="columnheader">#</span><span role="columnheader">Your note</span><span role="columnheader">Where</span><span role="columnheader">What Manul did</span></div>
+        <div class="row" role="row">
+          <span class="n mono" role="cell">01</span>
+          <q role="cell">cut <s>the ums</s>, and the bit where I lose my train of thought</q>
+          <span class="at mono" role="cell">02:31 → 02:12</span>
+          <span class="did" role="cell">Cut on the word, not near it. Nineteen seconds gone, no jump in the audio.</span>
         </div>
-        <div class="edl" role="table" aria-label="Notes and what Manul did with them">
-          <div class="row th" role="row"><span role="columnheader">#</span><span role="columnheader">Your note</span><span role="columnheader">Where</span><span role="columnheader">What Manul did</span></div>
-          <div class="row" role="row">
-            <span class="n mono" role="cell">001</span>
-            <q role="cell">cut <s>the ums</s>, and the bit where I lose my train of thought</q>
-            <span class="at mono" role="cell">02:31 → 02:12</span>
-            <span class="did" role="cell">Cut on the word, not near it. Nineteen seconds gone, no jump in the audio.</span>
-          </div>
-          <div class="row" role="row">
-            <span class="n mono" role="cell">002</span>
-            <q role="cell"><i class="boxed">box</i> blur this <span class="circled">number plate</span></q>
-            <span class="at mono" role="cell">00:18 · box</span>
-            <span class="did" role="cell">Blurred only what’s inside your box, from 00:18 to 00:24. The rest of the shot is untouched.</span>
-          </div>
-          <div class="row" role="row">
-            <span class="n mono" role="cell">003</span>
-            <q role="cell">put my name on screen when I introduce myself</q>
-            <span class="at mono" role="cell">00:06 “I’m”</span>
-            <span class="did" role="cell">A lower third in real type, in on the word. Drag it somewhere else after if you like.</span>
-          </div>
-          <div class="row" role="row">
-            <span class="n mono" role="cell">004</span>
-            <q role="cell">quiet music under the whole thing</q>
-            <span class="at mono" role="cell">00:00 → end</span>
-            <span class="did" role="cell">Looped to the length of the film and dipped under every sentence. You hear the mix before anything renders.</span>
-          </div>
-          <div class="row" role="row">
-            <span class="n mono" role="cell">005</span>
-            <q role="cell">now a vertical one for Shorts, captions burned in</q>
-            <span class="at mono" role="cell">9:16</span>
-            <span class="did" role="cell">Same film, the crop following whoever’s in frame, with captions timed to the word.</span>
-          </div>
-          <div class="row" role="row">
-            <span class="n mono" role="cell">006</span>
-            <q role="cell">put <span class="ref">@logo.png</span> bottom right, and <span class="ref">@song.mp3</span> under the intro</q>
-            <span class="at mono" role="cell">your files</span>
-            <span class="did" role="cell">Type @ and pick anything you dropped in, a version you kept or a title it made. The note points at it by name.</span>
-          </div>
+        <div class="row" role="row">
+          <span class="n mono" role="cell">02</span>
+          <q role="cell"><i class="boxed">box</i> blur this <span class="circled">number plate</span></q>
+          <span class="at mono" role="cell">00:18 · box</span>
+          <span class="did" role="cell">Blurred only what’s inside your box, from 00:18 to 00:24. The rest of the shot is untouched.</span>
+        </div>
+        <div class="row" role="row">
+          <span class="n mono" role="cell">03</span>
+          <q role="cell">put my name on screen when I introduce myself</q>
+          <span class="at mono" role="cell">00:06 “I’m”</span>
+          <span class="did" role="cell">A lower third in real type, in on the word. Drag it somewhere else after if you like.</span>
+        </div>
+        <div class="row" role="row">
+          <span class="n mono" role="cell">04</span>
+          <q role="cell">quiet music under the whole thing</q>
+          <span class="at mono" role="cell">00:00 → end</span>
+          <span class="did" role="cell">Looped to the length of the film and dipped under every sentence. You hear the mix before anything renders.</span>
+        </div>
+        <div class="row" role="row">
+          <span class="n mono" role="cell">05</span>
+          <q role="cell">now a vertical one for Shorts, captions burned in</q>
+          <span class="at mono" role="cell">9:16</span>
+          <span class="did" role="cell">Same film, the crop following whoever’s in frame, with captions timed to the word.</span>
+        </div>
+        <div class="row" role="row">
+          <span class="n mono" role="cell">06</span>
+          <q role="cell">put <span class="ref">@logo.png</span> bottom right, and <span class="ref">@song.mp3</span> under the intro</q>
+          <span class="at mono" role="cell">your files</span>
+          <span class="did" role="cell">Type @ and pick anything you dropped in, a version you kept or a title it made. The note points at it by name.</span>
         </div>
       </div>
     </section>
 
-    <section class="log" id="log">
-      <div class="wrap">
-        <div class="head">
-          <p class="label"><b>■</b> Before the first cut</p>
-          <h2 class="slate">It watches the whole film first.</h2>
-          <p class="aside">Before it edits a frame, Manul measures your footage on your own computer: every word and when it’s said, who says it, every shot, where the subject is, every beat of the music. That’s how a note in plain words turns into an exact cut.</p>
-        </div>
-        <div class="readout" role="table" aria-label="What Manul measures, and what that lets you say">
-          <div class="row th" role="row"><span role="columnheader">Track</span><span role="columnheader">What it found</span><span role="columnheader">So you can say</span></div>
-          {log.map(r => (
-            <div class="row" role="row">
-              <span class="k mono" role="rowheader">{r.k}</span>
-              <span class="found" role="cell"><span class="mono" set:html={r.found} /><span class="trace" set:html={r.trace} /></span>
-              <q role="cell">{r.say}</q>
-            </div>
-          ))}
+    <section class="reads" id="reads">
+      <div class="wrap sh">
+        <h2 class="slate">It watches the whole film first.</h2>
+        <p>Before it edits a frame, Manul measures your footage on your own computer: every word and when it’s said, who says it, every shot, where the subject is, every beat of the music. That’s how a note in plain words turns into an exact cut.</p>
+      </div>
+      <div class="paint grass">
+        <div class="paper">
+          <div class="readout" role="table" aria-label="What Manul measures, and what that lets you say">
+            <div class="row th" role="row"><span role="columnheader">Track</span><span role="columnheader">What it found</span><span role="columnheader">So you can say</span></div>
+            {log.map(r => (
+              <div class="row" role="row">
+                <span class="k" role="rowheader">{r.k}</span>
+                <span class="found" role="cell"><span class="mono" set:html={r.found} /><span class="trace" set:html={r.trace} /></span>
+                <q role="cell">{r.say}</q>
+              </div>
+            ))}
+          </div>
         </div>
         <p class="craft">And it knows the craft of the film you’re making: talking heads, tutorials, Shorts and Reels, promos and montages, motion graphics, cleanup and repair.</p>
       </div>
     </section>
 
     <section class="fits wrap" id="fits">
-      <div class="head">
-        <p class="label"><b>■</b> Where it fits</p>
-        <h2 class="slate">Not a slot machine.<br />Not code.<br />A timeline only if you want it.</h2>
+      <div class="sh">
+        <h2 class="slate">Not a slot machine. Not code. A timeline only if you want it.</h2>
+        <p>Where Manul sits next to the editors, code-to-video tools and generators you already know.</p>
       </div>
       <div class="cmp" role="table" aria-label="Manul compared with timeline editors, code-to-video tools and AI video generators">
         <div class="row th" role="row"><span role="columnheader"></span><span role="columnheader">Timeline editors<small>Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut</small></span><span role="columnheader">Video as code<small>HyperFrames, Remotion</small></span><span role="columnheader">AI generators<small>Runway, Sora, Veo</small></span><span role="columnheader" class="us">Manul<small>agentic editor</small></span></div>
@@ -305,35 +293,30 @@ const faqs = [
     </section>
 
     <section class="next wrap" id="next">
-      <div class="head">
-        <p class="label"><b>■</b> Coming next</p>
-        <h2 class="slate">The next reel.</h2>
-        <p class="aside">Generated shots, for the moments your camera missed. Your footage stays the film; generation fills the gaps you point at, through the model you pick.</p>
+      <div class="sh">
+        <h2 class="slate">Coming next: the shots your camera missed.</h2>
+        <p>Your footage stays the film; generation fills the gaps you point at, through the model you pick. The whole <a href={`${gh}/blob/main/ROADMAP.md`}>roadmap</a> is public, and open to ideas.</p>
       </div>
-      <ol class="reel">
-        <li><span class="tag mono">soon</span><h3 class="slate">B-roll on the fly</h3><p>Say <q>cut to the city at night here</q>. Manul generates a few takes; you pick one and it lands on that sentence.</p></li>
-        <li><span class="tag mono">soon</span><h3 class="slate">Extend the frame</h3><p>Turn a 16:9 shot into a 9:16 Short without cropping anyone out. The new edges are filled to match the shot.</p></li>
-        <li><span class="tag mono">soon</span><h3 class="slate">Complete the shot</h3><p>Box a spot and say what belongs there. Only that box, only for that moment, is generated.</p></li>
-        <li><span class="tag mono">later</span><h3 class="slate">Hand off the cut</h3><p>Open Manul’s edit in Premiere Pro, DaVinci Resolve or Final Cut Pro, and publish to YouTube.</p></li>
+      <ol class="cards">
+        <li><span class="tag">Soon</span><h3>B-roll on the fly</h3><p>Say <q>cut to the city at night here</q>. Manul generates a few takes; you pick one and it lands on that sentence.</p></li>
+        <li><span class="tag">Soon</span><h3>Extend the frame</h3><p>Turn a 16:9 shot into a 9:16 Short without cropping anyone out. The new edges are filled to match the shot.</p></li>
+        <li><span class="tag">Soon</span><h3>Complete the shot</h3><p>Box a spot and say what belongs there. Only that box, only for that moment, is generated.</p></li>
+        <li><span class="tag later">Later</span><h3>Hand off the cut</h3><p>Open Manul’s edit in Premiere Pro, DaVinci Resolve or Final Cut Pro, and publish to YouTube.</p></li>
       </ol>
-      <p class="alt">The whole <a href={`${gh}/blob/main/ROADMAP.md`}>roadmap</a> is public, and open to ideas.</p>
     </section>
 
-    <section class="get" id="get">
-      <div class="wrap">
-        <div class="get-top">
-          <div class="head">
-            <p class="label"><b>■</b> Install · v<span data-version>{version}</span></p>
-            <h2 class="slate">Get it.</h2>
-            <p class="aside">Free, for macOS 12+ and Debian or Ubuntu. The source is on GitHub.</p>
-          </div>
-          <ol class="first">
-            <li><span class="mono">01</span><span>Open Manul and drop in a video.</span></li>
-            <li><span class="mono">02</span><span>Paste a Claude, Gemini or OpenAI key. It stays in your system’s keychain.</span></li>
-            <li><span class="mono">03</span><span>Give it your first note. Try <q>cut the silences</q>.</span></li>
-          </ol>
-        </div>
+    <section class="get wrap" id="get">
+      <div class="sh">
+        <h2 class="slate">Free to start. One line to install.</h2>
+        <p>Version <span data-version>{version}</span>, for macOS 12+ and Debian or Ubuntu. The source is on GitHub.</p>
+      </div>
+      <ol class="first">
+        <li><span class="num">01</span><h3>Open Manul</h3><p>Drop in a video, or start from a motion example.</p></li>
+        <li><span class="num">02</span><h3>Add a model</h3><p>Paste a Claude, Gemini or OpenAI key. It stays in your system’s keychain.</p></li>
+        <li><span class="num">03</span><h3>Give it a note</h3><p>Try <q>cut the silences</q>, then keep it or send it back.</p></li>
+      </ol>
 
+      <div class="install">
         <div class="tabs" role="tablist" aria-label="Choose your system">
           <button role="tab" id="t-mac" aria-controls="p-mac" aria-selected="true" data-tab="mac">macOS</button>
           <button role="tab" id="t-linux" aria-controls="p-linux" aria-selected="false" data-tab="linux">Linux</button>
@@ -363,33 +346,55 @@ const faqs = [
       </div>
     </section>
 
+    <section class="oss wrap" id="oss">
+      <div class="oss-head">
+        <div>
+          <h2 class="slate">Open source</h2>
+          <p>Built in public under Apache-2.0.</p>
+        </div>
+        <a class="btn" href={gh}>Star us on GitHub</a>
+      </div>
+      <div class="bento">
+        <a class="tile t1" href={`${gh}/blob/main/LICENSE`}><span class="big">Apache-2.0</span><span class="what">Use it, change it, edit paid work with it</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="tile t2" href={`${gh}/releases/latest`}><span class="big">Free</span><span class="what">The whole app, for good</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="tile t3" href="#motion"><span class="big">233</span><span class="what">Motion examples, each with its prompt</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="tile t4" href="#faq"><span class="big">0 bytes</span><span class="what">Of your footage uploaded</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="tile t5" href={`${gh}/blob/main/ROADMAP.md`}><span class="big">Roadmap</span><span class="what">In the open, ideas welcome</span><span class="go" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
     <section class="cat wrap">
       <figure>
         <video id="cat" src="/timofey.mp4" poster="/timofey.webp" width="960" height="720" muted loop playsinline preload="none" aria-label="Timofey, a Pallas's cat, sitting in a doorway and staring flatly at the camera"><track kind="captions" src="/captions/silent.vtt" srclang="en" label="No sound" /></video>
-        <figcaption class="label">Timofey. Unimpressed.</figcaption>
+        <figcaption>Timofey. Unimpressed.</figcaption>
       </figure>
       <div>
-        <p class="label"><b>■</b> Why a cat</p>
+        <p class="label"><b>●</b> Why a cat</p>
         <h2 class="slate">Named after the manul.</h2>
         <p>The manul, or Pallas’s cat, lives alone on the cold steppe of Central Asia. It doesn’t chase; it waits, then moves once, exactly. And it looks at everything with the same flat, faintly disappointed stare.</p>
         <p>That’s the editor we wanted in the room: patient, hard to impress, and precise when it counts.</p>
       </div>
     </section>
 
-    <section class="faq" id="faq">
-      <div class="wrap">
-        <div class="head"><p class="label"><b>■</b> Questions</p></div>
-        <div class="qs">
-          {faqs.map(f => <details><summary>{f.q}</summary><p set:html={f.a} /></details>)}
+    <section class="cta">
+      <div class="paint dusk">
+        <img src="/icon.png" width="116" height="116" alt="" loading="lazy" />
+        <h2 class="slate">Download Manul.</h2>
+        <p>Give notes. Get cuts. On your own computer.</p>
+        <div class="cta-row">
+          <a href="#get" class="btn dot">
+            <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
+            <span data-os-label>Get Manul, free</span>
+          </a>
+          <a href={gh} class="btn">Star on GitHub</a>
         </div>
       </div>
     </section>
 
-    <section class="wrap-up wrap">
-      <h2 class="slate">That’s a wrap.</h2>
-      <div class="cta">
-        <a href="#get" class="btn"><span data-os-label>Get Manul, free</span></a>
-        <button class="brew mono" data-copy={brew} aria-label="Copy the Homebrew install command"><span>$ {brew}</span><em>copy</em></button>
+    <section class="faq wrap" id="faq">
+      <h2 class="slate">FAQs</h2>
+      <div class="qs">
+        {faqs.map(f => <details><summary>{f.q}</summary><p set:html={f.a} /></details>)}
       </div>
     </section>
   </main>
@@ -405,16 +410,31 @@ const faqs = [
   <dialog class="film ex" id="ex" aria-label="A motion example">
     <video id="ex-v" controls playsinline preload="none" width="1920" height="1080"></video>
     <div class="ex-info">
-      <div><p class="slate" id="ex-title"></p><p class="mono ex-by">by <a id="ex-who"></a> · <a id="ex-post">View post ↗</a></p></div>
-      <details><summary class="mono">The prompt that made it</summary><pre id="ex-prompt"></pre></details>
+      <div><p class="ex-title" id="ex-title"></p><p class="ex-by">by <a id="ex-who"></a> · <a id="ex-post">View post ↗</a></p></div>
+      <details><summary>The prompt that made it</summary><pre id="ex-prompt"></pre></details>
     </div>
     <button class="film-close" type="button" aria-label="Close">×</button>
   </dialog>
   <script type="application/json" id="ex-data" set:html={JSON.stringify(motion.map(m => ({ ...m, video: `${media}/${m.id}.mp4`, poster: `${media}/posters/${m.id}.jpg` })))} />
 
-  <footer class="wrap label">
-    <span>© Hormuz Labs · <a href={`${gh}/blob/main/LICENSE`}>Apache-2.0</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href={gh}>GitHub</a> · <a href="https://apt.manul.si">apt.manul.si</a></span>
-    <span>Demo clip: “Manul Timofey”, Moscow Zoo, <a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D0%BD%D1%83%D0%BB_%D0%A2%D0%B8%D0%BC%D0%BE%D1%84%D0%B5%D0%B9_%D0%BD%D0%B0_%D1%80%D0%B0%D0%B7%D0%B6%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B5.webm">CC BY 4.0</a>, edited.</span>
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-top">
+        <div class="foot-brand">
+          <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="32" height="32" alt="" /><span>Manul</span></a>
+          <p>The video editor you talk to. Free and open source, for macOS and Linux.</p>
+        </div>
+        <nav class="cols" aria-label="Footer">
+          <div><h3>Product</h3><a href="#try">Try it</a><a href="#motion">Motion</a><a href="#notes">Notes</a><a href="#fits">Compare</a><a href="#get">Install</a></div>
+          <div><h3>Project</h3><a href={gh}>GitHub</a><a href={`${gh}/blob/main/ROADMAP.md`}>Roadmap</a><a href={`${gh}/blob/main/CONTRIBUTING.md`}>Contributing</a><a href={`${gh}/releases`}>Releases</a><a href="https://apt.manul.si">apt.manul.si</a></div>
+          <div><h3>Company</h3><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href={`${gh}/blob/main/LICENSE`}>License</a><a href="#faq">FAQ</a></div>
+        </nav>
+      </div>
+      <div class="foot-base">
+        <span>© 2026 Hormuz Labs · Apache-2.0</span>
+        <span>Demo clip: “Manul Timofey”, Moscow Zoo, <a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D0%BD%D1%83%D0%BB_%D0%A2%D0%B8%D0%BC%D0%BE%D1%84%D0%B5%D0%B9_%D0%BD%D0%B0_%D1%80%D0%B0%D0%B7%D0%B6%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B5.webm">CC BY 4.0</a>, edited.</span>
+      </div>
+    </div>
   </footer>
 
   <script>
@@ -478,284 +498,302 @@ const faqs = [
     ex.addEventListener('click', e => { if (e.target === ex) ex.close() })
     ex.addEventListener('close', () => exV.pause())
 
-    // china-marker notes draw themselves once they're on screen
+    // the ring, the strike-through and the rows draw in once they're on screen
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: 0.4 })
-    document.querySelectorAll('.ringed, .marks, .readout .row, .edl .row').forEach(el => io.observe(el))
+    document.querySelectorAll('.ringed, .readout .row, .edl .row').forEach(el => io.observe(el))
 
     // the cat plays only while he's on screen, and not at all for people who'd rather nothing moved
     const cat = document.getElementById('cat') as HTMLVideoElement
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      new IntersectionObserver(([e]) => { if (e.isIntersecting) cat.play().catch(() => {}); else cat.pause() }, { rootMargin: '200px' }).observe(cat)
-    }
+    if (!still) new IntersectionObserver(([e]) => { if (e.isIntersecting) cat.play().catch(() => {}); else cat.pause() }, { rootMargin: '200px' }).observe(cat)
 
-    // the timecode: one frame per pixel scrolled, 24 fps
-    const tc = document.getElementById('tc')!, bar = document.getElementById('bar')!
-    const pad = (n: number) => String(n).padStart(2, '0')
+    // the header gets a hairline once the page moves under it
+    const top = document.getElementById('top')!
     let queued = false
     addEventListener('scroll', () => {
       if (queued) return
       queued = true
-      requestAnimationFrame(() => {
-        const f = Math.round(scrollY / 2), s = Math.floor(f / 24)
-        tc.textContent = `00:${pad(Math.floor(s / 60))}:${pad(s % 60)}:${pad(f % 24)}`
-        bar.classList.toggle('on', scrollY > innerHeight * .8)
-        queued = false
-      })
+      requestAnimationFrame(() => { top.classList.toggle('on', scrollY > 8); queued = false })
     }, { passive: true })
   </script>
 
   <style>
-    /* the china marker: hand strokes that draw in */
-    .ringed svg path, .marks path { fill: none; stroke: var(--red); stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-    .ringed.in svg path, .marks.in path { transition: stroke-dashoffset .9s cubic-bezier(.6,.1,.3,1); stroke-dashoffset: 0; }
-    .marks.in .m1 path:last-child, .marks.in .m2 path:last-child { transition-delay: .7s; }
+    /* the ring and the strike: Manul's notes on the page, drawn in amber */
+    .ringed { position: relative; display: inline-block; }
+    .ringed svg { position: absolute; left: -5%; top: -16%; width: 113%; height: 132%; overflow: visible; pointer-events: none; }
+    .ringed svg path { fill: none; stroke: var(--amber); stroke-width: 6px; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; }
+    .ringed.in svg path { transition: stroke-dashoffset .9s cubic-bezier(.6,.1,.3,1) .2s; stroke-dashoffset: 0; }
     s { text-decoration: line-through transparent .1em; text-decoration-skip-ink: none; transition: text-decoration-color .5s ease .2s; }
-    .in s { text-decoration-color: var(--red-ink); }
+    .in s { text-decoration-color: var(--amber); }
     @media (prefers-reduced-motion: reduce) {
-      .ringed svg path, .marks path { stroke-dashoffset: 0; }
-      s { text-decoration-color: var(--red-ink); transition: none; }
+      .ringed svg path { stroke-dashoffset: 0; }
+      s { text-decoration-color: var(--amber); transition: none; }
     }
 
-    .bar { position: fixed; z-index: 20; inset: 0 0 auto; background: var(--ink); color: var(--paper); transform: translateY(-100%); transition: transform .3s ease; }
-    .bar.on { transform: none; }
-    .bar .wrap { display: flex; align-items: center; gap: 20px; height: 56px; }
-    .bar .slate { font-size: 24px; }
-    .bar .btn { margin-left: auto; white-space: nowrap; height: 38px; padding: 0 16px; font-size: 14.5px; background: var(--red-ink); }
-    .bar .btn:hover { background: #e8492b; }
-    .tc { display: flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: .04em; color: #b8ae9f; font-variant-numeric: tabular-nums; }
-    .tc i { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: blink 1.2s steps(2, start) infinite; }
-    @keyframes blink { to { visibility: hidden; } }
-    @media (prefers-reduced-motion: reduce) { .tc i { animation: none; } }
+    /* header: links left, the cat in the middle, GitHub and Download right */
+    .top { position: sticky; top: 0; z-index: 30; background: rgba(253, 253, 246, .82); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); transition: box-shadow .2s; }
+    .top.on { box-shadow: 0 1px 0 var(--line-2); }
+    .top-in { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; height: 60px; padding: 0 20px; }
+    .top nav { display: flex; gap: 4px; }
+    .top nav a { padding: 8px 12px; border-radius: 8px; font: 500 14px/1 var(--sans); text-decoration: none; color: var(--ink); }
+    .top nav a:hover { background: rgba(38, 38, 38, .06); }
+    .brand { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font: 800 19px/1 var(--sans); letter-spacing: -.02em; }
+    .brand img { border-radius: 7px; }
+    .acts { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+    .gh { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); font: 600 14px/1 var(--sans); text-decoration: none; }
+    .gh:hover { background: rgba(38, 38, 38, .05); }
+    .gh svg { width: 16px; height: 16px; }
 
-    .top { display: flex; align-items: center; gap: 24px; height: 72px; }
-    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand img { border-radius: 6px; }
-    .brand .slate { font-size: 30px; line-height: 1; letter-spacing: .01em; }
-    .meta { flex: 1; margin: 0; text-align: center; }
-    nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 22px; }
-    nav a { text-decoration: none; font: 500 14px/1 var(--mono); color: var(--ink-2); }
-    nav a:hover { color: var(--red-ink); }
+    /* the hero: a painted sky with the editor in it */
+    .hero { padding: 0 8px; }
+    .sky { position: relative; overflow: hidden; border-radius: var(--r-lg); padding: clamp(56px, 8vw, 104px) clamp(12px, 4vw, 56px) clamp(16px, 4vw, 56px);
+      background: linear-gradient(180deg, rgba(253, 253, 246, .1), rgba(253, 253, 246, 0) 40%), url(/paint/steppe.webp) center 30% / cover, #bcd6ef; }
+    .hero-copy { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 860px; margin: 0 auto; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255, 255, 255, .6); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font: 600 13.5px/1.2 var(--sans); text-decoration: none; }
+    .dot-live { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px var(--amber-soft); }
+    h1 { margin: 22px 0 0; font-size: clamp(44px, 6.6vw, 84px); line-height: 1.02; letter-spacing: -.035em; }
+    .lede { margin: 20px 0 0; max-width: 680px; font-size: clamp(17px, 1.5vw, 19.5px); line-height: 1.5; color: #2f2f2c; }
+    .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 30px; }
+    .play { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); position: relative; flex: none; }
+    .play::after { content: ''; position: absolute; left: 8.5px; top: 6.5px; border-left: 8px solid #fff; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; }
+    .dur { font-size: 12.5px; font-weight: 500; color: var(--ink-3); }
+    .brew { display: inline-flex; gap: 12px; align-items: center; margin-top: 16px; padding: 7px 14px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, .45); cursor: pointer; font-size: 13.5px; color: var(--ink-2); }
+    .brew:hover { background: rgba(255, 255, 255, .7); }
+    .brew em { font: 600 13px/1 var(--sans); font-style: normal; color: var(--amber-ink); }
+    .phone-only { display: none; margin: 16px 0 0; font-size: 14.5px; color: var(--ink-2); }
 
-    .hero { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 48px; align-items: end; padding: 28px 0 30px; }
-    h1 { margin: 0; font-size: clamp(76px, 10.4vw, 150px); }
-    .ringed { position: relative; display: inline-block; }
-    .ringed svg { position: absolute; left: -9%; top: -14%; width: 118%; height: 128%; overflow: visible; pointer-events: none; }
-    .ringed svg path { stroke-width: 7px; vector-effect: non-scaling-stroke; }
-    .ringed { color: var(--red); }
-    .lede { margin: 0; font-size: 19px; line-height: 1.5; color: var(--ink-2); }
-    .cta { margin-top: 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-    .brew { display: inline-flex; gap: 14px; align-items: center; padding: 0; border: 0; background: none; cursor: pointer; font-size: 14px; color: var(--ink-2); }
-    .brew em { font-style: normal; color: var(--red-ink); text-decoration: underline; text-underline-offset: 3px; }
-    .brew.ok em { text-decoration: none; }
-    .trust { margin: 22px 0 0; line-height: 1.6; }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .film-open { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 18px 0 14px; border: 2px solid var(--ink); border-radius: 4px; background: none; cursor: pointer; font: 650 16px/1 var(--sans); }
-    .film-open i { width: 24px; height: 24px; border-radius: 50%; background: var(--red); position: relative; }
-    .film-open i::after { content: ''; position: absolute; left: 9px; top: 7px; border-left: 9px solid var(--paper); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
-    .film-open span { font-size: 13px; font-weight: 500; color: var(--ink-3); }
-    .film-open:hover { background: var(--ink); color: var(--paper); }
-    .film-open:hover span { color: #b8ae9f; }
-    .film { width: min(1200px, 100vw - 32px); max-width: none; max-height: none; padding: 0; border: 0; background: #000; color: var(--paper); overflow: visible; }
-    .film::backdrop { background: rgba(23, 20, 15, .88); }
-    .film video { display: block; width: 100%; height: auto; }
-    .film-close { position: absolute; right: 0; top: -48px; width: 40px; height: 40px; border: 0; border-radius: 3px; background: var(--paper); color: var(--ink); font-size: 26px; line-height: 1; cursor: pointer; }
-    .phone-only { display: none; margin: 10px 0 0; text-transform: none; letter-spacing: .02em; line-height: 1.6; }
+    .stage { max-width: 1120px; margin: clamp(40px, 6vw, 64px) auto 0; }
+    .steps { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; padding: 0; }
+    .steps li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 999px; background: rgba(32, 32, 32, .86); color: #fff; font: 600 13.5px/1.2 var(--sans); }
+    .steps b { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--amber); color: var(--ink); font-size: 12px; }
+    .glass { padding: 8px; border-radius: 24px; background: rgba(255, 255, 255, .34); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .6), 0 40px 80px -40px rgba(30, 40, 60, .45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+    .credit { margin: 14px auto 0; font-size: 13px; color: var(--ink-3); text-align: center; }
+    .credit a { color: inherit; text-underline-offset: 3px; }
 
-    .stage { padding-bottom: 120px; }
-    .marks.above { height: 74px; margin-bottom: 4px; }
-    .marks.below { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; margin-top: 10px; }
-    .mark { position: relative; margin: 0; font: 500 14px/1.3 var(--mono); color: var(--red-ink); }
-    .mark b { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 6px; border: 2px solid var(--red); border-radius: 50%; font-size: 12px; }
-    .mark svg { position: absolute; width: 120px; height: 70px; overflow: visible; }
-    .mark path { stroke-width: 2.4px; }
-    .m1 { text-align: right; padding: 10px 120px 0 0; }
-    .m1 svg { right: 0; top: 8px; }
-    .m2 { display: flex; gap: 10px; align-items: flex-end; padding-left: 24%; line-height: 1.5; white-space: nowrap; }
-    .m2 svg { position: static; flex: none; margin-bottom: 12px; }
-    .mark.phone { display: none; margin: 0 0 14px; }
-    .credit { flex: 0 1 470px; margin: 4px 0 0; text-align: right; text-transform: none; letter-spacing: .02em; line-height: 1.6; }
+    /* section heads: centred, bold, a line under */
+    .sh { max-width: 760px; margin: 0 auto; text-align: center; }
+    .sh h2 { margin: 0; font-size: clamp(30px, 3.6vw, 44px); }
+    .sh p { margin: 14px auto 0; max-width: 640px; text-wrap: pretty; font-size: 17.5px; color: var(--ink-2); }
+    .sh a { color: var(--ink); text-underline-offset: 3px; }
+    section.wrap, .reads { padding-top: clamp(80px, 10vw, 128px); }
 
-    .head { display: grid; gap: 18px; max-width: 1060px; }
-    .head .label { margin: 0; }
-    h2 { margin: 0; font-size: clamp(50px, 6.8vw, 96px); }
-    .aside { margin: 4px 0 0; max-width: 620px; font-size: 18px; color: var(--ink-2); }
-
-    .motion { padding: 110px 0 100px; }
-    .reels { list-style: none; margin: 44px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .reel-tile { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--ink); cursor: pointer; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 3px; box-shadow: 0 0 0 1px rgba(23, 20, 15, .12); }
+    .reels { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .reel-tile { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--dark); cursor: pointer; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--r); box-shadow: 0 0 0 1px var(--line-2); }
     .reel-tile video { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.16, 1, .3, 1); }
     .reel-tile:hover video, .reel-tile:focus-visible video { transform: scale(1.03); }
-    .reel-tile:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
-    .slug { position: absolute; inset: auto 0 0; display: flex; justify-content: space-between; padding: 22px 12px 9px; font-size: 12.5px; color: var(--paper); background: linear-gradient(transparent, rgba(23, 20, 15, .7)); pointer-events: none; }
-    .motion-say { margin: 34px 0 0; max-width: 680px; font: 550 clamp(21px, 2.1vw, 26px)/1.3 var(--sans); font-variation-settings: 'wdth' 88; }
-    .motion .credit { margin-top: 14px; }
-    .motion .credit a { color: inherit; }
-    .ex { width: min(1100px, 100vw - 32px, 108vh); } /* the video ≤ 61vh tall, so it and the prompt fit the window */
-    .ex-info { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 18px 22px 20px; background: var(--ink); }
-    .ex-info .slate { margin: 0; font-size: 28px; line-height: 1.05; }
-    .ex-by { margin: 8px 0 0; font-size: 13px; color: #b8ae9f; }
-    .ex-by a { color: var(--paper); }
-    .ex .film-close { top: 10px; right: 10px; z-index: 1; background: rgba(23, 20, 15, .55); color: var(--paper); }
-    .ex-info summary { cursor: pointer; font-size: 13px; color: #f0775a; }
-    .ex-info pre { margin: 10px 0 0; max-height: 22vh; overflow: auto; white-space: pre-wrap; font: 400 12.5px/1.55 var(--mono); color: #d9d0c3; }
+    .slug { position: absolute; inset: auto 0 0; display: flex; justify-content: space-between; padding: 26px 14px 11px; font: 600 13px/1 var(--sans); color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, .6)); pointer-events: none; }
+    .slug .mono { font-weight: 500; font-size: 12.5px; }
+    .motion .credit { margin-top: 18px; }
     @media (prefers-reduced-motion: reduce) { .reel-tile video { transition: none; } }
-    @media (max-width: 980px) { .reels { grid-template-columns: repeat(2, 1fr); } .ex-info { grid-template-columns: 1fr; } }
-    @media (max-width: 560px) { .reels { grid-template-columns: 1fr; gap: 14px; } .motion { padding: 80px 0 70px; } }
-    .notes { padding: 110px 0; background: var(--paper-2); }
-    .edl { margin-top: 56px; }
-    .edl .row { display: grid; grid-template-columns: 56px minmax(0, 1.25fr) 150px minmax(0, 1fr); gap: 28px; align-items: baseline; padding: 26px 20px; }
-    .edl .row:nth-child(even) { background: var(--paper-3); }
-    .edl .th { padding-top: 0; padding-bottom: 14px; font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-    .edl .n { font-size: 13px; color: var(--ink-3); }
-    .edl q { quotes: '“' '”'; font: 550 clamp(22px, 2.3vw, 29px)/1.2 var(--sans); font-variation-settings: 'wdth' 88; letter-spacing: -.01em; }
-    .edl .at { font-size: 13.5px; color: var(--red-ink); }
-    .edl .did { font-size: 16px; color: var(--ink-2); }
-    .boxed { display: inline-block; vertical-align: .25em; margin-right: 8px; padding: 2px 7px; border: 2px dashed var(--red); color: var(--red-ink); font: 600 12px/1.3 var(--mono); font-style: normal; }
-    .ref { font: 600 .82em/1 var(--mono); color: var(--red-ink); background: var(--red-soft); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
-    .circled { padding: 0 .12em; box-shadow: inset 0 0 0 2.5px var(--red); border-radius: 3px; transform: rotate(-.6deg); display: inline-block; }
 
-    .log { padding: 120px 0; background: var(--ink); color: var(--paper); }
-    .log .label { color: #9a9081; }
-    .log .label b { color: #f0775a; }
-    .log .aside { color: #b8ae9f; }
-    .readout { margin-top: 56px; border-top: 1px solid #2e2a24; }
-    .readout .row { display: grid; grid-template-columns: 110px minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #2e2a24; }
-    .readout .th { padding: 14px 0; font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: #9a9081; }
-    .readout .k { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #f0775a; }
-    .readout .found { font-size: 14.5px; line-height: 1.65; color: #d9d1c3; }
-    .readout .found :global(i) { font-style: normal; color: var(--paper); background: #2e2a24; padding: 1px 6px; margin: 0 2px; border-radius: 2px; white-space: nowrap; }
-    .readout q { quotes: '“' '”'; font: 550 clamp(20px, 2vw, 25px)/1.25 var(--sans); font-variation-settings: 'wdth' 88; color: var(--paper); }
+    /* the notes: one card, a row per note */
+    .edl { margin-top: 48px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+    .edl .row { display: grid; grid-template-columns: 44px minmax(0, 1.25fr) 140px minmax(0, 1fr); gap: 28px; align-items: baseline; padding: 24px 28px; border-top: 1px solid var(--line-2); }
+    .edl .th { padding-block: 14px; border: 0; background: var(--bg-2); font: 600 12.5px/1 var(--sans); color: var(--ink-3); }
+    .edl .n { font-size: 13px; color: var(--ink-3); }
+    .edl q { quotes: '“' '”'; font: 650 clamp(19px, 1.9vw, 23px)/1.3 var(--sans); letter-spacing: -.015em; }
+    .edl .at { font-size: 13px; color: var(--amber-ink); }
+    .edl .did { font-size: 15.5px; color: var(--ink-2); }
+    .boxed { display: inline-block; vertical-align: .2em; margin-right: 8px; padding: 2px 8px; border: 2px dashed var(--amber); border-radius: 6px; color: var(--amber-ink); font: 700 12px/1.3 var(--sans); font-style: normal; }
+    .ref { font: 600 .82em/1 var(--mono); color: var(--amber-ink); background: var(--amber-soft); padding: 3px 7px; border-radius: 6px; white-space: nowrap; }
+    .circled { padding: 0 .14em; box-shadow: inset 0 0 0 2.5px var(--amber); border-radius: 6px; }
+
+    /* what it measures: a white sheet on painted grass */
+    .paint { position: relative; overflow: hidden; border-radius: var(--r-lg); background-size: cover; background-position: center; }
+    .grass { margin: 48px 8px 0; padding: clamp(16px, 6vw, 88px) clamp(12px, 5vw, 72px) clamp(28px, 5vw, 56px); background-image: url(/paint/grass.webp); background-color: #c9d6bf; }
+    .paper { max-width: 1040px; margin: 0 auto; padding: 8px 28px; border-radius: 20px; background: rgba(255, 255, 255, .94); box-shadow: 0 40px 80px -40px rgba(40, 50, 30, .45); }
+    .readout .row { display: grid; grid-template-columns: 96px minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--line-2); }
+    .readout .th { padding: 16px 0 12px; border: 0; font: 600 12.5px/1 var(--sans); color: var(--ink-3); }
+    .readout .k { display: inline-flex; justify-self: start; padding: 5px 11px; border-radius: 999px; background: var(--dark); color: #fff; font: 650 13px/1.2 var(--sans); }
+    .readout .found { display: grid; gap: 10px; font-size: 14px; line-height: 1.65; color: var(--ink-2); }
+    .readout .found :global(i) { font-style: normal; color: var(--ink); background: var(--bg-2); padding: 1px 7px; margin: 0 2px; border-radius: 5px; white-space: nowrap; }
+    .readout q { quotes: '“' '”'; font: 650 clamp(18px, 1.8vw, 22px)/1.3 var(--sans); letter-spacing: -.01em; }
     .readout .row:not(.th) { opacity: 0; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease; }
     .readout .row.in { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) { .readout .row:not(.th) { opacity: 1; transform: none; transition: none; } }
-    .readout .found { display: grid; gap: 10px; }
     .trace :global(svg) { display: block; width: 100%; height: 28px; }
-    .trace :global(.p) { fill: #5f574b; }
-    .trace :global(.q) { fill: #9a9081; }
-    .trace :global(.r) { fill: #f0775a; }
-    .trace :global(.h) { fill: rgba(240, 119, 90, .22); }
-    .trace :global(.rl) { fill: none; stroke: #f0775a; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
-    .trace :global(.pf) { fill: #3c362f; }
-    .craft { margin: 36px 0 0; max-width: 720px; font-size: 18px; color: #b8ae9f; }
+    .trace :global(.p) { fill: #d3d0c4; }
+    .trace :global(.q) { fill: #8f8c82; }
+    .trace :global(.r) { fill: var(--amber); }
+    .trace :global(.h) { fill: rgba(242, 165, 65, .28); }
+    .trace :global(.rl) { fill: none; stroke: #e0901f; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+    .trace :global(.pf) { fill: #e6e3d8; }
+    .craft { max-width: 640px; margin: 28px auto 0; padding: 12px 20px; border-radius: 16px; background: rgba(32, 32, 32, .86); color: #f1efe8; font-size: 15.5px; text-align: center; }
 
-    .fits { padding: 120px 0; }
-    .cmp { margin-top: 52px; }
-    .cmp .row { display: grid; grid-template-columns: .8fr 1fr 1fr 1fr 1fr; }
-    .cmp small { display: block; margin-top: 8px; font: 400 12px/1.4 var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink-3); }
-    .cmp .row > span { padding: 18px 20px; font-size: 16.5px; color: var(--ink-2); }
-    .cmp .row:nth-child(even) > span { background: var(--paper-2); }
-    .cmp .th > span { padding-top: 0; font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-    .cmp [role=rowheader] { font: 500 13px/1.6 var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
-    .cmp .us { color: var(--ink) !important; font-weight: 650; background: var(--red-soft) !important; }
-    .cmp .th .us { color: var(--red-ink) !important; padding-top: 16px; }
+    /* where it fits */
+    .cmp { margin-top: 48px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+    .cmp .row { display: grid; grid-template-columns: .8fr 1fr 1fr 1fr 1fr; border-top: 1px solid var(--line-2); }
+    .cmp .th { border: 0; background: var(--bg-2); }
+    .cmp small { display: block; margin-top: 6px; font: 400 12.5px/1.4 var(--sans); color: var(--ink-3); }
+    .cmp .row > span { padding: 18px 20px; font-size: 15.5px; color: var(--ink-2); }
+    .cmp .th > span { font: 700 14px/1.2 var(--sans); color: var(--ink); }
+    .cmp [role=rowheader] { font: 600 14px/1.5 var(--sans); color: var(--ink-3); }
+    .cmp .us { color: var(--ink) !important; font-weight: 650; background: var(--amber-soft); }
+    .cmp .th .us { background: var(--dark); color: #fff !important; }
+    .cmp .th .us small { color: rgba(255, 255, 255, .65); }
 
-    .next { padding: 0 0 130px; }
-    .reel { list-style: none; margin: 52px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-    .reel li { position: relative; padding: 30px 28px 32px; background: var(--paper-2); }
-    .reel li:nth-child(2), .reel li:nth-child(3) { background: var(--paper-3); }
-    .reel h3 { margin: 0; padding-right: 72px; font-size: clamp(36px, 3.6vw, 52px); }
-    .reel p { margin: 14px 0 0; max-width: 460px; color: var(--ink-2); }
-    .reel q { quotes: '“' '”'; color: var(--ink); font-weight: 600; }
-    .reel .tag { position: absolute; top: 24px; right: 24px; padding: 3px 8px; border: 2px solid var(--red); color: var(--red-ink); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; transform: rotate(4deg); }
-    .reel li:last-child .tag { border-color: var(--ink-3); color: var(--ink-3); }
-    .next > .alt { margin-top: 24px; }
-    .get { padding: 120px 0; background: var(--paper-2); }
-    .get-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 48px; align-items: end; }
-    .first { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; counter-reset: none; }
-    .first li { display: grid; grid-template-columns: 40px 1fr; gap: 10px; padding: 14px 16px; background: var(--paper-3); font-size: 16.5px; line-height: 1.45; }
-    .first .mono { font-size: 13px; color: var(--red-ink); padding-top: 2px; }
-    .first q { quotes: '“' '”'; font-weight: 600; }
-    .tabs { display: flex; gap: 6px; margin-top: 48px; }
-    .tabs button { height: 42px; padding: 0 18px; border: 0; border-radius: 3px; background: var(--paper-3); color: var(--ink-2); font: 500 14px/1 var(--mono); cursor: pointer; }
-    .tabs button[aria-selected=true] { background: var(--ink); color: var(--paper); }
-    .panel { margin-top: 18px; max-width: 920px; }
-    .how { margin: 0 0 14px; color: var(--ink-2); }
-    .cmd { display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 20px; border-radius: 4px; background: var(--ink); color: var(--paper); }
-    .cmd code { flex: 1; font: 500 16px/1.6 var(--mono); overflow-x: auto; white-space: pre; scrollbar-width: none; }
-    .cmd code::before { content: '$ '; color: var(--red-ink); }
-    .cmd.multi { align-items: flex-start; padding-block: 16px; }
-    .cmd.multi code { font-size: 13.5px; line-height: 1.8; }
+    /* coming next */
+    .cards { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .cards li { padding: 24px; border-radius: var(--r); box-shadow: inset 0 0 0 1px var(--line); }
+    .cards h3, .first h3 { margin: 18px 0 0; font-size: 19px; letter-spacing: -.015em; }
+    .cards p, .first p { margin: 8px 0 0; font-size: 15.5px; color: var(--ink-2); }
+    .cards q, .first q { quotes: '“' '”'; color: var(--ink); font-weight: 650; }
+    .tag { display: inline-flex; padding: 4px 10px; border-radius: 999px; background: var(--amber-soft); color: var(--amber-ink); font: 700 12.5px/1.2 var(--sans); }
+    .tag.later { background: var(--bg-2); color: var(--ink-3); }
+
+    /* install */
+    .first { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .first li { padding: 24px; border-radius: var(--r); box-shadow: inset 0 0 0 1px var(--line); }
+    .num { font: 600 13px/1 var(--mono); color: var(--amber-ink); }
+    .first h3 { margin-top: 14px; }
+    .install { margin-top: 16px; padding: 24px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+    .tabs { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--bg-2); }
+    .tabs button { height: 38px; padding: 0 18px; border: 0; border-radius: 999px; background: none; color: var(--ink-2); font: 600 14px/1 var(--sans); cursor: pointer; }
+    .tabs button[aria-selected=true] { background: var(--ink); color: #fff; }
+    .panel { margin-top: 20px; }
+    .how { margin: 0 0 12px; color: var(--ink-2); }
+    .cmd { display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 20px; border-radius: 14px; background: var(--dark); color: #f4f2ec; }
+    .cmd code { flex: 1; font: 500 15.5px/1.6 var(--mono); overflow-x: auto; white-space: pre; scrollbar-width: none; }
+    .cmd code::before { content: '$ '; color: var(--amber); }
+    .cmd.multi { align-items: flex-start; padding-block: 14px; }
+    .cmd.multi code { font-size: 13px; line-height: 1.8; }
     .cmd.multi code::before { content: none; }
-    .cmd.prose code { white-space: pre-wrap; font: 15px/1.6 var(--sans); color: #d9d1c3; }
-    .copy { flex: none; height: 38px; min-width: 76px; padding: 0 14px; border: 0; border-radius: 3px; background: #2e2a24; color: var(--paper); font: 500 13px/1 var(--mono); cursor: pointer; }
-    .copy:hover { background: #3c362f; }
-    .copy.ok { background: var(--red); }
-    .alt { margin: 16px 0 0; color: var(--ink-3); font-size: 15px; }
-    .alt a, .qs a, footer a, .credit a { color: var(--ink-2); text-underline-offset: 3px; }
-    .alt a:hover, .qs a:hover, footer a:hover { color: var(--red-ink); }
-    .windows { margin-top: 36px; }
+    .cmd.prose code { white-space: pre-wrap; font: 15px/1.6 var(--sans); color: #dedbd2; }
+    .copy { flex: none; height: 38px; min-width: 76px; padding: 0 16px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, .12); color: #fff; font: 600 13.5px/1 var(--sans); cursor: pointer; }
+    .copy:hover { background: rgba(255, 255, 255, .2); }
+    .copy.ok { background: var(--amber); color: var(--ink); }
+    .alt { margin: 14px 0 0; color: var(--ink-3); font-size: 14.5px; }
+    .alt a, .qs a, .credit a { color: var(--ink-2); text-underline-offset: 3px; }
+    .alt a:hover, .qs a:hover { color: var(--ink); }
+    .windows { margin-top: 20px; }
 
-    .cat { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; align-items: center; padding: 130px 0; }
-    .cat figure { position: relative; margin: 0; }
-    .cat video { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; background: var(--paper-3); }
-    .cat figcaption { margin-top: 12px; text-transform: none; }
-    .cat h2 { margin: 18px 0 26px; font-size: clamp(52px, 6.6vw, 92px); }
-    .cat p:not(.label) { margin: 0 0 16px; font-size: 18px; color: var(--ink-2); max-width: 520px; }
+    /* open source: painted tiles */
+    .oss-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+    .oss-head h2 { margin: 0; font-size: clamp(28px, 3vw, 36px); }
+    .oss-head p { margin: 6px 0 0; color: var(--ink-2); }
+    .bento { margin-top: 28px; display: grid; grid-template-columns: 1.1fr 1.4fr .9fr; grid-template-rows: 220px 220px; gap: 12px; }
+    .tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 24px; border-radius: 18px; overflow: hidden; color: #fff; text-decoration: none; background-size: cover; isolation: isolate; }
+    .tile::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(20, 20, 10, .42)); }
+    .tile .big { font: 800 clamp(34px, 4vw, 54px)/1 var(--sans); letter-spacing: -.035em; text-shadow: 0 2px 18px rgba(0, 0, 0, .25); }
+    .tile .what { margin-top: 8px; font: 600 15px/1.3 var(--sans); }
+    .tile .go { position: absolute; top: 14px; right: 14px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, .88); color: var(--ink); font-size: 14px; transition: transform .2s; }
+    .tile:hover .go { transform: translate(2px, -2px); }
+    .t1 { grid-column: 1 / 3; background-image: url(/paint/steppe.webp); background-position: center 70%; }
+    .t2 { grid-row: 1 / 3; grid-column: 3; background-image: url(/paint/dusk.webp); background-position: 70% center; }
+    .t3 { background-image: url(/paint/grass.webp); background-position: 20% 60%; }
+    .t4 { background-image: url(/paint/dusk.webp); background-position: 10% 85%; }
+    .t5 { display: none; }
 
-    .faq { padding: 110px 0; background: var(--paper-2); }
-    .qs { margin-top: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 48px; }
-    details { padding: 0; }
-    summary { list-style: none; cursor: pointer; padding: 18px 0; font: 600 20px/1.3 var(--sans); font-variation-settings: 'wdth' 90; display: flex; justify-content: space-between; gap: 16px; }
+    /* the cat */
+    .cat { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+    .cat figure { margin: 0; }
+    .cat video { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 20px; background: var(--bg-2); }
+    .cat figcaption { margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+    .cat h2 { margin: 12px 0 20px; font-size: clamp(32px, 4vw, 48px); }
+    .cat p:not(.label) { margin: 0 0 14px; font-size: 17.5px; color: var(--ink-2); max-width: 520px; }
+    .cat .label { margin: 0; }
+
+    /* the closing card */
+    .cta { padding: clamp(80px, 10vw, 128px) 8px 0; }
+    .dusk { display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(56px, 8vw, 104px) 20px; background-image: url(/paint/dusk.webp); background-color: #f1c79d; }
+    .dusk img { width: 116px; height: 116px; filter: drop-shadow(0 18px 22px rgba(60, 30, 10, .35)); } /* the PNG has the macOS icon margin; the shadow follows the tile */
+    .dusk h2 { margin: 14px 0 0; font-size: clamp(36px, 5vw, 60px); letter-spacing: -.035em; }
+    .dusk p { margin: 12px 0 0; font-size: 18px; color: #2f2a24; }
+    .dusk .cta-row { margin-top: 28px; }
+
+    /* questions */
+    .faq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; padding-bottom: clamp(80px, 10vw, 128px); }
+    .faq h2 { margin: 6px 0 0; font-size: clamp(30px, 3.6vw, 44px); }
+    .qs details { border-bottom: 1px solid var(--line); }
+    .qs details:first-child { border-top: 1px solid var(--line); }
+    summary { list-style: none; cursor: pointer; padding: 20px 0; font: 600 17.5px/1.35 var(--sans); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     summary::-webkit-details-marker { display: none; }
-    summary::after { content: '+'; font: 500 20px/1.3 var(--mono); color: var(--red-ink); transition: transform .2s; }
-    details[open] summary::after { transform: rotate(45deg); }
-    details p { margin: 0 0 18px; color: var(--ink-2); }
+    summary::after { content: '+'; flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--line); font: 500 18px/1 var(--sans); transition: transform .2s, background .2s; }
+    details[open] summary::after { transform: rotate(45deg); background: var(--ink); color: #fff; box-shadow: none; }
+    details p { margin: 0 0 20px; max-width: 680px; color: var(--ink-2); }
 
-    .wrap-up { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; padding: 140px 0 80px; }
-    .wrap-up h2 { font-size: clamp(76px, 14vw, 200px); }
+    /* the film and the motion examples open over the page */
+    .film { width: min(1200px, 100vw - 32px); max-width: none; max-height: none; padding: 0; border: 0; border-radius: 16px; background: #000; color: #fff; overflow: visible; }
+    .film::backdrop { background: rgba(20, 20, 18, .82); backdrop-filter: blur(4px); }
+    .film video { display: block; width: 100%; height: auto; border-radius: 16px; }
+    .film-close { position: absolute; right: 0; top: -50px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #fff; color: var(--ink); font-size: 24px; line-height: 1; cursor: pointer; }
+    .ex { width: min(1100px, 100vw - 32px, 108vh); } /* the video ≤ 61vh tall, so it and the prompt fit the window */
+    .ex video { border-radius: 16px 16px 0 0; }
+    .ex-info { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 18px 22px 20px; border-radius: 0 0 16px 16px; background: var(--dark); }
+    .ex-title { margin: 0; font: 800 24px/1.1 var(--sans); letter-spacing: -.02em; }
+    .ex-by { margin: 8px 0 0; font-size: 13.5px; color: #b9b7af; }
+    .ex-by a { color: #fff; }
+    .ex .film-close { top: 10px; right: 10px; z-index: 1; background: rgba(0, 0, 0, .5); color: #fff; }
+    .ex-info summary { padding: 0; font: 600 13.5px/1.4 var(--sans); color: var(--amber); }
+    .ex-info summary::after { content: none; }
+    .ex-info pre { margin: 10px 0 0; max-height: 22vh; overflow: auto; white-space: pre-wrap; font: 400 12.5px/1.55 var(--mono); color: #d9d7cf; }
 
-    footer { display: flex; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; padding: 26px 0 80px; text-transform: none; letter-spacing: .02em; line-height: 1.6; }
+    /* footer */
+    .foot { background: var(--dark); color: #f4f3ee; padding: 64px 0 32px; }
+    .foot-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 48px; }
+    .foot .brand { font-size: 22px; }
+    .foot-brand p { margin: 16px 0 0; max-width: 300px; font-size: 15px; color: #a9a8a1; }
+    .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    .cols h3 { margin: 0 0 14px; font: 600 12.5px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: #8d8c86; }
+    .cols a { display: block; padding: 5px 0; font-size: 15px; color: #f4f3ee; text-decoration: none; }
+    .cols a:hover { color: var(--amber); }
+    .foot-base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, .1); font-size: 13.5px; color: #8d8c86; }
+    .foot-base a { color: #c9c8c1; text-underline-offset: 3px; }
 
+    @media (max-width: 1100px) {
+      .top nav a.more { display: none; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
     @media (max-width: 980px) {
-      .hero { grid-template-columns: 1fr; gap: 28px; }
-      .pitch { max-width: 560px; }
-      .marks.above, .m2 { display: none; }
-      .marks.below { display: block; }
-      .mark.phone { display: block; }
-      .stage .credit { text-align: left; margin-top: 14px; }
-      .edl .row { grid-template-columns: 44px minmax(0, 1fr); gap: 8px 16px; }
+      .reels { grid-template-columns: repeat(2, 1fr); }
+      .ex-info { grid-template-columns: 1fr; }
+      .edl .row { grid-template-columns: 36px minmax(0, 1fr); gap: 8px 14px; padding: 20px; }
       .edl .row > :nth-child(n+3) { grid-column: 2; }
       .edl .th { display: none; }
-      .readout .row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
+      .readout .row { grid-template-columns: 1fr; gap: 8px; padding: 18px 0; }
       .readout .th { display: none; }
-      .cat { grid-template-columns: 1fr; gap: 40px; }
-      .qs { grid-template-columns: 1fr; }
-      .get-top { grid-template-columns: 1fr; gap: 32px; }
-      .reel { grid-template-columns: 1fr; }
-      .reel li:nth-child(3) { background: var(--paper-2); }
-      .reel li:nth-child(even) { background: var(--paper-3); }
+      .cat { grid-template-columns: 1fr; gap: 32px; }
+      .faq { grid-template-columns: 1fr; gap: 20px; }
+      .first { grid-template-columns: 1fr; }
+      .bento { grid-template-columns: 1fr 1fr; grid-template-rows: none; grid-auto-rows: 180px; }
+      .t1 { grid-column: 1 / 3; }
+      .t2 { grid-row: auto; grid-column: auto; }
+      .t5 { display: flex; grid-column: 1 / 3; background-image: url(/paint/steppe.webp); background-position: center 85%; }
+      .foot-top { grid-template-columns: 1fr; }
     }
-    @media (max-width: 360px) { .tc { display: none; } }
-    /* every section in the nav while there's room for it; the version line gives way first */
-    @media (max-width: 1240px) { .meta { display: none; } .top { justify-content: space-between; } }
-    @media (max-width: 1000px) { nav a.more { display: none; } }
+    @media (max-width: 820px) {
+      .top-in { grid-template-columns: auto 1fr; padding: 0 14px; }
+      .top nav { display: none; }
+      .steps li:nth-child(n+2) { display: none; }
+    }
     @media (max-width: 760px) {
-      .meta { display: none; }
-      .top { justify-content: space-between; }
-      nav { gap: 16px; }
-      .hero { padding-top: 24px; }
-      .lede { font-size: 17.5px; }
-      .stage { padding-bottom: 80px; }
-      .notes, .log, .fits, .get, .cat, .faq { padding-block: 80px; }
-      .next { padding-bottom: 80px; }
-      .reel li { padding: 24px 18px 26px; }
-      .edl { margin-top: 36px; }
-      .edl .row { padding: 20px 12px; }
+      .hero, .cta { padding-inline: 6px; }
+      .grass { margin-inline: 6px; }
+      .sky { border-radius: 22px; }
+      .hero .brew, .gh span { display: none; }
+      .gh { width: 38px; padding: 0; justify-content: center; }
+      .phone-only { display: block; }
+      .paper { padding: 4px 16px; }
       .cmp { margin-top: 36px; }
       .cmp .row.th { display: none; }
-      .cmp .row { display: block; padding: 16px 0 12px; }
-      .cmp .row:nth-child(even) { background: var(--paper-2); }
-      .cmp .row > span { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 5px 14px; font-size: 15.5px; background: none !important; }
-      .cmp .row > span::before { content: attr(data-h); font: 500 11px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
-      .cmp .row > .us::before { color: var(--red-ink); }
-      .cmp .row > .us { background: var(--red-soft) !important; padding-block: 8px; margin-top: 4px; }
-      .cmp .row > [role=rowheader] { display: block; padding: 0 14px 6px; color: var(--ink); font-size: 13px; }
+      .cmp .row { display: block; padding: 14px 0 10px; }
+      .cmp .row > span { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 5px 16px; font-size: 15px; background: none; }
+      .cmp .row > span::before { content: attr(data-h); font: 600 12px/1.4 var(--sans); color: var(--ink-3); }
+      .cmp .row > .us::before { color: var(--amber-ink); }
+      .cmp .row > .us { background: var(--amber-soft); padding-block: 8px; margin-top: 4px; }
+      .cmp .row > [role=rowheader] { display: block; padding: 0 16px 6px; color: var(--ink); font-weight: 700; }
       .cmp .row > [role=rowheader]::before { content: none; }
-      .hero .brew, .wrap-up .brew { display: none; }
-      .phone-only { display: block; }
-      .tabs button { font-size: 13px; }
+      .cards { grid-template-columns: 1fr; }
+      .install { padding: 16px; }
+      .tabs { display: flex; }
+      .tabs button { flex: 1; padding: 0 8px; font-size: 13px; }
       .cmd code { font-size: 14px; }
-      .tabs button { flex: 1; padding: 0 8px; }
+      .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .reels { grid-template-columns: 1fr; gap: 12px; }
+      .bento { grid-template-columns: 1fr; grid-auto-rows: 160px; }
+      .t1, .t5 { grid-column: auto; }
+      .acts .btn { padding: 0 14px; }
     }
   </style>
 </body>
