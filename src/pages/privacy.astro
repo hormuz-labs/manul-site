@@ -55,10 +55,10 @@ import LegalPage from '../components/LegalPage.astro'
     <p>If enabled, Manul sends a fixed set of product events through a Hormuz Labs Cloudflare Worker to PostHog. These events describe actions such as opening the app, creating a project, active time, the selected model and tool names used in an agent run, accepting an edit, completing an export, and installing a tool. Events also include app version, operating system, architecture, and a random installation ID that is not tied to your Manul account or identity, even when you are signed in.</p>
 
     <h3>Crash reports</h3>
-    <p>If enabled, Manul sends uncaught errors and crash information to Sentry. Local variables, console output, network requests, and screenshots are excluded. File paths, computer names, and user details are removed.</p>
+    <p>If enabled, Manul sends uncaught errors and crash information to PostHog’s error tracking, through our proxy: the error’s type, message and stack trace. Local variables, console output, network requests, screenshots and crash dumps are excluded. File paths, computer names, and user details are removed.</p>
 
     <h3>What diagnostics never include</h3>
-    <p>Diagnostics do not include your footage, file or folder names, paths, project titles, prompts, agent replies, transcripts, API keys, or visited URLs. We do not pass your IP address to PostHog, and Sentry is configured not to retain it. The complete, current event list is published in Manul’s <a href="https://github.com/hormuz-labs/manul/blob/main/telemetry/README.md">telemetry documentation</a>.</p>
+    <p>Diagnostics do not include your footage, file or folder names, paths, project titles, prompts, agent replies, transcripts, API keys, or visited URLs. We do not pass your IP address to PostHog. The complete, current event list is published in Manul’s <a href="https://github.com/hormuz-labs/manul/blob/main/telemetry/README.md">telemetry documentation</a>.</p>
   </section>
 
   <section>
@@ -69,7 +69,7 @@ import LegalPage from '../components/LegalPage.astro'
 
   <section>
     <h2 class="slate">Sharing and retention</h2>
-    <p>We share information only with service providers needed for the purposes above, such as Cloudflare, Clerk, Dodo Payments, the model, voice and music providers behind the Manul key, PostHog, and Sentry; when you direct us to connect to a third party; or when required to protect rights, safety, and the integrity of the service or to comply with law. These providers may process information in countries other than yours.</p>
+    <p>We share information only with service providers needed for the purposes above, such as Cloudflare, Clerk, Dodo Payments, the model, voice and music providers behind the Manul key, and PostHog; when you direct us to connect to a third party; or when required to protect rights, safety, and the integrity of the service or to comply with law. These providers may process information in countries other than yours.</p>
     <p>We retain information only as long as reasonably needed for those purposes, security, and legal obligations. Account data is kept while your account exists; usage and billing records are kept as long as needed for billing, disputes and tax law. Optional usage events may wait on your computer while offline, up to 500 events. Turning usage statistics off deletes unsent events and the random installation ID. A later opt-in creates a new ID.</p>
   </section>
 
