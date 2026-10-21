@@ -8,7 +8,7 @@ How it compares: timeline editors (Premiere Pro, Final Cut Pro, DaVinci Resolve,
 
 ## Pricing
 
-Credits are shared with Pitch (trypitch.co): Pitch accounts sign in to Manul with the same email and their plan and credits are already there. Subscribe in the app under Settings → Plan.
+Credits are shared with Pitch (trypitch.co): Pitch accounts sign in to Manul with the same email and their plan and credits are already there. Subscribe in the app under Settings → Keys → Manul key.
 
 - Local: $0 forever with your own model keys. New Manul accounts also get 1,000 starter credits.
 - Pro: $45/month for 10,000 credits a month, or $432/year with 120,000 credits granted upfront.
