@@ -7,9 +7,10 @@ interface Props {
   title: string
   description: string
   eyebrow: string
+  effective?: string
 }
 
-const { title, description, eyebrow } = Astro.props
+const { title, description, eyebrow, effective = 'October 11, 2026' } = Astro.props
 const canonical = new URL(Astro.url.pathname, 'https://manul.si')
 ---
 <!doctype html>
@@ -39,7 +40,7 @@ const canonical = new URL(Astro.url.pathname, 'https://manul.si')
     <header class="title">
       <p class="eyebrow"><span aria-hidden="true"></span>{eyebrow}</p>
       <h1 class="slate">{title}</h1>
-      <p class="effective">Effective October 11, 2026</p>
+      <p class="effective">Effective {effective}</p>
     </header>
     <article>
       <slot />
