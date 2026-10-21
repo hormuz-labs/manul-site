@@ -3,6 +3,8 @@
 
 export const STARTER_CREDITS = 1_000
 export const CONTACT = 'hello@hormuz-labs.dev'
+/** Launch offer: model usage is billed at half its list rate. Set to 0 to end it (the app's is USAGE_RATE in the manul repo). */
+export const LAUNCH_DISCOUNT = 50
 
 export interface Plan {
   key: 'local' | 'pro' | 'max' | 'flex' | 'enterprise'
