@@ -616,20 +616,6 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
   </script>
 
   <style>
-    /* a painting behind a panel: its own layer, so it can drift slower than the page; it loads once the panel is near */
-    .paint { position: relative; isolation: isolate; overflow: hidden; background-color: var(--tint); }
-    .paint::before { content: ''; position: absolute; z-index: -1; inset: -9% 0; background: var(--pos, center) / cover no-repeat; transform: translate3d(0, var(--py, 0px), 0); opacity: 0; transition: opacity .7s ease; }
-    .paint.seen::before, html:not(.js) .paint::before { background-image: var(--img); opacity: 1; }
-    @media (prefers-reduced-motion: reduce) { .paint::before { transition: none; } }
-    .panel { margin: 40px 8px 0; padding: clamp(14px, 5vw, 72px) clamp(10px, 4vw, 56px); border-radius: var(--r-lg); }
-    .panel > * { max-width: 1120px; margin-inline: auto; }
-    .sheet { background: rgba(255, 255, 255, .93); box-shadow: 0 40px 80px -44px rgba(30, 30, 20, .45), 0 0 0 1px rgba(255, 255, 255, .7); }
-    @supports (backdrop-filter: blur(1px)) { .sheet { background: rgba(255, 255, 255, .86); backdrop-filter: blur(10px) saturate(1.1); -webkit-backdrop-filter: blur(10px) saturate(1.1); } }
-
-    /* rising in */
-    .js.move [data-r] { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.2, .7, .2, 1), transform .7s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--d, 0) * 90ms); }
-    .js.move [data-r].in { opacity: 1; transform: none; }
-
     /* the ring and the strike: Manul's notes on the page, drawn in amber */
     .ringed { position: relative; display: inline-block; }
     .ringed svg { position: absolute; left: -5%; top: -16%; width: 113%; height: 132%; overflow: visible; pointer-events: none; }
@@ -706,11 +692,6 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
     .say.live .ch.on { color: var(--ink); }
     .say.live .ch.lead { color: #c77a12; }
 
-    /* section heads: centred, bold */
-    .sh { max-width: 760px; margin: 0 auto; text-align: center; }
-    .sh h2 { margin: 0; font-size: clamp(30px, 3.6vw, 44px); }
-    .sh p { margin: 14px auto 0; max-width: 640px; font-size: 17.5px; color: var(--ink-2); text-wrap: pretty; }
-    .sh a { color: var(--ink); text-underline-offset: 3px; }
     main > section:not(.hero):not(.say):not(.cta) { padding-top: clamp(80px, 10vw, 128px); }
 
     /* motion */
