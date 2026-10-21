@@ -1,10 +1,23 @@
 # Manul
 
-> Manul is a free desktop video editor (source on GitHub, Apache-2.0) you talk to, for macOS and Linux. Drop in footage, say what you want in plain words, and draw a box on the frame when something's off. Manul makes the edit on your own computer with ffmpeg, and every change comes back as a new version you can compare before and after, then keep or send back. It uses your own Claude, Gemini or OpenAI key. With no footage at all it makes motion videos: start from one of 233 examples (each with the prompt that made it), a video whose look to match, or a description.
+> Manul is an open-source video agent (Apache-2.0) for macOS and Linux. You talk to it and it edits your footage, makes motion graphics and motion design, voiceover and music, and exports the film. It runs on your own computer, on your own files: footage is never uploaded, and the model only sees text and a few still frames. Bring your own Claude, Gemini or OpenAI key (or any OpenAI- or Anthropic-compatible endpoint) and it is free forever, or sign in for one Manul key paid in credits.
 
-What it does today: measures the footage before editing (word timings, who speaks, shots and camera shake, where the subject is, the music's beats and bars, loudness), cuts on transcribed words, punch-ins and reframes that follow the subject, titles, lower thirds and captions in real type, music ducked under speech, the conversation with the film beside it, instructions typed right at a box or range on the film, light and dark themes, @-mentions of the project's files, versions and clips, 16:9 / 9:16 / 1:1 exports, version history. It never replaces your footage with generated frames. Generated shots (b-roll on the fly, extending a frame to a new aspect ratio, filling a boxed spot) are on the roadmap, only where the user asks, labelled as generated.
+What it does today: measures the footage before editing (word timings, who speaks, shots and camera shake, where the subject is, the music's beats and bars, loudness), cuts on transcribed words, punch-ins and reframes that follow the subject, titles, lower thirds and captions in real type, motion graphics built scene by scene (start from one of 233 examples, each with the prompt that made it, a reference video, or a description), voiceover and music, product walkthroughs filmed in your own Chrome, music ducked under speech, instructions typed right at a box or range on the film, @-mentions of the project's files, 16:9 / 9:16 / 1:1 exports, and every change as a new version you can compare before and after, then keep or send back. Craft skills (talking heads, Shorts, tutorials, promos, motion design, voiceover, music…) ship as SKILL.md files in the repo. Next: generated shots only where asked (labelled as generated), hand-off to Premiere/Resolve/Final Cut, publishing to YouTube, an API and MCP server, and Manul cloud for heavy compute.
 
-How it compares: timeline editors (Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut) are operated cut by cut; Descript edits through the transcript; HyperFrames and Remotion turn video into code an agent writes; AI generators (Runway, Sora, Veo) produce new footage. Manul is a desktop app where you give notes and review each edit.
+How it compares: timeline editors (Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut) are operated cut by cut; Descript edits through the transcript; HyperFrames and Remotion turn video into code an agent writes; AI generators (Runway, Sora, Veo) produce new footage; hosted video agents run in their own cloud on your uploads. Manul is an open-source agent on your own computer where you give notes and review each edit.
+
+## Pricing
+
+Launch offer: model usage on the Manul key is billed at 50% off its list rate, for a limited time. Credits are shared with Pitch (trypitch.co): Pitch accounts sign in to Manul with the same email and their plan and credits are already there. Subscribe in the app under Settings → Keys → Manul key.
+
+- Local: $0 forever with your own model keys. New Manul accounts also get 1,000 starter credits.
+- Pro: $45/month for 10,000 credits a month, or $432/year with 120,000 credits granted upfront.
+- Max: $80/month for 30,000 credits a month, or $768/year with 360,000 credits granted upfront.
+- Flex top-up: $20 for 5,000 credits, one-time, with an active Pro or Max plan.
+- Enterprise: custom volume, hello@hormuz-labs.dev.
+- Model tiers on the Manul key: Low, Medium and High for everyone; Max and Ultra (the strongest models) on Pro and Max.
+- Credits never expire once granted.
+- [Pricing page](https://manul.si/pricing/)
 
 ## Install
 
@@ -23,11 +36,11 @@ sudo apt update && sudo apt install manul
 - [Install Manul (agent skill)](https://manul.si/skills/install-manul/SKILL.md): steps a coding agent can follow to install Manul on this machine
 
 - [README](https://github.com/hormuz-labs/manul/blob/main/README.md): what Manul is, features, install, and a prompt to give a coding agent so it installs Manul for you
-- [Roadmap](https://github.com/hormuz-labs/manul/blob/main/ROADMAP.md): phases, what's done, what's next (generated shots, hand-off to Premiere/Resolve/Final Cut, Windows)
+- [Roadmap](https://github.com/hormuz-labs/manul/blob/main/ROADMAP.md): phases, what's done, what's next (generated shots, hand-off to Premiere/Resolve/Final Cut, publishing, cloud, Windows)
 - [Contributing](https://github.com/hormuz-labs/manul/blob/main/CONTRIBUTING.md): run Manul from source
 
 ## Optional
 
-- [Website](https://manul.si/): live demo, comparison, FAQ, and the 88-second film
+- [Website](https://manul.si/): live demo, kinds of film, comparison, pricing, FAQ, and the 88-second film
 - [Source code](https://github.com/hormuz-labs/manul)
 - [License (Apache-2.0)](https://github.com/hormuz-labs/manul/blob/main/LICENSE)
