@@ -1,6 +1,6 @@
 ---
 name: install-manul
-description: Install Manul, the free open-source video editor you talk to, on macOS (Homebrew) or Debian/Ubuntu (apt), or with an AppImage on other Linux. Use when the user asks to install, set up or update Manul.
+description: Install Manul, the free open-source video agent you talk to, on macOS (Homebrew) or Debian/Ubuntu (apt), or with an AppImage on other Linux. Use when the user asks to install, set up or update Manul.
 ---
 
 # Install Manul
@@ -29,4 +29,4 @@ Download `manul_<version>_x86_64.AppImage` or `manul_<version>_arm64.AppImage` f
 
 ## After installing
 
-Open Manul. It asks for a Claude, Gemini or OpenAI API key, kept in the system keychain. Updates install themselves (Homebrew and apt also update it).
+Open Manul. Sign in for a Manul key (new accounts get 1,000 starter credits; plans under Settings → Plan), or add a Claude, Gemini or OpenAI API key, kept in the system keychain. Updates install themselves (Homebrew and apt also update it).
