@@ -1,11 +1,11 @@
 ---
 name: install-manul
-description: Install Manul, the free open-source video agent you talk to, on macOS (Homebrew) or Debian/Ubuntu (apt), or with an AppImage on other Linux. Use when the user asks to install, set up or update Manul.
+description: Install Manul, the free open-source video agent you talk to, on macOS (Homebrew), Windows (installer), or Debian/Ubuntu (apt), or with an AppImage on other Linux. Use when the user asks to install, set up or update Manul.
 ---
 
 # Install Manul
 
-Manul is a desktop video editor for macOS 12+ and Linux. Detect the system, then run the matching steps. Ask before using `sudo`.
+Manul is a desktop video editor for macOS 12+, Windows 10+ and Linux. Detect the system, then run the matching steps. Ask before using `sudo`.
 
 ## macOS
 
@@ -14,6 +14,10 @@ brew install hormuz-labs/tap/manul
 ```
 
 No Homebrew: download the `.dmg` for this Mac (`arm64` for Apple silicon, `x64` for Intel) from https://github.com/hormuz-labs/manul/releases/latest. Until notarization is done, the first launch needs right-click → Open.
+
+## Windows
+
+Download `Manul-windows-x64-Setup.exe` from https://github.com/hormuz-labs/manul/releases/latest and run it. It installs for the current user, needs no admin rights, and updates itself. Windows 10 1903+ or Windows 11, x64. The installer is signed with Hormuz Labs' own certificate, not a public CA, so SmartScreen may ask once: More info → Run anyway.
 
 ## Debian and Ubuntu
 

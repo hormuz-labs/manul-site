@@ -9,7 +9,7 @@ import release from '../release.json'
 const gh = 'https://github.com/hormuz-labs/manul'
 const brew = 'brew install hormuz-labs/tap/manul'
 const title = 'Pricing · Manul: free with your own keys, or one Manul key'
-const description = `Manul, the open-source video agent for macOS and Linux, is free forever with your own model keys. ${PLAN_SUMMARY}`
+const description = `Manul, the open-source video agent for macOS, Windows and Linux, is free forever with your own model keys. ${PLAN_SUMMARY}`
 ---
 <!doctype html>
 <html lang="en">
@@ -31,7 +31,7 @@ const description = `Manul, the open-source video agent for macOS and Linux, is 
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Manul', applicationCategory: 'MultimediaApplication',
-    operatingSystem: 'macOS, Linux', url: 'https://manul.si/', softwareVersion: release.version, offers: OFFERS,
+    operatingSystem: 'macOS, Windows, Linux', url: 'https://manul.si/', softwareVersion: release.version, offers: OFFERS,
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'FAQPage',

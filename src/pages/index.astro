@@ -16,10 +16,23 @@ const dl = (f: string) => `https://github.com/hormuz-labs/manul/releases/downloa
 const apt = `curl -fsSL https://apt.manul.si/manul.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/manul.gpg &&
 echo "deb [signed-by=/usr/share/keyrings/manul.gpg] https://apt.manul.si stable main" | sudo tee /etc/apt/sources.list.d/manul.list &&
 sudo apt update && sudo apt install manul`
-const agentPrompt = `Install Manul from https://github.com/hormuz-labs/manul. On macOS run \`brew install hormuz-labs/tap/manul\`. On Debian or Ubuntu run:\n\n${apt}\n\nOr download the .deb or AppImage for this machine from the latest GitHub release. Then open Manul.`
+const agentPrompt = `Install Manul, the open-source video agent, on this computer.
+macOS: brew install hormuz-labs/tap/manul
+Windows: download the 64-bit installer from https://github.com/hormuz-labs/manul/releases/latest and run it
+Debian or Ubuntu:
+${apt}
+Anything else: download the .deb or AppImage from https://github.com/hormuz-labs/manul/releases/latest
+
+Then open Manul.`
+// the same prompt with a little colour: labels amber, commands green, links sky
+const agentHtml = agentPrompt
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  .replace(/^(macOS|Windows|Debian or Ubuntu|Anything else):/gm, '<span class="k">$1:</span>')
+  .replace(/^(brew|curl|echo|sudo) .*$/gm, '<span class="c">$&</span>')
+  .replace(/https?:\/\/[^\s<]+/g, m => `<span class="u">${m}</span>`)
 const brew = 'brew install hormuz-labs/tap/manul'
-const title = 'Manul: the open-source AI video agent for Mac and Linux'
-const description = 'Manul is an open-source video agent you talk to. It edits your footage, makes motion graphics, voice and music, and exports the film, on your own computer with your own model keys. Free for macOS and Linux (Apache-2.0), or one Manul key paid in credits: an alternative to CapCut, Premiere Pro, Descript and HyperFrames.'
+const title = 'Manul: the open-source AI video agent for Mac, Windows and Linux'
+const description = 'Manul is an open-source video agent you talk to. It edits your footage, makes motion graphics, voice and music, and exports the film, on your own computer with your own model keys. Free for macOS, Windows and Linux (Apache-2.0), or one Manul key paid in credits: an alternative to CapCut, Premiere Pro, Descript and HyperFrames.'
 const gh = 'https://github.com/hormuz-labs/manul'
 // motion examples from the gallery inside Manul: made by the people credited, with Claude; collected by prompt-motion.com.
 // Videos and posters stream from Manul's bucket (scripts/publish-motion-gallery.mjs in the app's repo).
@@ -99,7 +112,7 @@ const faqs = [
   { q: 'Do I need to know video editing?', a: `No. If you can describe what you want to a person, you can direct Manul. If you do know editing, you’ll get there faster: it understands “J-cut”, “punch in” and “duck the music”.` },
   { q: 'Do I have to type everything into the chat?', a: `No. Draw a box on the picture, drag across the timeline, or press N at a moment, and a message box opens right there: say what should change and press Enter. It goes to Manul with what you pointed at, and shows in the conversation so you can look back over it. Light by default, with a dark theme in Settings.` },
   { q: 'Does Manul generate video?', a: `It makes motion graphics, voiceover and music today. Generated camera shots are next: b-roll on the fly, extending a frame to a new aspect ratio, and filling in a spot you box. They go only where you ask, through the video model you choose, and each one is labelled as generated. Your own footage is never swapped out.` },
-  { q: 'What can’t it do yet?', a: `Generated shots, multi-camera sync, handing the cut to Premiere, Resolve or Final Cut, publishing straight to YouTube, an API and MCP server, Manul cloud for heavy renders, and Windows. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
+  { q: 'What can’t it do yet?', a: `Generated shots, multi-camera sync, handing the cut to Premiere, Resolve or Final Cut, publishing straight to YouTube, an API and MCP server, and Manul cloud for heavy renders. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
   { q: 'How is it different from CapCut, Descript, Motion or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript lets you edit by editing the transcript. HyperFrames and Remotion turn video into code that an agent writes. Hosted video agents run in someone else’s cloud, on your uploads, on their credits. Manul is an open-source agent on your own computer: you give notes in plain words, point at the frame, and review each change as a before and after, with any model you like.` },
   { q: 'Who makes it?', a: `Hormuz Labs, in the open. Issues, ideas and pull requests are welcome on <a href="${gh}">GitHub</a>. For teams and business, write to <a href="mailto:hello@hormuz-labs.dev">hello@hormuz-labs.dev</a>.` },
 ]
@@ -152,7 +165,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
   <script is:inline>document.documentElement.classList.add('js'); if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('move')</script>
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Manul', applicationCategory: 'MultimediaApplication',
-    operatingSystem: 'macOS, Linux', offers: OFFERS, url: 'https://manul.si/', description: PLAN_SUMMARY,
+    operatingSystem: 'macOS, Windows, Linux', offers: OFFERS, url: 'https://manul.si/', description: PLAN_SUMMARY,
     downloadUrl: `${gh}/releases/latest`, softwareVersion: version, license: `${gh}/blob/main/LICENSE`,
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
@@ -190,7 +203,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
     <section class="hero" aria-label="Manul">
       <div class="sky paint seen" style={paint('steppe', 'center 30%', '#bcd6ef')}>
         <div class="hero-copy">
-          <a class="eyebrow" href="#get"><span class="dot-live" aria-hidden="true"></span><span>v<span data-version>{version}</span> · open source · macOS &amp; Linux</span></a>
+          <a class="eyebrow" href="#get"><span class="dot-live" aria-hidden="true"></span><span>v<span data-version>{version}</span> · open source · macOS, Windows &amp; Linux</span></a>
           <h1 class="slate" aria-label="Manul, the open-source video agent.">
             <span class="w" style="--i:0" aria-hidden="true">Manul,</span> <span class="w" style="--i:1" aria-hidden="true">the</span> <span class="w ringed" style="--i:2" aria-hidden="true">open-source<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg></span> <span class="w" style="--i:3" aria-hidden="true">video</span> <span class="w" style="--i:4" aria-hidden="true">agent.</span>
           </h1>
@@ -239,7 +252,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
         }
         fit(); addEventListener('resize', fit); document.fonts && document.fonts.ready.then(fit)
       })()</script>
-      <p class="credit wrap">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0. Each “after” was rendered by the same engine Manul drives. <span class="phone-only">A desktop app for macOS and Linux: open this page on your computer to install.</span></p>
+      <p class="credit wrap">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0. Each “after” was rendered by the same engine Manul drives. <span class="phone-only">A desktop app for macOS, Windows and Linux: open this page on your computer to install.</span></p>
     </section>
 
     <section class="say" id="say" aria-label={say}>
@@ -455,7 +468,7 @@ product-walkthrough   promos-and-montages  …</code></pre>
     <section class="get" id="get">
       <div class="wrap sh" data-r>
         <h2 class="slate">Free to start. One line to install.</h2>
-        <p>Version <span data-version>{version}</span>, for macOS 12+ and Debian or Ubuntu. Free with your own keys; plans are in the app, under Settings → Keys → Manul key.</p>
+        <p>Version <span data-version>{version}</span>, for macOS 12+, Windows 10+ and Debian or Ubuntu. Free with your own keys; plans are in the app, under Settings → Keys → Manul key.</p>
       </div>
       <div class="panel paint" style={paint('mist', 'center 80%', '#e4ebe2')}>
         <ol class="first">
@@ -464,33 +477,99 @@ product-walkthrough   promos-and-montages  …</code></pre>
           <li class="sheet" data-r style="--d:2"><span class="num">03</span><h3>Give it a note</h3><p>Try <q>cut the silences</q>, then keep it or send it back.</p></li>
         </ol>
 
-        <div class="install sheet">
-          <div class="tabs" role="tablist" aria-label="Choose your system">
-            <button role="tab" id="t-mac" aria-controls="p-mac" aria-selected="true" data-tab="mac">macOS</button>
-            <button role="tab" id="t-linux" aria-controls="p-linux" aria-selected="false" data-tab="linux">Linux</button>
-            <button role="tab" id="t-agent" aria-controls="p-agent" aria-selected="false" data-tab="agent">Ask your agent</button>
+        <div class="dl sheet">
+          <div class="dl-col" data-os="mac">
+            <div class="dl-head"><span data-plat-label>Platform</span><span>01</span></div>
+            <div class="dl-body">
+              <div class="dl-os">
+                <span class="dl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.03 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" /></svg></span>
+                <h3>macOS</h3>
+              </div>
+              <p class="dl-lead"><b>Disk image (Apple silicon)</b><span>For M1 and later Macs. Updates install themselves.</span></p>
+              <a class="dl-main" href={dl(`Manul-${version}-arm64.dmg`)}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg><span>Standalone for macOS</span>
+              </a>
+              <p class="dl-note">Prefer Homebrew? <code>{brew}</code>. Until Apple notarization is done, open it the first time with right-click → Open.</p>
+              <div class="dl-more">
+                <p>Other files for macOS</p>
+                <a class="dl-row" href={dl(`Manul-${version}-x64.dmg`)}>
+                  <span class="t"><b>Disk image (Intel)</b><span>For Macs with an Intel processor.</span><code>Manul-{version}-x64.dmg</code></span>
+                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
+                </a>
+                <a class="dl-row" href={`${gh}/releases/latest`}>
+                  <span class="t"><b>All release files</b><span>Every build, checksum and note.</span><code>github.com/hormuz-labs/manul/releases</code></span>
+                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
+                </a>
+              </div>
+            </div>
           </div>
 
-          <div class="tabpanel" role="tabpanel" id="p-mac" aria-labelledby="t-mac">
-            <p class="how">One line in Terminal. Updates install themselves.</p>
-            <div class="cmd"><code>{brew}</code><button class="copy" data-copy={brew}>Copy</button></div>
-            <p class="alt">No Homebrew? Download the app for{' '}<a href={dl(`Manul-${version}-arm64.dmg`)} data-file="Manul-{v}-arm64.dmg">Apple silicon</a> or{' '}<a href={dl(`Manul-${version}-x64.dmg`)} data-file="Manul-{v}-x64.dmg">Intel</a>.
-              Until Apple notarization is done, open it the first time with right-click → Open.</p>
+          <div class="dl-col" data-os="win">
+            <div class="dl-head"><span data-plat-label>Platform</span><span>02</span></div>
+            <div class="dl-body">
+              <div class="dl-os">
+                <span class="dl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6v5.9h7.4V4.3L3 5.6Zm8.6-1.4v7.3H21V3.1L11.6 4.2ZM3 12.5v5.9l7.4 1.3v-7.2H3Zm8.6 0v7.3L21 20.9v-8.4h-9.4Z" /></svg></span>
+                <h3>Windows</h3>
+              </div>
+              <p class="dl-lead"><b>Installer (64-bit)</b><span>Most Windows 10 and 11 PCs. Installs for your user, no admin rights.</span></p>
+              <a class="dl-main" href={dl(`Manul-${version}-windows-x64-Setup.exe`)}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg><span>Standalone for Windows</span>
+              </a>
+              <p class="dl-note">Not signed by a public CA yet: SmartScreen may ask once — choose <b>More info</b> → <b>Run anyway</b>. Updates arrive inside the app after that.</p>
+              <div class="dl-more">
+                <p>Other files for Windows</p>
+                <a class="dl-row" href={dl('latest.yml')}>
+                  <span class="t"><b>Update feed</b><span>What the app reads to update itself.</span><code>latest.yml</code></span>
+                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
+                </a>
+                <a class="dl-row" href={`${gh}/releases/latest`}>
+                  <span class="t"><b>All release files</b><span>Every build, checksum and note.</span><code>github.com/hormuz-labs/manul/releases</code></span>
+                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
+                </a>
+              </div>
+            </div>
           </div>
-          <div class="tabpanel" role="tabpanel" id="p-linux" aria-labelledby="t-linux" hidden>
-            <p class="how">Debian and Ubuntu: add the signed repository once, and apt keeps Manul up to date.</p>
-            <div class="cmd multi"><code>{apt}</code><button class="copy" data-copy-from="prev">Copy</button></div>
-            <p class="alt">Or download:
-              <a href={dl(`manul_${version}_amd64.deb`)} data-file="manul_{v}_amd64.deb">.deb x64</a> ·
-              <a href={dl(`manul_${version}_arm64.deb`)} data-file="manul_{v}_arm64.deb">.deb ARM</a> ·
-              <a href={dl(`manul_${version}_x86_64.AppImage`)} data-file="manul_{v}_x86_64.AppImage">AppImage x64</a> ·
-              <a href={dl(`manul_${version}_arm64.AppImage`)} data-file="manul_{v}_arm64.AppImage">AppImage ARM</a></p>
+
+          <div class="dl-col" data-os="linux">
+            <div class="dl-head"><span data-plat-label>Platform</span><span>03</span></div>
+            <div class="dl-body">
+              <div class="dl-os">
+                <span class="dl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="12" rx="1.6" /><path d="M9 20h6M12 16v4" /></svg></span>
+                <h3>Linux</h3>
+              </div>
+              <p class="dl-lead"><b>Debian package (x86_64)</b><span>Debian, Ubuntu and derivatives. apt keeps it current.</span></p>
+              <a class="dl-main" href={dl(`manul_${version}_amd64.deb`)}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg><span>Standalone for Linux</span>
+              </a>
+              <p class="dl-note">Prefer apt? Add the signed repository once at <a href="https://apt.manul.si">apt.manul.si</a>, or paste the agent prompt below.</p>
+              <div class="dl-more">
+                <p>Other files for Linux</p>
+                <a class="dl-row" href={dl(`manul_${version}_arm64.deb`)}>
+                  <span class="t"><b>Debian package (ARM64)</b><span>Debian and Ubuntu on ARM.</span><code>manul_{version}_arm64.deb</code></span>
+                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
+                </a>
+                <a class="dl-row" href={dl(`manul_${version}_x86_64.AppImage`)}>
+                  <span class="t"><b>AppImage (x86_64)</b><span>Any distro. Mark it executable and run.</span><code>manul_{version}_x86_64.AppImage</code></span>
+                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
+                </a>
+                <a class="dl-row" href={dl(`manul_${version}_arm64.AppImage`)}>
+                  <span class="t"><b>AppImage (ARM64)</b><span>Any distro on ARM.</span><code>manul_{version}_arm64.AppImage</code></span>
+                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
+                </a>
+              </div>
+            </div>
           </div>
-          <div class="tabpanel" role="tabpanel" id="p-agent" aria-labelledby="t-agent" hidden>
-            <p class="how">Using Claude Code, Cursor or Codex? Paste this and let it do the install.</p>
-            <div class="cmd multi prose"><code>{agentPrompt}</code><button class="copy" data-copy={agentPrompt}>Copy</button></div>
+        </div>
+
+        <div class="ask sheet">
+          <div class="dl-head"><span>Ask your agent</span><span>04</span></div>
+          <div class="ask-body">
+            <p class="ask-lead">Using Claude Code, Cursor or Codex? Paste this in and it installs Manul for this computer.</p>
+            <div class="agent">
+              <button class="agent-copy" type="button" data-copy={agentPrompt}>Copy</button>
+              <pre><code set:html={agentHtml} /></pre>
+            </div>
           </div>
-          <p class="alt windows">Windows is on the <a href={`${gh}/blob/main/ROADMAP.md`}>roadmap</a>.</p>
         </div>
       </div>
     </section>
@@ -576,7 +655,7 @@ product-walkthrough   promos-and-montages  …</code></pre>
       <div class="foot-top">
         <div class="foot-brand">
           <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="32" height="32" alt="" /><span>Manul</span></a>
-          <p>The open-source video agent you talk to, for macOS and Linux.</p>
+          <p>The open-source video agent you talk to, for macOS, Windows and Linux.</p>
         </div>
         <nav class="cols" aria-label="Footer">
           <div><h3>Product</h3><a href="#try">Try it</a><a href="#films">What it makes</a><a href="#motion">Motion</a><a href="#fits">Compare</a><a href="/pricing/">Pricing</a><a href="#get">Install</a></div>
@@ -595,26 +674,26 @@ product-walkthrough   promos-and-montages  …</code></pre>
     const root = document.documentElement
     const move = root.classList.contains('move')
 
-    // pick the right tab and button for this computer
+    // pick the visitor's platform: the black button, the "your system" label, and the CTA
     const ua = navigator.userAgent
-    const os = /Mac/.test(ua) && !/iPhone|iPad/.test(ua) ? 'mac' : /Linux|X11/.test(ua) && !/Android/.test(ua) ? 'linux' : null
-    const label = os === 'mac' ? 'Download for Mac' : os === 'linux' ? 'Download for Linux' : 'Download Manul'
+    const os = /Windows/.test(ua) ? 'win' : /Mac/.test(ua) && !/iPhone|iPad/.test(ua) ? 'mac' : /Linux|X11/.test(ua) && !/Android/.test(ua) ? 'linux' : null
+    const label = os === 'mac' ? 'Download for Mac' : os === 'win' ? 'Download for Windows' : os === 'linux' ? 'Download for Linux' : 'Download Manul'
     document.querySelectorAll('[data-os-label]').forEach(el => (el.textContent = label))
 
-    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.install [role=tab]')]
-    const show = (name: string) => tabs.forEach(t => {
-      const on = t.dataset.tab === name
-      t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1
-      document.getElementById('p-' + t.dataset.tab)!.hidden = !on
-    })
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => show(t.dataset.tab!))
-      t.addEventListener('keydown', e => {
-        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
-        if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; show(n.dataset.tab!); n.focus() }
+    if (os) {
+      const cols = [...document.querySelectorAll<HTMLElement>('.dl-col')]
+      const mine = cols.find(c => c.dataset.os === os)
+      cols.forEach(c => {
+        const me = c === mine
+        c.classList.toggle('me', me)
+        const h = c.querySelector('[data-plat-label]')
+        if (h) h.textContent = me ? 'Your system' : 'Platform'
       })
-    })
-    if (os === 'linux') show('linux')
+      // the big "Download" button goes straight to this computer's file
+      const file = mine?.querySelector<HTMLAnchorElement>('.dl-main')?.href
+      const cta = document.querySelector<HTMLAnchorElement>('.cta .btn.dot')
+      if (file && cta) cta.href = file
+    }
 
     document.querySelectorAll<HTMLButtonElement>('[data-copy], [data-copy-from]').forEach(b => b.addEventListener('click', async () => {
       const text = b.dataset.copy ?? b.previousElementSibling!.textContent!
@@ -983,26 +1062,54 @@ product-walkthrough   promos-and-montages  …</code></pre>
     .first li { padding: 24px; border-radius: 18px; }
     .num { font: 600 13px/1 var(--mono); color: var(--amber-ink); }
     .first h3 { margin-top: 14px; }
-    .install { margin-top: 16px; padding: 24px; border-radius: 20px; }
-    .tabs { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(38, 38, 38, .07); }
-    .tabs button { height: 38px; padding: 0 18px; border: 0; border-radius: 999px; background: none; color: var(--ink-2); font: 600 14px/1 var(--sans); cursor: pointer; }
-    .tabs button[aria-selected=true] { background: var(--ink); color: #fff; }
-    .tabpanel { margin-top: 20px; }
-    .how { margin: 0 0 12px; color: var(--ink-2); }
-    .cmd { display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 20px; border-radius: 14px; background: var(--dark); color: #f4f2ec; }
-    .cmd code { flex: 1; font: 500 15.5px/1.6 var(--mono); overflow-x: auto; white-space: pre; scrollbar-width: none; }
-    .cmd code::before { content: '$ '; color: var(--amber); }
-    .cmd.multi { align-items: flex-start; padding-block: 14px; }
-    .cmd.multi code { font-size: 13px; line-height: 1.8; }
-    .cmd.multi code::before { content: none; }
-    .cmd.prose code { white-space: pre-wrap; font: 15px/1.6 var(--sans); color: #dedbd2; }
-    .copy { flex: none; height: 38px; min-width: 76px; padding: 0 16px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, .12); color: #fff; font: 600 13.5px/1 var(--sans); cursor: pointer; }
-    .copy:hover { background: rgba(255, 255, 255, .2); }
-    .copy.ok { background: var(--amber); color: var(--ink); }
-    .alt { margin: 14px 0 0; color: var(--ink-3); font-size: 14.5px; }
-    .alt a, .qs a, .credit a, .faq-side a { color: var(--ink-2); text-underline-offset: 3px; }
-    .alt a:hover, .qs a:hover { color: var(--ink); }
-    .windows { margin-top: 20px; }
+    /* download: three platforms side by side, the visitor's own marked */
+    .dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 16px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+    .dl-col { display: flex; flex-direction: column; border-left: 1px solid var(--line); }
+    .dl-col:first-child { border-left: 0; }
+    .dl-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 16px 22px; border-bottom: 1px solid var(--line); font: 500 10.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
+    .dl-col.me .dl-head [data-plat-label] { color: var(--amber-ink); font-weight: 600; }
+    .dl-body { display: flex; flex-direction: column; flex: 1; padding: 24px 22px 4px; }
+    .dl-os { display: flex; align-items: center; gap: 14px; }
+    .dl-os h3 { margin: 0; font-size: clamp(24px, 2.2vw, 28px); font-weight: 800; letter-spacing: -.03em; }
+    .dl-ic { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border: 1px solid var(--line); border-radius: 7px; background: rgba(255, 255, 255, .72); }
+    .dl-ic svg { width: 20px; height: 20px; }
+    .dl-lead { margin: 20px 0 0; }
+    .dl-lead b { display: block; font-size: 15.5px; font-weight: 600; }
+    .dl-lead span { display: block; margin-top: 3px; color: var(--ink-3); font-size: 14.5px; text-wrap: pretty; }
+    .dl-main { display: flex; align-items: center; justify-content: center; gap: 9px; height: 46px; margin-top: 16px; border: 1px solid var(--ink); border-radius: 5px; color: var(--ink); font: 600 11.5px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; text-decoration: none; transition: background .15s ease, color .15s ease; }
+    .dl-main:hover { background: rgba(38, 38, 38, .06); }
+    .dl-main svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .dl-col.me .dl-main { background: var(--ink); color: #fff; box-shadow: 0 14px 26px -18px rgba(38, 38, 38, .7); }
+    .dl-col.me .dl-main:hover { background: #000; }
+    .dl-note { margin: 14px 0 0; color: var(--ink-3); font-size: 13px; line-height: 1.5; text-wrap: pretty; }
+    .dl-note b { color: var(--ink-2); font-weight: 600; }
+    .dl-note code { font: 400 12px/1.5 var(--mono); color: var(--ink-2); overflow-wrap: anywhere; }
+    .dl-note a { color: var(--ink-2); text-underline-offset: 3px; }
+    .dl-more { margin-top: auto; padding-top: 28px; }
+    .dl-more > p { margin: 0; padding: 14px 0 12px; border-top: 1px solid var(--line); font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+    .dl-row { display: flex; align-items: center; gap: 12px; padding: 13px 8px 13px 0; border-bottom: 1px solid var(--line-2); text-decoration: none; }
+    .dl-row:last-child { border-bottom: 0; }
+    .dl-row:hover { background: linear-gradient(90deg, rgba(38, 38, 38, .045), rgba(38, 38, 38, 0)); }
+    .dl-row .t { flex: 1; min-width: 0; }
+    .dl-row b { display: block; font-size: 14.5px; font-weight: 600; }
+    .dl-row .t > span { display: block; color: var(--ink-3); font-size: 13.5px; }
+    .dl-row code { display: block; margin-top: 5px; font: 400 11.5px/1.4 var(--mono); color: var(--ink-3); opacity: .82; overflow-wrap: anywhere; }
+    .dl-down { width: 16px; height: 16px; flex: none; fill: none; stroke: var(--ink-3); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ask { margin-top: 16px; border-radius: 20px; }
+    .ask .dl-head { border-bottom: 1px solid var(--line); }
+    .ask-body { padding: 18px 22px 22px; }
+    .ask-lead { margin: 0 0 12px; color: var(--ink-2); font-size: 15px; }
+    .agent { position: relative; border-radius: 14px; background: var(--dark); }
+    .agent pre { margin: 0; padding: 18px 106px 18px 20px; overflow-x: auto; }
+    .agent code { display: block; font: 400 12.5px/1.9 var(--mono); color: #e9e7df; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .agent .k { color: var(--amber); font-weight: 600; }
+    .agent .c { color: #a3c39d; }
+    .agent .u { color: #a7c8dd; text-decoration: underline; text-decoration-color: rgba(167, 200, 221, .3); text-underline-offset: 2px; }
+    .agent-copy { position: absolute; top: 12px; right: 12px; height: 30px; padding: 0 14px; border: 1px solid rgba(255, 255, 255, .18); border-radius: 999px; background: rgba(255, 255, 255, .09); color: #fff; font: 600 12.5px/1 var(--sans); cursor: pointer; }
+    .agent-copy:hover { background: rgba(255, 255, 255, .17); }
+    .agent-copy.ok { background: var(--amber); border-color: transparent; color: var(--ink); }
+    .qs a, .credit a, .faq-side a { color: var(--ink-2); text-underline-offset: 3px; }
+    .qs a:hover { color: var(--ink); }
 
     /* open source: painted tiles */
     .oss-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
@@ -1145,10 +1252,15 @@ product-walkthrough   promos-and-montages  …</code></pre>
       .cmp .row > [role=rowheader]::before { content: none; }
       .cards { grid-template-columns: 1fr; }
       .band { height: 96px; }
-      .install { padding: 16px; }
-      .tabs { display: flex; }
-      .tabs button { flex: 1; padding: 0 8px; font-size: 13px; }
+      .dl { grid-template-columns: 1fr; gap: 12px; border: 0; border-radius: 0; overflow: visible; background: none; }
+      .dl-col { order: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: rgba(255, 255, 255, .6); }
+      .dl-col.me { order: -1; }
+      .dl-head { padding: 14px 18px; }
+      .dl-body { padding: 20px 18px 4px; }
       .cmd code { font-size: 14px; }
+      .agent pre { padding: 16px 16px 56px; }
+      .agent code { font-size: 11.8px; }
+      .agent-copy { top: auto; bottom: 12px; }
       .prompt { margin-top: 14px; padding: 8px 8px 8px 14px; border-radius: 16px; }
       .prompt-text { font-size: 14.5px; min-height: 4.5em; }
       .chips { flex-wrap: nowrap; justify-content: flex-start; width: calc(100% + 24px); margin-inline: -12px; padding: 2px 12px; overflow-x: auto; scrollbar-width: none; }
