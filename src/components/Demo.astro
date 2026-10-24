@@ -4,7 +4,7 @@
 // Every "after" is a real edit of the same clip (rendered with ffmpeg, the engine Manul drives).
 ---
 <div class="demo" id="demo" data-state="idle">
-  <div class="win" role="group" aria-label="Interactive Manul demo">
+  <div class="win" role="group" aria-label="Interactive AgentShot demo">
     <div class="main">
     <div class="bar">
       <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -416,7 +416,7 @@
     $('restart').hidden = kept.size === 0
     if (kept.size === Object.keys(EDITS).length && !toldAll) {
       toldAll = true
-      say('That\'s the whole idea. Now try it on your own footage. <a href="#get" style="color:var(--amber);font-weight:600">Get Manul →</a>')
+      say('That\'s the whole idea. Now try it on your own footage. <a href="#get" style="color:var(--amber);font-weight:600">Get AgentShot →</a>')
     }
     asks.hidden = false
   }

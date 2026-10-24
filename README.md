@@ -1,6 +1,6 @@
-# manul.si
+# agentshot.si
 
-The website for [Manul](https://github.com/hormuz-labs/manul), the agentic video editor. Astro, static, no framework JS: the only script is the hero demo (`src/components/Demo.astro`), a working miniature of Manul's editor.
+The website for [AgentShot](https://github.com/hormuz-labs/agentshot), the agentic video editor. Astro, static, no framework JS: the only script is the hero demo (`src/components/Demo.astro`), a working miniature of AgentShot's editor.
 
 The look is the steppe the manul lives on: a cream page where every section sits on its own painting (seven in `public/paint/`, made for this site, each loaded only when its panel comes near and drifting a little slower than the page), white sheets over them for reading, dark pill buttons, and the app's amber for what Manul does. Type is Albert Sans, with IBM Plex Mono for commands and timecodes.
 

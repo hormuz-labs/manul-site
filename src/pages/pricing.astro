@@ -6,10 +6,10 @@ import Pricing from '../components/Pricing.astro'
 import { OFFERS, PRICING_FAQS, PLAN_SUMMARY } from '../data/plans'
 import release from '../release.json'
 
-const gh = 'https://github.com/hormuz-labs/manul'
+const gh = 'https://github.com/hormuz-labs/agentshot'
 const brew = 'brew install hormuz-labs/tap/manul'
-const title = 'Pricing · Manul: free with your own keys, or one Manul key'
-const description = `Manul, the open-source video agent for macOS, Windows and Linux, is free forever with your own model keys. ${PLAN_SUMMARY}`
+const title = 'Pricing · AgentShot: free with your own keys, or one AgentShot key'
+const description = `AgentShot, the open-source video agent for macOS, Windows and Linux, is free forever with your own model keys. ${PLAN_SUMMARY}`
 ---
 <!doctype html>
 <html lang="en">
@@ -22,16 +22,16 @@ const description = `Manul, the open-source video agent for macOS, Windows and L
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="canonical" href="https://manul.si/pricing/" />
+  <link rel="canonical" href="https://agentshot.si/pricing/" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://manul.si/pricing/" />
+  <meta property="og:url" content="https://agentshot.si/pricing/" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content="https://manul.si/og.jpg" />
+  <meta property="og:image" content="https://agentshot.si/og.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json" set:html={JSON.stringify({
-    '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Manul', applicationCategory: 'MultimediaApplication',
-    operatingSystem: 'macOS, Windows, Linux', url: 'https://manul.si/', softwareVersion: release.version, offers: OFFERS,
+    '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'AgentShot', applicationCategory: 'MultimediaApplication',
+    operatingSystem: 'macOS, Windows, Linux', url: 'https://agentshot.si/', softwareVersion: release.version, offers: OFFERS,
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -40,7 +40,7 @@ const description = `Manul, the open-source video agent for macOS, Windows and L
 </head>
 <body>
   <header class="top wrap">
-    <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>Manul</span></a>
+    <a class="brand" href="/" aria-label="AgentShot home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>AgentShot</span></a>
     <nav aria-label="Site">
       <a href="/">Product</a>
       <a href="/#build" class="more">Developers</a>
@@ -59,9 +59,9 @@ const description = `Manul, the open-source video agent for macOS, Windows and L
 
     <section class="wrap end">
       <h2 class="slate">Start free. Decide later.</h2>
-      <p>Install Manul, add a key or sign in, and give it a note. Plans live in the app, under Settings → Keys → Manul key.</p>
+      <p>Install AgentShot, add a key or sign in, and give it a note. Plans live in the app, under Settings → Keys → AgentShot key.</p>
       <div class="row">
-        <a href="/#get" class="btn dot"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>Download Manul</a>
+        <a href="/#get" class="btn dot"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>Download AgentShot</a>
         <a href={gh} class="btn light">Star on GitHub</a>
       </div>
       <p class="mono brew">$ {brew}</p>
@@ -70,7 +70,7 @@ const description = `Manul, the open-source video agent for macOS, Windows and L
 
   <footer class="wrap foot label">
     <span>© 2026 Hormuz Labs · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href={`${gh}/blob/main/LICENSE`}>Apache-2.0</a></span>
-    <a href="/">Back to Manul</a>
+    <a href="/">Back to AgentShot</a>
   </footer>
 
   <style>

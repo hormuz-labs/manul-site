@@ -10,33 +10,33 @@ import motion from '../data/motion.json'
 import Pricing from '../components/Pricing.astro'
 import { OFFERS, PRICING_FAQS, PLAN_SUMMARY, STARTER_CREDITS, fmt } from '../data/plans'
 
-// the latest release; .github/workflows/release.yml refreshes src/release.json when Manul ships
+// the latest release; .github/workflows/release.yml refreshes src/release.json when AgentShot ships
 const version = release.version
-const dl = (f: string) => `https://github.com/hormuz-labs/manul/releases/download/v${version}/${f}`
-const apt = `curl -fsSL https://apt.manul.si/manul.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/manul.gpg &&
-echo "deb [signed-by=/usr/share/keyrings/manul.gpg] https://apt.manul.si stable main" | sudo tee /etc/apt/sources.list.d/manul.list &&
+const dl = (f: string) => `https://github.com/hormuz-labs/agentshot/releases/download/v${version}/${f}`
+const apt = `curl -fsSL https://apt.agentshot.si/manul.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/manul.gpg &&
+echo "deb [signed-by=/usr/share/keyrings/manul.gpg] https://apt.agentshot.si stable main" | sudo tee /etc/apt/sources.list.d/manul.list &&
 sudo apt update && sudo apt install manul`
-const winPs = `iwr ${dl(`Manul-${version}-windows-x64-Setup.exe`)} -OutFile $env:TEMP\\Manul.exe; & $env:TEMP\\Manul.exe`
+const winPs = `iwr ${dl(`AgentShot-${version}-windows-x64-Setup.exe`)} -OutFile $env:TEMP\\AgentShot.exe; & $env:TEMP\\AgentShot.exe`
 const brew = 'brew install hormuz-labs/tap/manul'
-const agentPrompt = `Install Manul from https://github.com/hormuz-labs/manul and launch it (or run manul --worker on a headless machine):
+const agentPrompt = `Install AgentShot from https://github.com/hormuz-labs/agentshot and launch it (or run manul --worker on a headless machine):
 
   macOS:   ${brew}
   Windows: ${winPs}
   Linux:   ${apt.replaceAll('\n', ' ')}
 
-Or download the .dmg, .exe, .deb or .AppImage for this machine from https://github.com/hormuz-labs/manul/releases/latest.`
-const agentHtml = `<span class="c"># Install Manul and launch it (or run manul --worker on a headless machine):</span>
+Or download the .dmg, .exe, .deb or .AppImage for this machine from https://github.com/hormuz-labs/agentshot/releases/latest.`
+const agentHtml = `<span class="c"># Install AgentShot and launch it (or run manul --worker on a headless machine):</span>
 
 <span class="l">macOS</span>    <span class="p">$</span> ${brew}
-<span class="l">Windows</span>  <span class="p">PS&gt;</span> iwr ${dl(`Manul-${version}-windows-x64-Setup.exe`)} -OutFile $env:TEMP\\Manul.exe; &amp; $env:TEMP\\Manul.exe
+<span class="l">Windows</span>  <span class="p">PS&gt;</span> iwr ${dl(`AgentShot-${version}-windows-x64-Setup.exe`)} -OutFile $env:TEMP\\AgentShot.exe; &amp; $env:TEMP\\AgentShot.exe
 <span class="l">Linux</span>    <span class="p">$</span> ${apt.replaceAll('&', '&amp;').replaceAll('\n', '\n           ')}
 
-<span class="c"># Or grab the .dmg, .exe, .deb or .AppImage from https://github.com/hormuz-labs/manul/releases/latest</span>`
-const title = 'Manul: the open-source AI video agent — make and edit any video'
-const description = 'Manul is an open-source video agent you talk to. Start from a blank canvas, a live web app or your own footage: it makes motion graphics, product walkthroughs, screen + facecam demos, voice and music, and edits on the word. For macOS, Windows and Linux, with a mobile companion and cloud or home workers.'
-const gh = 'https://github.com/hormuz-labs/manul'
-// motion examples from the gallery inside Manul: made by the people credited, with Claude; collected by prompt-motion.com.
-// Videos and posters stream from Manul's bucket (scripts/publish-motion-gallery.mjs in the app's repo).
+<span class="c"># Or grab the .dmg, .exe, .deb or .AppImage from https://github.com/hormuz-labs/agentshot/releases/latest</span>`
+const title = 'AgentShot: the open-source AI video agent — make and edit any video'
+const description = 'AgentShot is an open-source video agent you talk to. Start from a blank canvas, a live web app or your own footage: it makes motion graphics, product walkthroughs, screen + facecam demos, voice and music, and edits on the word. For macOS, Windows and Linux, with a mobile companion and cloud or home workers.'
+const gh = 'https://github.com/hormuz-labs/agentshot'
+// motion examples from the gallery inside AgentShot: made by the people credited, with Claude; collected by prompt-motion.com.
+// Videos and posters stream from AgentShot's bucket (scripts/publish-motion-gallery.mjs in the app's repo).
 const media = 'https://storage.googleapis.com/manul-gallery/v1'
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`
 // a trace under each line of the readout, drawn here so the page ships no script for it (600 × 28, seeded so it never changes)
@@ -109,13 +109,13 @@ const log = [
 const faqs = [
   ...PRICING_FAQS,
   { q: 'Does my video get uploaded anywhere?', a: `No, not by default. Cutting, rendering and transcription happen on your computer. The model only receives text (your notes, the transcript) and, when it needs to look, a few still frames. If you pair the mobile app, it talks directly to your computer over Wi-Fi or Tailscale pinned to your desktop’s TLS certificate. If you choose a home or cloud worker, only the active project delta-syncs over the encrypted manul-mesh tunnel.` },
-  { q: 'Can I use it from my phone, or on a remote worker?', a: `Yes. Open Settings → Mobile to pair the iOS or Android companion app with a 6-digit code over Wi-Fi or Tailscale: send clips from your camera roll, browse projects, draw boxes on the frame, chat live, and share exports. For heavy renders or working from a light laptop, run <code>manul --worker</code> on a home machine or lease a cloud worker on your Manul key — built-in userspace WireGuard (manul-mesh) links them without needing Tailscale installed.` },
-  { q: 'Which AI does it use?', a: `Your pick, per project. Sign in for the Manul key and choose a tier (Low, Medium, High, and on Pro or Max, Max and Ultra), or bring your own Claude, Gemini or OpenAI key, or any OpenAI- or Anthropic-compatible endpoint. Your keys stay in your system’s keychain and are used first.` },
-  { q: 'Do I need to know video editing?', a: `No. If you can describe what you want to a person, you can direct Manul. If you do know editing, you’ll get there faster: it understands “J-cut”, “punch in” and “duck the music”.` },
-  { q: 'Do I have to type everything into the chat?', a: `No. Draw a box on the picture, drag across the timeline, or press N at a moment, and a message box opens right there: say what should change and press Enter. It goes to Manul with what you pointed at, and shows in the conversation so you can look back over it. Light by default, with a dark theme in Settings.` },
-  { q: 'Does Manul generate video from scratch?', a: `Yes. Without any camera footage, it builds 60fps motion graphics from a blank canvas or 233 gallery examples, films narrated product walkthroughs in Chrome, and generates voiceover and music. Generated AI camera shots (b-roll on the fly, extending a frame, filling in a spot you box) are next — placed only where you ask, never swapping out your own footage.` },
+  { q: 'Can I use it from my phone, or on a remote worker?', a: `Yes. Open Settings → Mobile to pair the iOS or Android companion app with a 6-digit code over Wi-Fi or Tailscale: send clips from your camera roll, browse projects, draw boxes on the frame, chat live, and share exports. For heavy renders or working from a light laptop, run <code>manul --worker</code> on a home machine or lease a cloud worker on your AgentShot key — built-in userspace WireGuard (manul-mesh) links them without needing Tailscale installed.` },
+  { q: 'Which AI does it use?', a: `Your pick, per project. Sign in for the AgentShot key and choose a tier (Low, Medium, High, and on Pro or Max, Max and Ultra), or bring your own Claude, Gemini or OpenAI key, or any OpenAI- or Anthropic-compatible endpoint. Your keys stay in your system’s keychain and are used first.` },
+  { q: 'Do I need to know video editing?', a: `No. If you can describe what you want to a person, you can direct AgentShot. If you do know editing, you’ll get there faster: it understands “J-cut”, “punch in” and “duck the music”.` },
+  { q: 'Do I have to type everything into the chat?', a: `No. Draw a box on the picture, drag across the timeline, or press N at a moment, and a message box opens right there: say what should change and press Enter. It goes to AgentShot with what you pointed at, and shows in the conversation so you can look back over it. Light by default, with a dark theme in Settings.` },
+  { q: 'Does AgentShot generate video from scratch?', a: `Yes. Without any camera footage, it builds 60fps motion graphics from a blank canvas or 233 gallery examples, films narrated product walkthroughs in Chrome, and generates voiceover and music. Generated AI camera shots (b-roll on the fly, extending a frame, filling in a spot you box) are next — placed only where you ask, never swapping out your own footage.` },
   { q: 'What can’t it do yet?', a: `Generated AI camera shots, multi-camera sync beyond screen + facecam, handing the cut to Premiere, Resolve or Final Cut, publishing straight to YouTube, and a public API and MCP server. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
-  { q: 'How is it different from CapCut, Descript, Motion or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript edits transcripts. HyperFrames and Remotion turn video into code in a terminal. Hosted video agents run only in someone else’s cloud. Manul is one open-source video agent for the whole job: make motion graphics, record product walkthroughs, sync screen + facecam, or cut footage on your own computer, from your phone, or on a worker.` },
+  { q: 'How is it different from CapCut, Descript, Motion or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript edits transcripts. HyperFrames and Remotion turn video into code in a terminal. Hosted video agents run only in someone else’s cloud. AgentShot is one open-source video agent for the whole job: make motion graphics, record product walkthroughs, sync screen + facecam, or cut footage on your own computer, from your phone, or on a worker.` },
   { q: 'Who makes it?', a: `Hormuz Labs, in the open. Issues, ideas and pull requests are welcome on <a href="${gh}">GitHub</a>. For teams and business, write to <a href="mailto:hello@hormuz-labs.dev">hello@hormuz-labs.dev</a>.` },
 ]
 // the hero's prompt box: one example per kind of film; the chips swap it
@@ -128,18 +128,18 @@ const chips = [
   { k: 'Article to video', p: 'Turn this blog post into a 60-second explainer with kinetic type, a voiceover and music.' },
   { k: 'Launch film', p: 'A 15-second launch film for our new feature, in the style of @reference.mp4.' },
 ]
-// many kinds of films, one agent: what you say, what Manul does, what comes out
+// many kinds of films, one agent: what you say, what AgentShot does, what comes out
 const ex = (id: string) => motion.find(m => m.id === id)!
 const films = [
-  { k: 'Edit footage', prompt: 'Make it cinematic, and put his name on screen.', steps: ['Measured the clip: one shot, one face, followed in every frame', 'Graded it and set it in a widescreen letterbox', 'Set his name in real type, in on the look', 'Rendered on your computer with ffmpeg', 'Before and after ready: keep it or send it back'], video: '/demo/cinema.mp4', poster: '/demo/cinema.webp', shape: 'wide', cap: 'The after, rendered by the same engine Manul drives' },
+  { k: 'Edit footage', prompt: 'Make it cinematic, and put his name on screen.', steps: ['Measured the clip: one shot, one face, followed in every frame', 'Graded it and set it in a widescreen letterbox', 'Set his name in real type, in on the look', 'Rendered on your computer with ffmpeg', 'Before and after ready: keep it or send it back'], video: '/demo/cinema.mp4', poster: '/demo/cinema.webp', shape: 'wide', cap: 'The after, rendered by the same engine AgentShot drives' },
   { k: 'Motion design', prompt: `Use the “${ex('tdinh-me-815acb').title}” example, but reveal @logo.png in our colours.`, steps: ['Read the example’s prompt and studied the film', 'Asked for what it needed: the logo, two colours, a track', 'Showed a storyboard, one line per scene, before a frame', 'Built each scene as real motion graphics you can edit on the picture', 'Rendered 21 seconds at 1080p'], video: `/motion/tdinh-me-815acb.mp4`, poster: '/motion/tdinh-me-815acb.jpg', shape: 'wide', cap: `The example it starts from, by @${ex('tdinh-me-815acb').handle}` },
   { k: 'Product walkthrough', prompt: 'Walk through our web app in Chrome: filter the analytics, open a report, zoom into each click and narrate it.', steps: ['Explored the live web app in Chrome and proposed a step-by-step storyboard', 'Filmed a clean 60fps take with smooth cursor travel and click ripples', 'Zoomed into each interaction and wrote the narration per step', 'Generated the voiceover and paced the cut to match every sentence'], video: `/motion/robj3d3-b18fad.mp4`, poster: '/motion/robj3d3-b18fad.jpg', shape: 'wide', cap: `A product film from the gallery, by @${ex('robj3d3-b18fad').handle}` },
-  { k: 'Screen + facecam', prompt: 'Sync my screen recording and facecam, put me in the corner, and cut the pauses.', steps: ['Aligned screen and camera recordings automatically by matching their audio', 'Placed the facecam in a rounded corner picture-in-picture overlay', 'Cut the dead air and hesitations while keeping all speech and screen action', 'Balanced the mic and rendered the composite at 60fps'], video: '/demo/zoom.mp4', poster: '/demo/zoom.webp', shape: 'wide', cap: 'The after, rendered by the same engine Manul drives' },
-  { k: 'Shorts & Reels', prompt: 'Make it a Short with a caption.', steps: ['Found the subject and tracked him through the shot', 'Reframed 16:9 to 9:16 so he never leaves the frame', 'Timed the caption to the moment and burned it in', 'Exported 1080 × 1920, ready for Shorts, Reels and TikTok'], video: '/demo/short.mp4', poster: '/demo/short.webp', shape: 'tall', cap: 'The after, rendered by the same engine Manul drives' },
+  { k: 'Screen + facecam', prompt: 'Sync my screen recording and facecam, put me in the corner, and cut the pauses.', steps: ['Aligned screen and camera recordings automatically by matching their audio', 'Placed the facecam in a rounded corner picture-in-picture overlay', 'Cut the dead air and hesitations while keeping all speech and screen action', 'Balanced the mic and rendered the composite at 60fps'], video: '/demo/zoom.mp4', poster: '/demo/zoom.webp', shape: 'wide', cap: 'The after, rendered by the same engine AgentShot drives' },
+  { k: 'Shorts & Reels', prompt: 'Make it a Short with a caption.', steps: ['Found the subject and tracked him through the shot', 'Reframed 16:9 to 9:16 so he never leaves the frame', 'Timed the caption to the moment and burned it in', 'Exported 1080 × 1920, ready for Shorts, Reels and TikTok'], video: '/demo/short.mp4', poster: '/demo/short.webp', shape: 'tall', cap: 'The after, rendered by the same engine AgentShot drives' },
   { k: 'Launch video', prompt: 'A 15-second launch film for dub.co, like the Dub promo example. Go all out.', steps: ['Opened dub.co in its own browser for the product, colours and copy', 'Wrote the beats and a storyboard for you to approve', 'Cut every scene on the beat of the track', 'Made the voiceover and the music through your key', 'Exported 16:9 and a 9:16 cut for socials'], video: `/motion/steventey-0d20e4.mp4`, poster: '/motion/steventey-0d20e4.jpg', shape: 'wide', cap: `The example it starts from, by @${ex('steventey-0d20e4').handle}` },
 ]
 // the line that fills in, letter by letter, as you scroll past it (split here so the page ships it ready)
-const say = 'Start from raw footage, a live web app, or a blank canvas. Say what you want and point at the frame — Manul builds or cuts the film and hands every change back as a before and after.'
+const say = 'Start from raw footage, a live web app, or a blank canvas. Say what you want and point at the frame — AgentShot builds or cuts the film and hands every change back as a before and after.'
 let sayN = 0
 const sayWords = say.split(' ').map(w => [...w].map(c => ({ c, i: sayN++ })))
 // a painting behind a panel: the image loads when the panel comes near (see .paint in the styles)
@@ -157,25 +157,25 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
   <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
   <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="canonical" href="https://manul.si/" />
+  <link rel="canonical" href="https://agentshot.si/" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://manul.si/" />
+  <meta property="og:url" content="https://agentshot.si/" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content="https://manul.si/og.jpg" />
+  <meta property="og:image" content="https://agentshot.si/og.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preload" href="/paint/steppe.webp" as="image" type="image/webp" />
   <!-- before first paint: "js" turns on the lazy paintings and reveals, "move" the scroll motion (not for reduced motion) -->
   <script is:inline>document.documentElement.classList.add('js'); if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('move')</script>
   <script type="application/ld+json" set:html={JSON.stringify({
-    '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Manul', applicationCategory: 'MultimediaApplication',
-    operatingSystem: 'macOS, Windows, Linux', offers: OFFERS, url: 'https://manul.si/', description: PLAN_SUMMARY,
+    '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'AgentShot', applicationCategory: 'MultimediaApplication',
+    operatingSystem: 'macOS, Windows, Linux', offers: OFFERS, url: 'https://agentshot.si/', description: PLAN_SUMMARY,
     downloadUrl: `${gh}/releases/latest`, softwareVersion: version, license: `${gh}/blob/main/LICENSE`,
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
-    '@context': 'https://schema.org', '@type': 'VideoObject', name: 'Manul: you direct, it makes and edits the film',
-    description: 'An 88-second film about Manul, the open-source video agent: start from footage or a blank canvas, say what you want, point at the frame, keep or send back each edit.',
-    thumbnailUrl: 'https://manul.si/film/poster.jpg', contentUrl: 'https://manul.si/film/manul.mp4', uploadDate: '2026-10-07', duration: 'PT1M28S',
+    '@context': 'https://schema.org', '@type': 'VideoObject', name: 'AgentShot: you direct, it makes and edits the film',
+    description: 'An 88-second film about AgentShot, the open-source video agent: start from footage or a blank canvas, say what you want, point at the frame, keep or send back each edit.',
+    thumbnailUrl: 'https://agentshot.si/film/poster.jpg', contentUrl: 'https://agentshot.si/film/manul.mp4', uploadDate: '2026-10-07', duration: 'PT1M28S',
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -193,9 +193,9 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
         <a href="#fits" class="more">Compare</a>
         <a href="#faq" class="more">FAQ</a>
       </nav>
-      <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>Manul</span></a>
+      <a class="brand" href="/" aria-label="AgentShot home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>AgentShot</span></a>
       <div class="acts">
-        <a class="gh" href={gh} aria-label="Manul on GitHub">
+        <a class="gh" href={gh} aria-label="AgentShot on GitHub">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>
           <span>Star</span>
         </a>
@@ -214,17 +214,17 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
   </header>
 
   <main>
-    <section class="hero" aria-label="Manul">
+    <section class="hero" aria-label="AgentShot">
       <div class="sky paint seen" style={paint('steppe', 'center 30%', '#bcd6ef')}>
         <div class="hero-copy">
           <a class="eyebrow" href="#get"><span class="dot-live" aria-hidden="true"></span><span>v<span data-version>{version}</span> · open source · macOS, Windows &amp; Linux</span></a>
-          <h1 class="slate" aria-label="Manul, the open-source video agent.">
-            <span class="w" style="--i:0" aria-hidden="true">Manul,</span> <span class="w" style="--i:1" aria-hidden="true">the</span> <span class="w ringed" style="--i:2" aria-hidden="true">open-source<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg></span> <span class="w" style="--i:3" aria-hidden="true">video</span> <span class="w" style="--i:4" aria-hidden="true">agent.</span>
+          <h1 class="slate" aria-label="AgentShot, the open-source video agent.">
+            <span class="w" style="--i:0" aria-hidden="true">AgentShot,</span> <span class="w" style="--i:1" aria-hidden="true">the</span> <span class="w ringed" style="--i:2" aria-hidden="true">open-source<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg></span> <span class="w" style="--i:3" aria-hidden="true">video</span> <span class="w" style="--i:4" aria-hidden="true">agent.</span>
           </h1>
           <p class="lede">Make any video from scratch, or edit the footage you have. Motion graphics, narrated product walkthroughs, screen + facecam demos, Shorts, voice and music — on your own computer, from your phone, or on a cloud worker.</p>
           <div class="prompt" role="group" aria-label="An example of what you can ask">
             <p class="prompt-text" id="prompt-text" aria-live="polite">{chips[0].p}</p>
-            <a class="prompt-go" href="#get" aria-label="Download Manul to try this"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m0 0-6 6m6-6 6 6"/></svg></a>
+            <a class="prompt-go" href="#get" aria-label="Download AgentShot to try this"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m0 0-6 6m6-6 6 6"/></svg></a>
           </div>
           <ul class="chips" role="list" aria-label="Kinds of video">
             {chips.map((c, i) => <li><button type="button" data-prompt={c.p} aria-pressed={i === 0 ? 'true' : 'false'}>{c.k}</button></li>)}
@@ -232,14 +232,14 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
           <div class="cta-row">
             <a href="#get" class="btn dot" data-os-cta>
               <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
-              <span data-os-label>Download Manul</span>
+              <span data-os-label>Download AgentShot</span>
             </a>
             <button class="btn light" type="button" data-film><i class="play" aria-hidden="true"></i>Watch the film <span class="mono dur">1:28</span></button>
           </div>
           <button class="brew mono" data-copy={brew} aria-label="Copy the Homebrew install command"><span>$ {brew}</span><em>copy</em></button>
         </div>
 
-        <div class="stage" id="try" aria-label="Try Manul">
+        <div class="stage" id="try" aria-label="Try AgentShot">
           <div class="glass"><Demo /></div>
           <ol class="steps" aria-hidden="true">
             <li><b>1</b>Give it a note</li>
@@ -266,7 +266,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
         }
         fit(); addEventListener('resize', fit); document.fonts && document.fonts.ready.then(fit)
       })()</script>
-      <p class="credit wrap">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0. Each “after” was rendered by the same engine Manul drives. <span class="phone-only">Desktop app for macOS, Windows and Linux, with a companion app for iPhone and Android.</span></p>
+      <p class="credit wrap">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0. Each “after” was rendered by the same engine AgentShot drives. <span class="phone-only">Desktop app for macOS, Windows and Linux, with a companion app for iPhone and Android.</span></p>
     </section>
 
     <section class="say" id="say" aria-label={say}>
@@ -281,7 +281,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
     <section class="films" id="films">
       <div class="wrap sh" data-r>
         <h2 class="slate">Video anything. One agent.</h2>
-        <p>Start with raw camera clips, a live URL, a screen recording, or nothing at all. Brief Manul the way you’d brief a creative director or an editor — it plans the scenes, builds or cuts the film, and hands back a before and after.</p>
+        <p>Start with raw camera clips, a live URL, a screen recording, or nothing at all. Brief AgentShot the way you’d brief a creative director or an editor — it plans the scenes, builds or cuts the film, and hands back a before and after.</p>
       </div>
       <div class="panel paint" style={paint('dusk', 'center 40%', '#f1c79d')}>
         <div class="film-tabs" role="tablist" aria-label="Kinds of film">
@@ -295,7 +295,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
                 <q class="fp-prompt">{f.prompt}</q>
               </div>
               <div class="fp-block">
-                <p class="lbl">Manul</p>
+                <p class="lbl">AgentShot</p>
                 <ol class="fp-steps">{f.steps.map(st => <li>{st}</li>)}</ol>
               </div>
             </div>
@@ -312,7 +312,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
     <section class="motion" id="motion">
       <div class="wrap sh" data-r>
         <h2 class="slate">No footage? Start from these.</h2>
-        <p>Pick any of 233 motion videos in Manul, each with the prompt that made it. Say what yours is about; Manul makes it the same way.</p>
+        <p>Pick any of 233 motion videos in AgentShot, each with the prompt that made it. Say what yours is about; AgentShot makes it the same way.</p>
       </div>
       <div class="panel paint" style={paint('bluehour', 'center', '#d9d3e6')}>
         <ul class="reels" role="list">
@@ -335,8 +335,8 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
         <p>Every word you recorded is transcribed with its timing, and every box you draw is pinned to a spot and a moment. So a note lands exactly where you meant it.</p>
       </div>
       <div class="panel paint" style={paint('peaks', 'center 70%', '#e3e6e6')}>
-        <div class="edl sheet" role="table" aria-label="Notes and what Manul did with them">
-          <div class="row th" role="row"><span role="columnheader">#</span><span role="columnheader">Your note</span><span role="columnheader">Where</span><span role="columnheader">What Manul did</span></div>
+        <div class="edl sheet" role="table" aria-label="Notes and what AgentShot did with them">
+          <div class="row th" role="row"><span role="columnheader">#</span><span role="columnheader">Your note</span><span role="columnheader">Where</span><span role="columnheader">What AgentShot did</span></div>
           <div class="row" role="row">
             <span class="n mono" role="cell">01</span>
             <q role="cell">cut <s>the ums</s>, and the bit where I lose my train of thought</q>
@@ -388,9 +388,9 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
             <div class="any-head">
               <span class="any-pill"><span class="dot-live" aria-hidden="true"></span>Mobile companion · iOS &amp; Android</span>
               <h3 class="slate">Direct from the couch. Or walk in with the shot.</h3>
-              <p>Pair your phone in <b>Settings → Mobile</b> with a 6-digit code over Wi-Fi or Tailscale, pinned to your desktop’s TLS certificate. Send clips straight from your camera roll, draw a box on the frame, chat live as Manul cuts, and share the finished export.</p>
+              <p>Pair your phone in <b>Settings → Mobile</b> with a 6-digit code over Wi-Fi or Tailscale, pinned to your desktop’s TLS certificate. Send clips straight from your camera roll, draw a box on the frame, chat live as AgentShot cuts, and share the finished export.</p>
             </div>
-            <div class="phone-mock" aria-label="Manul mobile companion preview">
+            <div class="phone-mock" aria-label="AgentShot mobile companion preview">
               <div class="pm-top">
                 <span class="pm-host mono"><i aria-hidden="true"></i>manul-desk · TLS pinned</span>
                 <span class="pm-code mono">Pair 482 · 910</span>
@@ -418,7 +418,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
             <div class="any-head">
               <span class="any-pill"><span class="dot-live" aria-hidden="true"></span>Cloud &amp; home workers · manul-mesh</span>
               <h3 class="slate">Edit on a light laptop. Render on heavy iron.</h3>
-              <p>Lease a cloud worker on your Manul key, or run <code>manul --worker</code> on a desktop or GPU box at home. Built-in userspace WireGuard (<code>manul-mesh</code>) connects your devices without installing Tailscale and delta-syncs only the active project.</p>
+              <p>Lease a cloud worker on your AgentShot key, or run <code>manul --worker</code> on a desktop or GPU box at home. Built-in userspace WireGuard (<code>manul-mesh</code>) connects your devices without installing Tailscale and delta-syncs only the active project.</p>
             </div>
             <div class="mesh-mock" aria-label="Cloud and home worker architecture">
               <div class="mm-nodes">
@@ -451,7 +451,7 @@ Syncing project delta (3 clips, 18.4 MB) … done</code></pre>
     <section class="reads" id="reads">
       <div class="wrap sh" data-r>
         <h2 class="slate">The model is your pick. The harness is the work.</h2>
-        <p>Claude, Gemini and GPT all cut well once they know what’s in the film. So Manul puts its effort around the model: it measures your footage before it touches it, checks each change against the picture, and keeps every version. Swap the model per project; the harness stays.</p>
+        <p>Claude, Gemini and GPT all cut well once they know what’s in the film. So AgentShot puts its effort around the model: it measures your footage before it touches it, checks each change against the picture, and keeps every version. Swap the model per project; the harness stays.</p>
       </div>
       <ul class="harness wrap" role="list">
         <li data-r style="--d:0"><b>Measures first</b><span>Words, voices, shots, the subject, the beat, loudness. On your computer or worker.</span></li>
@@ -465,7 +465,7 @@ Syncing project delta (3 clips, 18.4 MB) … done</code></pre>
               <div class="tracks" aria-hidden="true">
                 {log.map((r, i) => <button type="button" tabindex="-1" data-step={i}><span>{r.k}</span><i></i></button>)}
               </div>
-              <div class="views" role="table" aria-label="What Manul measures, and what that lets you say">
+              <div class="views" role="table" aria-label="What AgentShot measures, and what that lets you say">
                 {log.map((r, i) => (
                   <div class="view" role="row" data-i={i}>
                     <span class="k" role="rowheader">{r.k}</span>
@@ -484,18 +484,18 @@ Syncing project delta (3 clips, 18.4 MB) … done</code></pre>
     <section class="fits" id="fits">
       <div class="wrap sh" data-r>
         <h2 class="slate">Not a slot machine. Not code. A timeline only if you want it.</h2>
-        <p>Where Manul sits next to the editors, code-to-video tools and generators you already know.</p>
+        <p>Where AgentShot sits next to the editors, code-to-video tools and generators you already know.</p>
       </div>
       <div class="panel paint" style={paint('rocks', 'center 40%', '#eadfcf')}>
-        <div class="cmp sheet" role="table" aria-label="Manul compared with timeline editors, code-to-video tools and AI video generators">
-          <div class="row th" role="row"><span role="columnheader"></span><span role="columnheader">Timeline editors<small>Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut</small></span><span role="columnheader">Video as code<small>HyperFrames, Remotion</small></span><span role="columnheader">AI generators<small>Runway, Sora, Veo</small></span><span role="columnheader" class="us">Manul<small>open-source video agent</small></span></div>
-          <div class="row" role="row"><span role="rowheader">You</span><span role="cell" data-h="Timeline editors">operate it, cut by cut</span><span role="cell" data-h="Video as code">describe it; an agent writes HTML</span><span role="cell" data-h="AI generators">prompt, hope, re-roll</span><span role="cell" data-h="Manul" class="us">say it, point at it</span></div>
-          <div class="row" role="row"><span role="rowheader">You look at</span><span role="cell" data-h="Timeline editors">a timeline</span><span role="cell" data-h="Video as code">a terminal and code</span><span role="cell" data-h="AI generators">a prompt box</span><span role="cell" data-h="Manul" class="us">your film, before and after</span></div>
-          <div class="row" role="row"><span role="rowheader">Makes from scratch</span><span role="cell" data-h="Timeline editors">by hand, keyframe by keyframe</span><span role="cell" data-h="Video as code">coded motion graphics</span><span role="cell" data-h="AI generators">synthetic clips</span><span role="cell" data-h="Manul" class="us">motion, walkthroughs, voice &amp; music</span></div>
-          <div class="row" role="row"><span role="rowheader">Your footage</span><span role="cell" data-h="Timeline editors">yours</span><span role="cell" data-h="Video as code">yours, plus coded layers</span><span role="cell" data-h="AI generators">swapped for generated frames</span><span role="cell" data-h="Manul" class="us">yours, untouched</span></div>
-          <div class="row" role="row"><span role="rowheader">Runs on</span><span role="cell" data-h="Timeline editors">your computer</span><span role="cell" data-h="Video as code">your computer</span><span role="cell" data-h="AI generators">their cloud</span><span role="cell" data-h="Manul" class="us">your computer, phone or worker</span></div>
-          <div class="row" role="row"><span role="rowheader">Undo</span><span role="cell" data-h="Timeline editors">Ctrl-Z, until it isn’t</span><span role="cell" data-h="Video as code">git, if you use it</span><span role="cell" data-h="AI generators">start over</span><span role="cell" data-h="Manul" class="us">every version, kept</span></div>
-          <div class="row" role="row"><span role="rowheader">Costs</span><span role="cell" data-h="Timeline editors">a subscription, mostly</span><span role="cell" data-h="Video as code">free, plus your agent</span><span role="cell" data-h="AI generators">credits</span><span role="cell" data-h="Manul" class="us">free with your keys, or a plan</span></div>
+        <div class="cmp sheet" role="table" aria-label="AgentShot compared with timeline editors, code-to-video tools and AI video generators">
+          <div class="row th" role="row"><span role="columnheader"></span><span role="columnheader">Timeline editors<small>Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut</small></span><span role="columnheader">Video as code<small>HyperFrames, Remotion</small></span><span role="columnheader">AI generators<small>Runway, Sora, Veo</small></span><span role="columnheader" class="us">AgentShot<small>open-source video agent</small></span></div>
+          <div class="row" role="row"><span role="rowheader">You</span><span role="cell" data-h="Timeline editors">operate it, cut by cut</span><span role="cell" data-h="Video as code">describe it; an agent writes HTML</span><span role="cell" data-h="AI generators">prompt, hope, re-roll</span><span role="cell" data-h="AgentShot" class="us">say it, point at it</span></div>
+          <div class="row" role="row"><span role="rowheader">You look at</span><span role="cell" data-h="Timeline editors">a timeline</span><span role="cell" data-h="Video as code">a terminal and code</span><span role="cell" data-h="AI generators">a prompt box</span><span role="cell" data-h="AgentShot" class="us">your film, before and after</span></div>
+          <div class="row" role="row"><span role="rowheader">Makes from scratch</span><span role="cell" data-h="Timeline editors">by hand, keyframe by keyframe</span><span role="cell" data-h="Video as code">coded motion graphics</span><span role="cell" data-h="AI generators">synthetic clips</span><span role="cell" data-h="AgentShot" class="us">motion, walkthroughs, voice &amp; music</span></div>
+          <div class="row" role="row"><span role="rowheader">Your footage</span><span role="cell" data-h="Timeline editors">yours</span><span role="cell" data-h="Video as code">yours, plus coded layers</span><span role="cell" data-h="AI generators">swapped for generated frames</span><span role="cell" data-h="AgentShot" class="us">yours, untouched</span></div>
+          <div class="row" role="row"><span role="rowheader">Runs on</span><span role="cell" data-h="Timeline editors">your computer</span><span role="cell" data-h="Video as code">your computer</span><span role="cell" data-h="AI generators">their cloud</span><span role="cell" data-h="AgentShot" class="us">your computer, phone or worker</span></div>
+          <div class="row" role="row"><span role="rowheader">Undo</span><span role="cell" data-h="Timeline editors">Ctrl-Z, until it isn’t</span><span role="cell" data-h="Video as code">git, if you use it</span><span role="cell" data-h="AI generators">start over</span><span role="cell" data-h="AgentShot" class="us">every version, kept</span></div>
+          <div class="row" role="row"><span role="rowheader">Costs</span><span role="cell" data-h="Timeline editors">a subscription, mostly</span><span role="cell" data-h="Video as code">free, plus your agent</span><span role="cell" data-h="AI generators">credits</span><span role="cell" data-h="AgentShot" class="us">free with your keys, or a plan</span></div>
         </div>
       </div>
     </section>
@@ -518,24 +518,24 @@ Syncing project delta (3 clips, 18.4 MB) … done</code></pre>
         <div class="build-in">
           <div class="build-copy">
             <p class="kicker">For developers</p>
-            <h2 class="slate">Build with Manul.</h2>
+            <h2 class="slate">Build with AgentShot.</h2>
             <p>The whole agent is on GitHub under Apache-2.0: the harness, the tools, the skills, the editor, and the headless worker. Read how it works, change it, run your fork, or point it at your own model server.</p>
             <ul class="build-list" role="list">
               <li><b>Any endpoint</b><span>Claude, Gemini, OpenAI, or anything that speaks the OpenAI or Anthropic API, local servers included.</span></li>
               <li><b>Headless worker</b><span>Run <code>manul --worker</code> on a home server or GPU box and connect from your laptop or phone over <code>manul-mesh</code>.</span></li>
               <li><b>Agent-installable</b><span>An <a href="/skills/install-manul/SKILL.md">install skill</a> and <a href="/llms.txt">llms.txt</a>, so Claude Code, Cursor or Codex can set it up for you.</span></li>
-              <li><b>API &amp; MCP</b> <span class="tag">Coming</span><span>Drive Manul from your own agent or scripts: hand it a folder and a brief, get a film back.</span></li>
+              <li><b>API &amp; MCP</b> <span class="tag">Coming</span><span>Drive AgentShot from your own agent or scripts: hand it a folder and a brief, get a film back.</span></li>
             </ul>
             <div class="cta-row left">
               <a class="btn" href={gh}>Star on GitHub</a>
               <a class="btn light" href={`${gh}/blob/main/CONTRIBUTING.md`}>Run it from source</a>
             </div>
           </div>
-          <div class="term" aria-label="Running Manul from source">
-            <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span class="mono">manul</span></div>
+          <div class="term" aria-label="Running AgentShot from source">
+            <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span class="mono">agentshot</span></div>
             <pre class="mono"><code><span class="c"># the agent, the editor, the worker, the skills</span>
-<span class="p">$</span> git clone https://github.com/hormuz-labs/manul
-<span class="p">$</span> cd manul &amp;&amp; npm install
+<span class="p">$</span> git clone https://github.com/hormuz-labs/agentshot
+<span class="p">$</span> cd agentshot &amp;&amp; npm install
 <span class="p">$</span> npm run setup:native
 <span class="p">$</span> npm run dev
 
@@ -556,11 +556,11 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
     <section class="get" id="get">
       <div class="wrap sh" data-r>
         <h2 class="slate">Free to start. One line to install.</h2>
-        <p>Version <span data-version>{version}</span>, for macOS 12+, Windows 10/11 (x64) and Debian or Ubuntu. Free with your own keys; plans and cloud workers are in the app, under Settings → Keys → Manul key.</p>
+        <p>Version <span data-version>{version}</span>, for macOS 12+, Windows 10/11 (x64) and Debian or Ubuntu. Free with your own keys; plans and cloud workers are in the app, under Settings → Keys → AgentShot key.</p>
       </div>
       <div class="panel paint" style={paint('mist', 'center 80%', '#e4ebe2')}>
         <ol class="first">
-          <li class="sheet" data-r style="--d:0"><span class="num">01</span><h3>Open Manul</h3><p>Drop in footage, point at a URL, or start from a motion example.</p></li>
+          <li class="sheet" data-r style="--d:0"><span class="num">01</span><h3>Open AgentShot</h3><p>Drop in footage, point at a URL, or start from a motion example.</p></li>
           <li class="sheet" data-r style="--d:1"><span class="num">02</span><h3>Sign in, or add a key</h3><p>Sign in for {fmt(STARTER_CREDITS)} starter credits, or paste a Claude, Gemini or OpenAI key. Keys stay in your system’s keychain.</p></li>
           <li class="sheet" data-r style="--d:2"><span class="num">03</span><h3>Direct the film</h3><p>Give a note, pair your phone in Settings → Mobile, or keep/send back each cut.</p></li>
         </ol>
@@ -575,7 +575,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
               </div>
               <span class="dl-req">macOS 12+ · Apple silicon &amp; Intel</span>
             </header>
-            <a class="btn dot dl-main" href={dl(`Manul-${version}-arm64.dmg`)}>
+            <a class="btn dot dl-main" href={dl(`AgentShot-${version}-arm64.dmg`)}>
               <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
               <span>Download .dmg</span>
               <small>Apple silicon</small>
@@ -587,7 +587,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
                 <button class="copy" data-copy={brew}>Copy</button>
               </div>
             </div>
-            <p class="dl-foot"><a href={dl(`Manul-${version}-x64.dmg`)}>Intel Mac (.dmg)</a> · First open: right-click → Open.</p>
+            <p class="dl-foot"><a href={dl(`AgentShot-${version}-x64.dmg`)}>Intel Mac (.dmg)</a> · First open: right-click → Open.</p>
           </article>
 
           <article class="dl-col sheet" data-os="win">
@@ -599,7 +599,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
               </div>
               <span class="dl-req">Windows 10 &amp; 11 · 64-bit</span>
             </header>
-            <a class="btn dot dl-main" href={dl(`Manul-${version}-windows-x64-Setup.exe`)}>
+            <a class="btn dot dl-main" href={dl(`AgentShot-${version}-windows-x64-Setup.exe`)}>
               <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
               <span>Download .exe</span>
               <small>64-bit</small>
@@ -607,7 +607,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
             <div class="dl-more">
               <p>Or install in PowerShell</p>
               <div class="dl-row">
-                <code>iwr …/Manul-{version}-windows-x64-Setup.exe</code>
+                <code>iwr …/AgentShot-{version}-windows-x64-Setup.exe</code>
                 <button class="copy" data-copy={winPs}>Copy</button>
               </div>
             </div>
@@ -631,7 +631,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
             <div class="dl-more">
               <p>Or add the signed apt repository</p>
               <div class="dl-row">
-                <code>curl -fsSL https://apt.manul.si/… &amp;&amp; sudo apt install manul</code>
+                <code>curl -fsSL https://apt.agentshot.si/… &amp;&amp; sudo apt install manul</code>
                 <button class="copy" data-copy={apt}>Copy</button>
               </div>
             </div>
@@ -647,7 +647,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
           <div class="ask-head">
             <div>
               <h3>Ask your agent</h3>
-              <p>Using Claude Code, Cursor or Codex? Paste this and let it install Manul (or start a headless worker with <code>manul --worker</code>); pair your phone in <b>Settings → Mobile</b>.</p>
+              <p>Using Claude Code, Cursor or Codex? Paste this and let it install AgentShot (or start a headless worker with <code>manul --worker</code>); pair your phone in <b>Settings → Mobile</b>.</p>
             </div>
             <button class="copy" data-copy={agentPrompt}>Copy prompt</button>
           </div>
@@ -681,7 +681,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
         </figure>
         <div class="cat-copy sheet" data-r style="--d:1">
           <p class="label"><b>●</b> Why a cat</p>
-          <h2 class="slate">Named after the manul.</h2>
+          <h2 class="slate">Our mascot: the manul.</h2>
           <p>The manul, or Pallas’s cat, lives alone on the cold steppe of Central Asia. It doesn’t chase; it waits, then moves once, exactly. And it looks at everything with the same flat, faintly disappointed stare.</p>
           <p>That’s the editor we wanted in the room: patient, hard to impress, and precise when it counts.</p>
         </div>
@@ -701,12 +701,12 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
     <section class="cta">
       <div class="paint dusk" style={paint('dusk', 'center', '#f1c79d')}>
         <img src="/icon.png" width="116" height="116" alt="" loading="lazy" data-r />
-        <h2 class="slate" data-r style="--d:1">Download Manul.</h2>
+        <h2 class="slate" data-r style="--d:1">Download AgentShot.</h2>
         <p data-r style="--d:2">The open-source video agent for macOS, Windows and Linux — on your desk, phone or cloud worker.</p>
         <div class="cta-row" data-r style="--d:3">
           <a href="#get" class="btn dot">
             <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
-            <span data-os-label>Download Manul</span>
+            <span data-os-label>Download AgentShot</span>
           </a>
           <a href={gh} class="btn">Star on GitHub</a>
         </div>
@@ -714,7 +714,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
     </section>
   </main>
 
-  <dialog class="film" id="film" aria-label="Manul, the film">
+  <dialog class="film" id="film" aria-label="AgentShot, the film">
     <video id="film-v" controls playsinline preload="none" poster="/film/poster.jpg" width="1920" height="1080">
       <source src="/film/manul.mp4" type="video/mp4" />
       <track kind="captions" src="/captions/film.vtt" srclang="en" label="English" />
@@ -736,12 +736,12 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
     <div class="wrap">
       <div class="foot-top">
         <div class="foot-brand">
-          <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="32" height="32" alt="" /><span>Manul</span></a>
+          <a class="brand" href="/" aria-label="AgentShot home"><img src="/icon-56.png" width="32" height="32" alt="" /><span>AgentShot</span></a>
           <p>The open-source video agent you talk to — for macOS, Windows and Linux, with a mobile companion and cloud workers.</p>
         </div>
         <nav class="cols" aria-label="Footer">
           <div><h3>Product</h3><a href="#try">Try it</a><a href="#films">Make &amp; Edit</a><a href="#anywhere">Phone &amp; Cloud</a><a href="#motion">Motion</a><a href="#fits">Compare</a><a href="/pricing/">Pricing</a><a href="#get">Install</a></div>
-          <div><h3>Project</h3><a href={gh}>GitHub</a><a href={`${gh}/blob/main/ROADMAP.md`}>Roadmap</a><a href="#build">Developers</a><a href={`${gh}/blob/main/CONTRIBUTING.md`}>Contributing</a><a href={`${gh}/releases`}>Releases</a><a href="https://apt.manul.si">apt.manul.si</a></div>
+          <div><h3>Project</h3><a href={gh}>GitHub</a><a href={`${gh}/blob/main/ROADMAP.md`}>Roadmap</a><a href="#build">Developers</a><a href={`${gh}/blob/main/CONTRIBUTING.md`}>Contributing</a><a href={`${gh}/releases`}>Releases</a><a href="https://apt.agentshot.si">apt.agentshot.si</a></div>
           <div><h3>Company</h3><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href={`${gh}/blob/main/LICENSE`}>License</a><a href="#faq">FAQ</a><a href="mailto:hello@hormuz-labs.dev">Contact</a></div>
         </nav>
       </div>
@@ -759,7 +759,7 @@ product-walkthrough   tutorials   voiceover  …</code></pre>
     // mark the card for this computer, and wire the download buttons to its installer
     const ua = navigator.userAgent
     const os = /Mac/.test(ua) && !/iPhone|iPad/.test(ua) ? 'mac' : /Win/.test(ua) ? 'win' : /Linux|X11/.test(ua) && !/Android/.test(ua) ? 'linux' : null
-    const label = os === 'mac' ? 'Download for Mac' : os === 'win' ? 'Download for Windows' : os === 'linux' ? 'Download for Linux' : 'Download Manul'
+    const label = os === 'mac' ? 'Download for Mac' : os === 'win' ? 'Download for Windows' : os === 'linux' ? 'Download for Linux' : 'Download AgentShot'
     document.querySelectorAll('[data-os-label]').forEach(el => (el.textContent = label))
     const col = os && document.querySelector<HTMLElement>(`.dl-col[data-os=${os}]`)
     if (col) {

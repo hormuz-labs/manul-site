@@ -35,9 +35,9 @@ export const PLANS: Plan[] = [
       'Bring your own Claude, Gemini or OpenAI key',
       'Or any OpenAI- or Anthropic-compatible endpoint',
       'Pair your phone or a home worker (manul --worker)',
-      `${fmt(STARTER_CREDITS)} starter credits on a new Manul account`,
+      `${fmt(STARTER_CREDITS)} starter credits on a new AgentShot account`,
     ],
-    cta: { label: 'Download Manul', href: '/#get' },
+    cta: { label: 'Download AgentShot', href: '/#get' },
   },
   {
     key: 'pro',
@@ -46,7 +46,7 @@ export const PLANS: Plan[] = [
     per: 'a month',
     monthly: { price: 45, credits: 10_000 },
     annual: { price: 432, credits: 120_000, save: save(45, 432) },
-    blurb: 'One Manul key for every model, so you never manage a key again.',
+    blurb: 'One AgentShot key for every model, so you never manage a key again.',
     features: [
       `${fmt(10_000)} credits a month`,
       'Max and Ultra model tiers: the strongest models',
@@ -54,7 +54,7 @@ export const PLANS: Plan[] = [
       'Flex top-ups when a project runs long',
     ],
     cta: { label: 'Get Pro', href: '/#get' },
-    note: 'Subscribe in the app: Settings → Keys → Manul key',
+    note: 'Subscribe in the app: Settings → Keys → AgentShot key',
     popular: true,
   },
   {
@@ -72,7 +72,7 @@ export const PLANS: Plan[] = [
       'The lowest price per credit',
     ],
     cta: { label: 'Get Max', href: '/#get' },
-    note: 'Subscribe in the app: Settings → Keys → Manul key',
+    note: 'Subscribe in the app: Settings → Keys → AgentShot key',
   },
 ]
 
@@ -81,7 +81,7 @@ export const FLEX = { name: 'Flex top-up', price: 20, credits: 5_000 }
 export const ENTERPRISE = {
   name: 'Enterprise',
   blurb: 'Custom credit volume, volume pricing, help setting up your workflow, and a person to talk to.',
-  href: `mailto:${CONTACT}?subject=Manul%20Enterprise`,
+  href: `mailto:${CONTACT}?subject=AgentShot%20Enterprise`,
 }
 
 export const TIERS = [
@@ -92,10 +92,10 @@ export const TIERS = [
   { name: 'Ultra', who: 'Pro and Max' },
 ]
 
-export const PITCH = 'Coming from Pitch? Sign in to Manul with the same email — your plan and credits are already there.'
+export const PITCH = 'Coming from Pitch? Sign in to AgentShot with the same email — your plan and credits are already there.'
 
 /** One-line summary for FAQ answers, llms-style text and structured data. */
-export const PLAN_SUMMARY = `Manul is free forever with your own model keys, and new Manul accounts get ${fmt(STARTER_CREDITS)} starter credits. Pro is $45 a month for ${fmt(10_000)} credits (or $432 a year with ${fmt(120_000)} credits upfront); Max is $80 a month for ${fmt(30_000)} credits (or $768 a year with ${fmt(360_000)} upfront). A Flex top-up adds ${fmt(5_000)} credits for $20 with an active Pro or Max plan. Credits never expire once granted.`
+export const PLAN_SUMMARY = `AgentShot is free forever with your own model keys, and new AgentShot accounts get ${fmt(STARTER_CREDITS)} starter credits. Pro is $45 a month for ${fmt(10_000)} credits (or $432 a year with ${fmt(120_000)} credits upfront); Max is $80 a month for ${fmt(30_000)} credits (or $768 a year with ${fmt(360_000)} upfront). A Flex top-up adds ${fmt(5_000)} credits for $20 with an active Pro or Max plan. Credits never expire once granted.`
 
 export { fmt }
 
@@ -113,9 +113,9 @@ export const OFFERS = [
 
 /** Questions about plans and credits: on the home page FAQ and on /pricing (HTML allowed in answers). */
 export const PRICING_FAQS = [
-  { q: 'Is it really free?', a: `Yes. Manul is open source under the <a href="https://github.com/hormuz-labs/manul/blob/main/LICENSE">Apache License 2.0</a> and runs on your computer. Bring your own Claude, Gemini or OpenAI key (or any compatible endpoint) and Manul costs nothing, for good: you pay your model provider directly, usually cents per edit. No account needed.` },
-  { q: 'What are credits?', a: `Credits are how the Manul key is paid for. Each agent run, voice line or music cue draws down credits by what it actually used: the model, the tokens, the minutes of audio. A quick cut uses a little; a long motion film on an Ultra model uses more. New Manul accounts get ${fmt(STARTER_CREDITS)} starter credits, and credits never expire once they’re granted.` },
-  { q: 'What do Pro and Max add?', a: `A monthly credit allowance (Pro ${fmt(10_000)}, Max ${fmt(30_000)}) and the Max and Ultra tiers in the Manul key’s model picker: the strongest models. Low, Medium and High are open to everyone. Paying yearly grants the whole year’s credits upfront (${fmt(120_000)} or ${fmt(360_000)}) for 20% less. Need more mid-month? A Flex top-up adds ${fmt(5_000)} credits for $20.` },
-  { q: 'Where do I subscribe?', a: `In the app: open Manul, sign in, and go to <b>Settings → Keys → Manul key</b>. Billing is handled by Dodo Payments, and you can change or cancel there any time. Your own keys keep working alongside a plan and are used first.` },
-  { q: 'I have a Pitch account. What happens to it?', a: `Pitch is becoming part of Manul. Sign in to Manul with the same email and your plan and credits are already there: one account, one balance, the same billing. Nothing to move.` },
+  { q: 'Is it really free?', a: `Yes. AgentShot is open source under the <a href="https://github.com/hormuz-labs/agentshot/blob/main/LICENSE">Apache License 2.0</a> and runs on your computer. Bring your own Claude, Gemini or OpenAI key (or any compatible endpoint) and AgentShot costs nothing, for good: you pay your model provider directly, usually cents per edit. No account needed.` },
+  { q: 'What are credits?', a: `Credits are how the AgentShot key is paid for. Each agent run, voice line or music cue draws down credits by what it actually used: the model, the tokens, the minutes of audio. A quick cut uses a little; a long motion film on an Ultra model uses more. New AgentShot accounts get ${fmt(STARTER_CREDITS)} starter credits, and credits never expire once they’re granted.` },
+  { q: 'What do Pro and Max add?', a: `A monthly credit allowance (Pro ${fmt(10_000)}, Max ${fmt(30_000)}) and the Max and Ultra tiers in the AgentShot key’s model picker: the strongest models. Low, Medium and High are open to everyone. Paying yearly grants the whole year’s credits upfront (${fmt(120_000)} or ${fmt(360_000)}) for 20% less. Need more mid-month? A Flex top-up adds ${fmt(5_000)} credits for $20.` },
+  { q: 'Where do I subscribe?', a: `In the app: open AgentShot, sign in, and go to <b>Settings → Keys → AgentShot key</b>. Billing is handled by Dodo Payments, and you can change or cancel there any time. Your own keys keep working alongside a plan and are used first.` },
+  { q: 'I have a Pitch account. What happens to it?', a: `Pitch is becoming part of AgentShot. Sign in to AgentShot with the same email and your plan and credits are already there: one account, one balance, the same billing. Nothing to move.` },
 ]

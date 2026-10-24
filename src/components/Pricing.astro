@@ -11,12 +11,12 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
 <section class="pricing" id="pricing" aria-labelledby="pricing-h">
   <div class="wrap sh" data-r>
     <H class="slate" id="pricing-h">Free with your keys.<br /> A plan when you’d rather not.</H>
-    <p>Manul is open source and runs on your computer, so bring your own model keys and it costs nothing, for good. Or take one Manul key that covers every model, voice and music, paid in credits—plus cloud workers when you want heavy renders off your laptop.</p>
+    <p>AgentShot is open source and runs on your computer, so bring your own model keys and it costs nothing, for good. Or take one AgentShot key that covers every model, voice and music, paid in credits—plus cloud workers when you want heavy renders off your laptop.</p>
   </div>
 
   <div class="panel paint" style={paint('grass', 'center 40%', '#d6dfcc')}>
     {LAUNCH_DISCOUNT > 0 && (
-      <p class="launch sheet" data-r><span class="pitch-tag launch-tag">Launch offer</span><span>Every model at {LAUNCH_DISCOUNT}% off: your credits go twice as far on Manul’s key while we launch.</span></p>
+      <p class="launch sheet" data-r><span class="pitch-tag launch-tag">Launch offer</span><span>Every model at {LAUNCH_DISCOUNT}% off: your credits go twice as far on AgentShot’s key while we launch.</span></p>
     )}
     <a class="pitch sheet" href="/#get" data-r>
       <span class="pitch-tag">From Pitch</span>
@@ -60,7 +60,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
 
     <div class="tiers sheet" data-r>
       <div class="tiers-copy">
-        <h3>Model tiers on the Manul key</h3>
+        <h3>Model tiers on the AgentShot key</h3>
         <p>Pick a tier in the model picker, per project. Plans unlock the strongest models. Credits never expire once they’re yours, and they’re the same credits you use on Pitch.</p>
       </div>
       <ul class="tier-row" role="list" aria-label="Model tiers and who can use them">
@@ -68,7 +68,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
       </ul>
     </div>
 
-    <p class="fine">Prices in US dollars. {LAUNCH_DISCOUNT > 0 && `Launch pricing: model usage is billed at ${LAUNCH_DISCOUNT}% off its list rate, for a limited time. `}Annual plans grant the year’s credits on day one. New Manul accounts start with {fmt(STARTER_CREDITS)} credits. Subscribe, change or cancel in Manul under <b>Settings → Keys → Manul key</b>; billing is handled by Dodo Payments.</p>
+    <p class="fine">Prices in US dollars. {LAUNCH_DISCOUNT > 0 && `Launch pricing: model usage is billed at ${LAUNCH_DISCOUNT}% off its list rate, for a limited time. `}Annual plans grant the year’s credits on day one. New AgentShot accounts start with {fmt(STARTER_CREDITS)} credits. Subscribe, change or cancel in AgentShot under <b>Settings → Keys → AgentShot key</b>; billing is handled by Dodo Payments.</p>
   </div>
 </section>
 

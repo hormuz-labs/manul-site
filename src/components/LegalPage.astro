@@ -11,14 +11,14 @@ interface Props {
 }
 
 const { title, description, eyebrow, effective = 'October 11, 2026' } = Astro.props
-const canonical = new URL(Astro.url.pathname, 'https://manul.si')
+const canonical = new URL(Astro.url.pathname, 'https://agentshot.si')
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{title} · Manul</title>
+  <title>{title} · AgentShot</title>
   <meta name="description" content={description} />
   <meta name="theme-color" content="#fdfdf6" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -28,11 +28,11 @@ const canonical = new URL(Astro.url.pathname, 'https://manul.si')
 </head>
 <body>
   <header class="top wrap">
-    <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>Manul</span></a>
+    <a class="brand" href="/" aria-label="AgentShot home"><img src="/icon-56.png" width="28" height="28" alt="" /><span>AgentShot</span></a>
     <nav aria-label="Legal pages">
       <a href="/privacy/">Privacy</a>
       <a href="/terms/">Terms</a>
-      <a href="https://github.com/hormuz-labs/manul">GitHub ↗</a>
+      <a href="https://github.com/hormuz-labs/agentshot">GitHub ↗</a>
     </nav>
   </header>
 
@@ -49,7 +49,7 @@ const canonical = new URL(Astro.url.pathname, 'https://manul.si')
 
   <footer class="wrap label">
     <span>© Hormuz Labs · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
-    <a href="/">Back to Manul</a>
+    <a href="/">Back to AgentShot</a>
   </footer>
 
   <style>

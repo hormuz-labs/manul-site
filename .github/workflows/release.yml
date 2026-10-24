@@ -1,6 +1,6 @@
-# Keeps the site's download links on the latest Manul release: when a new release ships, this writes
+# Keeps the site's download links on the latest AgentShot release: when a new release ships, this writes
 # src/release.json and pushes, and Cloudflare Pages rebuilds. Hourly, like the Homebrew tap.
-name: Follow Manul releases
+name: Follow AgentShot releases
 on:
   schedule: [{ cron: '17 * * * *' }]
   workflow_dispatch:
@@ -14,9 +14,9 @@ jobs:
       - name: Read the latest release
         env: { GH_TOKEN: '${{ github.token }}' }
         run: |
-          v=$(gh api repos/hormuz-labs/manul/releases/latest --jq .tag_name | sed 's/^v//')
+          v=$(gh api repos/hormuz-labs/agentshot/releases/latest --jq .tag_name | sed 's/^v//')
           echo "{ \"version\": \"$v\" }" > src/release.json
           git diff --quiet && { echo "already on $v"; exit 0; }
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "Manul $v" && git push
+          git commit -am "AgentShot $v" && git push
