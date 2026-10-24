@@ -4,8 +4,8 @@ import LegalPage from '../components/LegalPage.astro'
 <LegalPage
   title="Privacy Policy"
   eyebrow="Your footage stays yours"
-  effective="October 21, 2026"
-  description="How Hormuz Labs handles information on the Manul website and in the Manul desktop application."
+  effective="October 24, 2026"
+  description="How Hormuz Labs handles information on the Manul website, in the Manul desktop and mobile applications, and across optional worker connections."
 >
   <p class="intro">Manul is designed to edit on your computer, not in our cloud. This policy explains the limited information involved when you visit manul.si, install Manul, sign in to a Manul account, pay for a plan, or choose to send diagnostics. An account is optional: with your own model keys, Manul works without one.</p>
 
@@ -31,6 +31,10 @@ import LegalPage from '../components/LegalPage.astro'
 
     <h3>Browser and external tools</h3>
     <p>When Manul searches the web, downloads a tool, or connects to a service at your direction, that service receives ordinary network request data and any information needed for the requested action. Manul uses its own browser by default; it accesses your browser only if you enable that option.</p>
+
+    <h3>Mobile companion and remote workers</h3>
+    <p>In <strong>Settings → Mobile</strong>, you can pair the Manul iOS or Android companion app with your computer using a 6-digit verification code over local Wi-Fi or Tailscale. Paired connections are encrypted and pinned to your computer’s certificate so footage, notes and exports move directly between your phone and your computer.</p>
+    <p>You can also connect Manul to a home worker you run yourself (<code>manul --worker</code>) or lease a Manul cloud worker. When you connect a worker, Manul coordinates the encrypted peer mesh (<code>manul-mesh</code>) and syncs the active project’s files to that worker so it can run edits and renders for you.</p>
   </section>
 
   <section>

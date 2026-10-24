@@ -34,8 +34,8 @@ export const PLANS: Plan[] = [
       'Every feature, no watermark, no limits from us',
       'Bring your own Claude, Gemini or OpenAI key',
       'Or any OpenAI- or Anthropic-compatible endpoint',
+      'Pair your phone or a home worker (manul --worker)',
       `${fmt(STARTER_CREDITS)} starter credits on a new Manul account`,
-      'Low, Medium and High model tiers on the Manul key',
     ],
     cta: { label: 'Download Manul', href: '/#get' },
   },
@@ -50,7 +50,7 @@ export const PLANS: Plan[] = [
     features: [
       `${fmt(10_000)} credits a month`,
       'Max and Ultra model tiers: the strongest models',
-      'Voice and music through the same key',
+      'Voice, music and cloud workers on the same key',
       'Flex top-ups when a project runs long',
     ],
     cta: { label: 'Get Pro', href: '/#get' },
@@ -68,7 +68,7 @@ export const PLANS: Plan[] = [
     features: [
       `${fmt(30_000)} credits a month`,
       'Max and Ultra model tiers',
-      'Voice and music through the same key',
+      'Voice, music and cloud workers on the same key',
       'The lowest price per credit',
     ],
     cta: { label: 'Get Max', href: '/#get' },

@@ -16,23 +16,24 @@ const dl = (f: string) => `https://github.com/hormuz-labs/manul/releases/downloa
 const apt = `curl -fsSL https://apt.manul.si/manul.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/manul.gpg &&
 echo "deb [signed-by=/usr/share/keyrings/manul.gpg] https://apt.manul.si stable main" | sudo tee /etc/apt/sources.list.d/manul.list &&
 sudo apt update && sudo apt install manul`
-const agentPrompt = `Install Manul, the open-source video agent, on this computer.
-macOS: brew install hormuz-labs/tap/manul
-Windows: download the 64-bit installer from https://github.com/hormuz-labs/manul/releases/latest and run it
-Debian or Ubuntu:
-${apt}
-Anything else: download the .deb or AppImage from https://github.com/hormuz-labs/manul/releases/latest
-
-Then open Manul.`
-// the same prompt with a little colour: labels amber, commands green, links sky
-const agentHtml = agentPrompt
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-  .replace(/^(macOS|Windows|Debian or Ubuntu|Anything else):/gm, '<span class="k">$1:</span>')
-  .replace(/^(brew|curl|echo|sudo) .*$/gm, '<span class="c">$&</span>')
-  .replace(/https?:\/\/[^\s<]+/g, m => `<span class="u">${m}</span>`)
+const winPs = `iwr ${dl(`Manul-${version}-windows-x64-Setup.exe`)} -OutFile $env:TEMP\\Manul.exe; & $env:TEMP\\Manul.exe`
 const brew = 'brew install hormuz-labs/tap/manul'
-const title = 'Manul: the open-source AI video agent for Mac, Windows and Linux'
-const description = 'Manul is an open-source video agent you talk to. It edits your footage, makes motion graphics, voice and music, and exports the film, on your own computer with your own model keys. Free for macOS, Windows and Linux (Apache-2.0), or one Manul key paid in credits: an alternative to CapCut, Premiere Pro, Descript and HyperFrames.'
+const agentPrompt = `Install Manul from https://github.com/hormuz-labs/manul and launch it (or run manul --worker on a headless machine):
+
+  macOS:   ${brew}
+  Windows: ${winPs}
+  Linux:   ${apt.replaceAll('\n', ' ')}
+
+Or download the .dmg, .exe, .deb or .AppImage for this machine from https://github.com/hormuz-labs/manul/releases/latest.`
+const agentHtml = `<span class="c"># Install Manul and launch it (or run manul --worker on a headless machine):</span>
+
+<span class="l">macOS</span>    <span class="p">$</span> ${brew}
+<span class="l">Windows</span>  <span class="p">PS&gt;</span> iwr ${dl(`Manul-${version}-windows-x64-Setup.exe`)} -OutFile $env:TEMP\\Manul.exe; &amp; $env:TEMP\\Manul.exe
+<span class="l">Linux</span>    <span class="p">$</span> ${apt.replaceAll('&', '&amp;').replaceAll('\n', '\n           ')}
+
+<span class="c"># Or grab the .dmg, .exe, .deb or .AppImage from https://github.com/hormuz-labs/manul/releases/latest</span>`
+const title = 'Manul: the open-source AI video agent — make and edit any video'
+const description = 'Manul is an open-source video agent you talk to. Start from a blank canvas, a live web app or your own footage: it makes motion graphics, product walkthroughs, screen + facecam demos, voice and music, and edits on the word. For macOS, Windows and Linux, with a mobile companion and cloud or home workers.'
 const gh = 'https://github.com/hormuz-labs/manul'
 // motion examples from the gallery inside Manul: made by the people credited, with Claude; collected by prompt-motion.com.
 // Videos and posters stream from Manul's bucket (scripts/publish-motion-gallery.mjs in the app's repo).
@@ -107,35 +108,38 @@ const log = [
 ]
 const faqs = [
   ...PRICING_FAQS,
-  { q: 'Does my video get uploaded anywhere?', a: `No. Cutting, rendering and transcription happen on your computer. The model only receives text (your notes, the transcript) and, when it needs to look, a few still frames. That holds with your own keys and with the Manul key.` },
+  { q: 'Does my video get uploaded anywhere?', a: `No, not by default. Cutting, rendering and transcription happen on your computer. The model only receives text (your notes, the transcript) and, when it needs to look, a few still frames. If you pair the mobile app, it talks directly to your computer over Wi-Fi or Tailscale pinned to your desktop’s TLS certificate. If you choose a home or cloud worker, only the active project delta-syncs over the encrypted manul-mesh tunnel.` },
+  { q: 'Can I use it from my phone, or on a remote worker?', a: `Yes. Open Settings → Mobile to pair the iOS or Android companion app with a 6-digit code over Wi-Fi or Tailscale: send clips from your camera roll, browse projects, draw boxes on the frame, chat live, and share exports. For heavy renders or working from a light laptop, run <code>manul --worker</code> on a home machine or lease a cloud worker on your Manul key — built-in userspace WireGuard (manul-mesh) links them without needing Tailscale installed.` },
   { q: 'Which AI does it use?', a: `Your pick, per project. Sign in for the Manul key and choose a tier (Low, Medium, High, and on Pro or Max, Max and Ultra), or bring your own Claude, Gemini or OpenAI key, or any OpenAI- or Anthropic-compatible endpoint. Your keys stay in your system’s keychain and are used first.` },
   { q: 'Do I need to know video editing?', a: `No. If you can describe what you want to a person, you can direct Manul. If you do know editing, you’ll get there faster: it understands “J-cut”, “punch in” and “duck the music”.` },
   { q: 'Do I have to type everything into the chat?', a: `No. Draw a box on the picture, drag across the timeline, or press N at a moment, and a message box opens right there: say what should change and press Enter. It goes to Manul with what you pointed at, and shows in the conversation so you can look back over it. Light by default, with a dark theme in Settings.` },
-  { q: 'Does Manul generate video?', a: `It makes motion graphics, voiceover and music today. Generated camera shots are next: b-roll on the fly, extending a frame to a new aspect ratio, and filling in a spot you box. They go only where you ask, through the video model you choose, and each one is labelled as generated. Your own footage is never swapped out.` },
-  { q: 'What can’t it do yet?', a: `Generated shots, multi-camera sync, handing the cut to Premiere, Resolve or Final Cut, publishing straight to YouTube, an API and MCP server, and Manul cloud for heavy renders. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
-  { q: 'How is it different from CapCut, Descript, Motion or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript lets you edit by editing the transcript. HyperFrames and Remotion turn video into code that an agent writes. Hosted video agents run in someone else’s cloud, on your uploads, on their credits. Manul is an open-source agent on your own computer: you give notes in plain words, point at the frame, and review each change as a before and after, with any model you like.` },
+  { q: 'Does Manul generate video from scratch?', a: `Yes. Without any camera footage, it builds 60fps motion graphics from a blank canvas or 233 gallery examples, films narrated product walkthroughs in Chrome, and generates voiceover and music. Generated AI camera shots (b-roll on the fly, extending a frame, filling in a spot you box) are next — placed only where you ask, never swapping out your own footage.` },
+  { q: 'What can’t it do yet?', a: `Generated AI camera shots, multi-camera sync beyond screen + facecam, handing the cut to Premiere, Resolve or Final Cut, publishing straight to YouTube, and a public API and MCP server. All are on the <a href="${gh}/blob/main/ROADMAP.md">roadmap</a>, in the open.` },
+  { q: 'How is it different from CapCut, Descript, Motion or HyperFrames?', a: `CapCut, Premiere Pro, Final Cut Pro and DaVinci Resolve hand you a timeline to operate. Descript edits transcripts. HyperFrames and Remotion turn video into code in a terminal. Hosted video agents run only in someone else’s cloud. Manul is one open-source video agent for the whole job: make motion graphics, record product walkthroughs, sync screen + facecam, or cut footage on your own computer, from your phone, or on a worker.` },
   { q: 'Who makes it?', a: `Hormuz Labs, in the open. Issues, ideas and pull requests are welcome on <a href="${gh}">GitHub</a>. For teams and business, write to <a href="mailto:hello@hormuz-labs.dev">hello@hormuz-labs.dev</a>.` },
 ]
 // the hero's prompt box: one example per kind of film; the chips swap it
 const chips = [
   { k: 'Edit footage', p: 'Cut the ums and the restarts, keep only Ravi’s answers, and put quiet music under it.' },
   { k: 'Motion design', p: 'A 20-second logo reveal for @logo.png, in our colours, on a track with a clear beat.' },
+  { k: 'Product walkthrough', p: 'Open app.example.com in Chrome, sign up and make a first project: film it at 60fps, zoom into clicks and add a voiceover.' },
+  { k: 'Screen + facecam', p: 'Sync @screen.mp4 and @facecam.mp4, put me in a round corner PiP, and cut the dead air while keeping every click.' },
   { k: 'Clip highlights', p: 'Find the five best moments in this 40-minute podcast and make each a vertical Short with captions.' },
-  { k: 'Talking head', p: 'Punch in when I make a point, put my name on screen when I introduce myself, and lose the shaky bits.' },
-  { k: 'Product walkthrough', p: 'A walkthrough of app.example.com: sign up and make a first project, with a voiceover.' },
   { k: 'Article to video', p: 'Turn this blog post into a 60-second explainer with kinetic type, a voiceover and music.' },
-  { k: 'Launch video', p: 'A 15-second launch film for our new feature, in the style of @reference.mp4.' },
+  { k: 'Launch film', p: 'A 15-second launch film for our new feature, in the style of @reference.mp4.' },
 ]
 // many kinds of films, one agent: what you say, what Manul does, what comes out
 const ex = (id: string) => motion.find(m => m.id === id)!
 const films = [
   { k: 'Edit footage', prompt: 'Make it cinematic, and put his name on screen.', steps: ['Measured the clip: one shot, one face, followed in every frame', 'Graded it and set it in a widescreen letterbox', 'Set his name in real type, in on the look', 'Rendered on your computer with ffmpeg', 'Before and after ready: keep it or send it back'], video: '/demo/cinema.mp4', poster: '/demo/cinema.webp', shape: 'wide', cap: 'The after, rendered by the same engine Manul drives' },
-  { k: 'Shorts & Reels', prompt: 'Make it a Short with a caption.', steps: ['Found the subject and tracked him through the shot', 'Reframed 16:9 to 9:16 so he never leaves the frame', 'Timed the caption to the moment and burned it in', 'Exported 1080 × 1920, ready for Shorts, Reels and TikTok'], video: '/demo/short.mp4', poster: '/demo/short.webp', shape: 'tall', cap: 'The after, rendered by the same engine Manul drives' },
   { k: 'Motion design', prompt: `Use the “${ex('tdinh-me-815acb').title}” example, but reveal @logo.png in our colours.`, steps: ['Read the example’s prompt and studied the film', 'Asked for what it needed: the logo, two colours, a track', 'Showed a storyboard, one line per scene, before a frame', 'Built each scene as real motion graphics you can edit on the picture', 'Rendered 21 seconds at 1080p'], video: `/motion/tdinh-me-815acb.mp4`, poster: '/motion/tdinh-me-815acb.jpg', shape: 'wide', cap: `The example it starts from, by @${ex('tdinh-me-815acb').handle}` },
+  { k: 'Product walkthrough', prompt: 'Walk through our web app in Chrome: filter the analytics, open a report, zoom into each click and narrate it.', steps: ['Explored the live web app in Chrome and proposed a step-by-step storyboard', 'Filmed a clean 60fps take with smooth cursor travel and click ripples', 'Zoomed into each interaction and wrote the narration per step', 'Generated the voiceover and paced the cut to match every sentence'], video: `/motion/robj3d3-b18fad.mp4`, poster: '/motion/robj3d3-b18fad.jpg', shape: 'wide', cap: `A product film from the gallery, by @${ex('robj3d3-b18fad').handle}` },
+  { k: 'Screen + facecam', prompt: 'Sync my screen recording and facecam, put me in the corner, and cut the pauses.', steps: ['Aligned screen and camera recordings automatically by matching their audio', 'Placed the facecam in a rounded corner picture-in-picture overlay', 'Cut the dead air and hesitations while keeping all speech and screen action', 'Balanced the mic and rendered the composite at 60fps'], video: '/demo/zoom.mp4', poster: '/demo/zoom.webp', shape: 'wide', cap: 'The after, rendered by the same engine Manul drives' },
+  { k: 'Shorts & Reels', prompt: 'Make it a Short with a caption.', steps: ['Found the subject and tracked him through the shot', 'Reframed 16:9 to 9:16 so he never leaves the frame', 'Timed the caption to the moment and burned it in', 'Exported 1080 × 1920, ready for Shorts, Reels and TikTok'], video: '/demo/short.mp4', poster: '/demo/short.webp', shape: 'tall', cap: 'The after, rendered by the same engine Manul drives' },
   { k: 'Launch video', prompt: 'A 15-second launch film for dub.co, like the Dub promo example. Go all out.', steps: ['Opened dub.co in its own browser for the product, colours and copy', 'Wrote the beats and a storyboard for you to approve', 'Cut every scene on the beat of the track', 'Made the voiceover and the music through your key', 'Exported 16:9 and a 9:16 cut for socials'], video: `/motion/steventey-0d20e4.mp4`, poster: '/motion/steventey-0d20e4.jpg', shape: 'wide', cap: `The example it starts from, by @${ex('steventey-0d20e4').handle}` },
 ]
 // the line that fills in, letter by letter, as you scroll past it (split here so the page ships it ready)
-const say = 'You say what you want and point at the frame. Manul watches the whole film, makes the cut on your computer, and hands it back as a before and after.'
+const say = 'Start from raw footage, a live web app, or a blank canvas. Say what you want and point at the frame — Manul builds or cuts the film and hands every change back as a before and after.'
 let sayN = 0
 const sayWords = say.split(' ').map(w => [...w].map(c => ({ c, i: sayN++ })))
 // a painting behind a panel: the image loads when the panel comes near (see .paint in the styles)
@@ -169,8 +173,8 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
     downloadUrl: `${gh}/releases/latest`, softwareVersion: version, license: `${gh}/blob/main/LICENSE`,
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
-    '@context': 'https://schema.org', '@type': 'VideoObject', name: 'Manul: you direct, it edits',
-    description: 'An 88-second film about Manul, the video editor you talk to: drop in footage, say what you want, point at the frame, keep or send back each edit.',
+    '@context': 'https://schema.org', '@type': 'VideoObject', name: 'Manul: you direct, it makes and edits the film',
+    description: 'An 88-second film about Manul, the open-source video agent: start from footage or a blank canvas, say what you want, point at the frame, keep or send back each edit.',
     thumbnailUrl: 'https://manul.si/film/poster.jpg', contentUrl: 'https://manul.si/film/manul.mp4', uploadDate: '2026-10-07', duration: 'PT1M28S',
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
@@ -182,7 +186,8 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
   <header class="top" id="top">
     <div class="top-in">
       <nav aria-label="On this page">
-        <a href="#films">Product</a>
+        <a href="#films">Make &amp; Edit</a>
+        <a href="#anywhere">Everywhere</a>
         <a href="#build">Developers</a>
         <a href="#pricing">Pricing</a>
         <a href="#fits" class="more">Compare</a>
@@ -197,6 +202,15 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
         <a href="#get" class="btn sm">Download</a>
       </div>
     </div>
+    <nav class="mob-nav" aria-label="Quick jump">
+      <a href="#try">Try it</a>
+      <a href="#films">Make &amp; Edit</a>
+      <a href="#anywhere">Phone &amp; Cloud</a>
+      <a href="#motion">233 Examples</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#get">Install</a>
+      <a href="#faq">FAQ</a>
+    </nav>
   </header>
 
   <main>
@@ -207,7 +221,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
           <h1 class="slate" aria-label="Manul, the open-source video agent.">
             <span class="w" style="--i:0" aria-hidden="true">Manul,</span> <span class="w" style="--i:1" aria-hidden="true">the</span> <span class="w ringed" style="--i:2" aria-hidden="true">open-source<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 14C96 0 22 8 9 46c-11 34 58 50 114 47 56-3 76-26 70-52-5-20-40-31-82-28"/></svg></span> <span class="w" style="--i:3" aria-hidden="true">video</span> <span class="w" style="--i:4" aria-hidden="true">agent.</span>
           </h1>
-          <p class="lede">Talk to it, and it edits your footage, makes motion graphics, voice and music, and exports the film. On your own computer, your own files, your own model keys. Free, for good.</p>
+          <p class="lede">Make any video from scratch, or edit the footage you have. Motion graphics, narrated product walkthroughs, screen + facecam demos, Shorts, voice and music — on your own computer, from your phone, or on a cloud worker.</p>
           <div class="prompt" role="group" aria-label="An example of what you can ask">
             <p class="prompt-text" id="prompt-text" aria-live="polite">{chips[0].p}</p>
             <a class="prompt-go" href="#get" aria-label="Download Manul to try this"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m0 0-6 6m6-6 6 6"/></svg></a>
@@ -252,13 +266,13 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
         }
         fit(); addEventListener('resize', fit); document.fonts && document.fonts.ready.then(fit)
       })()</script>
-      <p class="credit wrap">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0. Each “after” was rendered by the same engine Manul drives. <span class="phone-only">A desktop app for macOS, Windows and Linux: open this page on your computer to install.</span></p>
+      <p class="credit wrap">Clip: Timofey the Pallas’s cat, Moscow Zoo, CC BY 4.0. Each “after” was rendered by the same engine Manul drives. <span class="phone-only">Desktop app for macOS, Windows and Linux, with a companion app for iPhone and Android.</span></p>
     </section>
 
     <section class="say" id="say" aria-label={say}>
       <div class="say-pin">
         <div class="paint say-card" style={paint('mist', 'center', '#e4ebe2')}>
-          <p class="kicker">From a note to a cut</p>
+          <p class="kicker">From a blank canvas or raw footage to a finished film</p>
           <p class="say-text" aria-hidden="true">{sayWords.map(w => <><span class="sw">{w.map(ch => <span class="ch" data-i={ch.i}>{ch.c}</span>)}</span> </>)}</p>
         </div>
       </div>
@@ -266,8 +280,8 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
 
     <section class="films" id="films">
       <div class="wrap sh" data-r>
-        <h2 class="slate">Many kinds of film. One agent.</h2>
-        <p>Say what you want the way you’d brief an editor. Manul plans it, does the work on your computer, and hands back something you can keep or send back.</p>
+        <h2 class="slate">Video anything. One agent.</h2>
+        <p>Start with raw camera clips, a live URL, a screen recording, or nothing at all. Brief Manul the way you’d brief a creative director or an editor — it plans the scenes, builds or cuts the film, and hands back a before and after.</p>
       </div>
       <div class="panel paint" style={paint('dusk', 'center 40%', '#f1c79d')}>
         <div class="film-tabs" role="tablist" aria-label="Kinds of film">
@@ -291,7 +305,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
             </figure>
           </div>
         ))}
-        <p class="note">Also: talking heads, tutorials, product walkthroughs filmed in your own Chrome, explainers, cleanup and repair.</p>
+        <p class="note">Also: talking heads, tutorials, article-to-video explainers, custom voiceover &amp; music, and audio/video cleanup.</p>
       </div>
     </section>
 
@@ -363,14 +377,85 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
       </div>
     </section>
 
+    <section class="anywhere" id="anywhere">
+      <div class="wrap sh" data-r>
+        <h2 class="slate">On your desk, from your phone, or on a cloud worker.</h2>
+        <p>Run everything locally on macOS, Windows and Linux — or pair your phone and offload heavy renders to a home machine or cloud worker over an encrypted mesh.</p>
+      </div>
+      <div class="panel paint" style={paint('steppe', 'center 65%', '#c7d8e8')}>
+        <div class="any-grid">
+          <article class="any-card sheet" data-r style="--d:0">
+            <div class="any-head">
+              <span class="any-pill"><span class="dot-live" aria-hidden="true"></span>Mobile companion · iOS &amp; Android</span>
+              <h3 class="slate">Direct from the couch. Or walk in with the shot.</h3>
+              <p>Pair your phone in <b>Settings → Mobile</b> with a 6-digit code over Wi-Fi or Tailscale, pinned to your desktop’s TLS certificate. Send clips straight from your camera roll, draw a box on the frame, chat live as Manul cuts, and share the finished export.</p>
+            </div>
+            <div class="phone-mock" aria-label="Manul mobile companion preview">
+              <div class="pm-top">
+                <span class="pm-host mono"><i aria-hidden="true"></i>manul-desk · TLS pinned</span>
+                <span class="pm-code mono">Pair 482 · 910</span>
+              </div>
+              <div class="pm-stage">
+                <div class="pm-frame">
+                  <span class="pm-time mono">00:14.2</span>
+                  <div class="pm-box"><span>00:14 · box</span></div>
+                  <p class="pm-caption">“Zoom into the metric card when I mention conversion”</p>
+                </div>
+                <div class="pm-upload">
+                  <span class="pm-badge mono">+ Camera Roll</span>
+                  <span>IMG_4821.MOV · 4K 60fps added to project</span>
+                </div>
+              </div>
+              <div class="pm-bar">
+                <span class="pm-keep">✓ Keep edit</span>
+                <span class="pm-undo">Send back</span>
+                <span class="pm-share">Share ↗</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="any-card sheet" data-r style="--d:1">
+            <div class="any-head">
+              <span class="any-pill"><span class="dot-live" aria-hidden="true"></span>Cloud &amp; home workers · manul-mesh</span>
+              <h3 class="slate">Edit on a light laptop. Render on heavy iron.</h3>
+              <p>Lease a cloud worker on your Manul key, or run <code>manul --worker</code> on a desktop or GPU box at home. Built-in userspace WireGuard (<code>manul-mesh</code>) connects your devices without installing Tailscale and delta-syncs only the active project.</p>
+            </div>
+            <div class="mesh-mock" aria-label="Cloud and home worker architecture">
+              <div class="mm-nodes">
+                <div class="mm-node">
+                  <b>Your laptop or phone</b>
+                  <span>UI, timeline &amp; preview</span>
+                </div>
+                <div class="mm-link mono" aria-hidden="true">
+                  <span>⇄ manul-mesh ⇄</span>
+                  <small>TLS + WireGuard delta-sync</small>
+                </div>
+                <div class="mm-node active">
+                  <b>Cloud or Home Worker</b>
+                  <span>Whisper, GSAP &amp; FFmpeg</span>
+                </div>
+              </div>
+              <div class="mm-term">
+                <div class="mm-term-bar"><span class="mono">worker · headless</span><span class="mm-live mono">● Connected</span></div>
+                <pre class="mono"><code><span class="c"># run on any Mac, Windows or Linux box you own</span>
+<span class="p">$</span> manul --worker
+Worker ready · pair with 6-digit code or join manul-mesh
+Syncing project delta (3 clips, 18.4 MB) … done</code></pre>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="reads" id="reads">
       <div class="wrap sh" data-r>
         <h2 class="slate">The model is your pick. The harness is the work.</h2>
         <p>Claude, Gemini and GPT all cut well once they know what’s in the film. So Manul puts its effort around the model: it measures your footage before it touches it, checks each change against the picture, and keeps every version. Swap the model per project; the harness stays.</p>
       </div>
       <ul class="harness wrap" role="list">
-        <li data-r style="--d:0"><b>Measures first</b><span>Words, voices, shots, the subject, the beat, loudness. On your computer.</span></li>
-        <li data-r style="--d:1"><b>Knows the craft</b><span>12 skills for talking heads, Shorts, promos, motion design, voice, music and more.</span></li>
+        <li data-r style="--d:0"><b>Measures first</b><span>Words, voices, shots, the subject, the beat, loudness. On your computer or worker.</span></li>
+        <li data-r style="--d:1"><b>Knows the craft</b><span>12 skills for motion design, walkthroughs, screen + facecam, Shorts, voice and music.</span></li>
         <li data-r style="--d:2"><b>Checks its work</b><span>Every change comes back as a before and after, never over your footage.</span></li>
       </ul>
       <div class="scrolly" style={`--n:${log.length}`}>
@@ -390,7 +475,7 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
                 ))}
               </div>
             </div>
-            <p class="craft">And it knows the craft of the film you’re making: talking heads, tutorials, Shorts and Reels, promos and montages, motion graphics, cleanup and repair.</p>
+            <p class="craft">And it knows the craft of the film you’re making: motion graphics, product walkthroughs, screen + facecam demos, talking heads, Shorts and Reels, promos and cleanup.</p>
           </div>
         </div>
       </div>
@@ -403,12 +488,12 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
       </div>
       <div class="panel paint" style={paint('rocks', 'center 40%', '#eadfcf')}>
         <div class="cmp sheet" role="table" aria-label="Manul compared with timeline editors, code-to-video tools and AI video generators">
-          <div class="row th" role="row"><span role="columnheader"></span><span role="columnheader">Timeline editors<small>Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut</small></span><span role="columnheader">Video as code<small>HyperFrames, Remotion</small></span><span role="columnheader">AI generators<small>Runway, Sora, Veo</small></span><span role="columnheader" class="us">Manul<small>agentic editor</small></span></div>
+          <div class="row th" role="row"><span role="columnheader"></span><span role="columnheader">Timeline editors<small>Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut</small></span><span role="columnheader">Video as code<small>HyperFrames, Remotion</small></span><span role="columnheader">AI generators<small>Runway, Sora, Veo</small></span><span role="columnheader" class="us">Manul<small>open-source video agent</small></span></div>
           <div class="row" role="row"><span role="rowheader">You</span><span role="cell" data-h="Timeline editors">operate it, cut by cut</span><span role="cell" data-h="Video as code">describe it; an agent writes HTML</span><span role="cell" data-h="AI generators">prompt, hope, re-roll</span><span role="cell" data-h="Manul" class="us">say it, point at it</span></div>
           <div class="row" role="row"><span role="rowheader">You look at</span><span role="cell" data-h="Timeline editors">a timeline</span><span role="cell" data-h="Video as code">a terminal and code</span><span role="cell" data-h="AI generators">a prompt box</span><span role="cell" data-h="Manul" class="us">your film, before and after</span></div>
+          <div class="row" role="row"><span role="rowheader">Makes from scratch</span><span role="cell" data-h="Timeline editors">by hand, keyframe by keyframe</span><span role="cell" data-h="Video as code">coded motion graphics</span><span role="cell" data-h="AI generators">synthetic clips</span><span role="cell" data-h="Manul" class="us">motion, walkthroughs, voice &amp; music</span></div>
           <div class="row" role="row"><span role="rowheader">Your footage</span><span role="cell" data-h="Timeline editors">yours</span><span role="cell" data-h="Video as code">yours, plus coded layers</span><span role="cell" data-h="AI generators">swapped for generated frames</span><span role="cell" data-h="Manul" class="us">yours, untouched</span></div>
-          <div class="row" role="row"><span role="rowheader">Generated shots</span><span role="cell" data-h="Timeline editors">some, built in</span><span role="cell" data-h="Video as code">no</span><span role="cell" data-h="AI generators">the whole film</span><span role="cell" class="us" data-h="Manul">only where you ask (soon)</span></div>
-          <div class="row" role="row"><span role="rowheader">Runs on</span><span role="cell" data-h="Timeline editors">your computer</span><span role="cell" data-h="Video as code">your computer</span><span role="cell" data-h="AI generators">their cloud</span><span role="cell" data-h="Manul" class="us">your computer</span></div>
+          <div class="row" role="row"><span role="rowheader">Runs on</span><span role="cell" data-h="Timeline editors">your computer</span><span role="cell" data-h="Video as code">your computer</span><span role="cell" data-h="AI generators">their cloud</span><span role="cell" data-h="Manul" class="us">your computer, phone or worker</span></div>
           <div class="row" role="row"><span role="rowheader">Undo</span><span role="cell" data-h="Timeline editors">Ctrl-Z, until it isn’t</span><span role="cell" data-h="Video as code">git, if you use it</span><span role="cell" data-h="AI generators">start over</span><span role="cell" data-h="Manul" class="us">every version, kept</span></div>
           <div class="row" role="row"><span role="rowheader">Costs</span><span role="cell" data-h="Timeline editors">a subscription, mostly</span><span role="cell" data-h="Video as code">free, plus your agent</span><span role="cell" data-h="AI generators">credits</span><span role="cell" data-h="Manul" class="us">free with your keys, or a plan</span></div>
         </div>
@@ -418,13 +503,13 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
     <section class="next wrap" id="workflow">
       <div class="sh" data-r>
         <h2 class="slate">It fits the way you already work.</h2>
-        <p>Your files, your style, your formats. And where it isn’t there yet, the <a href={`${gh}/blob/main/ROADMAP.md`}>roadmap</a> says so, in public.</p>
+        <p>Your files, your style, your devices. And where it isn’t there yet, the <a href={`${gh}/blob/main/ROADMAP.md`}>roadmap</a> says so, in public.</p>
       </div>
       <ol class="cards">
-        <li data-r style="--d:0"><span class="band paint" style={paint('dusk', '30% 20%', '#f1c79d')}><span class="num">01</span><span class="tag">Now</span></span><h3>Skills and taste</h3><p>Craft skills for each kind of film, as plain <code>SKILL.md</code> files in the repo. Say <q>captions are always yellow</q> once and every project after knows it.</p></li>
-        <li data-r style="--d:1"><span class="band paint" style={paint('peaks', '50% 30%', '#e3e6e6')}><span class="num">02</span><span class="tag">Now</span></span><h3>Your files and tools</h3><p>Drop in footage, subtitles, music, logos, fonts and LUTs, then point at them with @. It researches in its own browser, and films product walkthroughs in your Chrome.</p></li>
-        <li data-r style="--d:2"><span class="band paint" style={paint('mist', '70% 60%', '#e4ebe2')}><span class="num">03</span><span class="tag later">Next</span></span><h3>Publishing</h3><p>Send the finished film straight to YouTube, and later run whole batches on Manul cloud while your laptop sleeps.</p></li>
-        <li data-r style="--d:3"><span class="band paint" style={paint('bluehour', '20% 40%', '#d9d3e6')}><span class="num">04</span><span class="tag">Now</span></span><h3>Export anywhere</h3><p>16:9, 9:16 and 1:1 from one edit, captions burned in or as a file. Handing the cut to Premiere Pro, Resolve or Final Cut is next.</p></li>
+        <li data-r style="--d:0"><span class="band paint" style={paint('dusk', '30% 20%', '#f1c79d')}><span class="num">01</span><span class="tag">Now</span></span><h3>Skills and taste</h3><p>12 craft skills as plain <code>SKILL.md</code> files in the repo. Say <q>captions are always yellow</q> once and every project after knows it.</p></li>
+        <li data-r style="--d:1"><span class="band paint" style={paint('peaks', '50% 30%', '#e3e6e6')}><span class="num">02</span><span class="tag">Now</span></span><h3>Browser &amp; screen studio</h3><p>Researches in its own browser, films 60fps product walkthroughs in your Chrome, and syncs screen + facecam recordings by audio.</p></li>
+        <li data-r style="--d:2"><span class="band paint" style={paint('mist', '70% 60%', '#e4ebe2')}><span class="num">03</span><span class="tag">Now</span></span><h3>Phone &amp; cloud workers</h3><p>Pair iOS or Android with a 6-digit code to send clips and review edits, or run heavy jobs on <code>manul --worker</code> or a cloud worker.</p></li>
+        <li data-r style="--d:3"><span class="band paint" style={paint('bluehour', '20% 40%', '#d9d3e6')}><span class="num">04</span><span class="tag">Now</span></span><h3>Export anywhere</h3><p>16:9, 9:16, 4:5 and 1:1 from one project, captions burned in or as a file. Premiere, Resolve, Final Cut and direct YouTube publishing are next.</p></li>
       </ol>
     </section>
 
@@ -434,9 +519,10 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
           <div class="build-copy">
             <p class="kicker">For developers</p>
             <h2 class="slate">Build with Manul.</h2>
-            <p>The whole agent is on GitHub under Apache-2.0: the harness, the tools, the skills, the editor. Read how it works, change it, run your fork, or point it at your own model server.</p>
+            <p>The whole agent is on GitHub under Apache-2.0: the harness, the tools, the skills, the editor, and the headless worker. Read how it works, change it, run your fork, or point it at your own model server.</p>
             <ul class="build-list" role="list">
               <li><b>Any endpoint</b><span>Claude, Gemini, OpenAI, or anything that speaks the OpenAI or Anthropic API, local servers included.</span></li>
+              <li><b>Headless worker</b><span>Run <code>manul --worker</code> on a home server or GPU box and connect from your laptop or phone over <code>manul-mesh</code>.</span></li>
               <li><b>Agent-installable</b><span>An <a href="/skills/install-manul/SKILL.md">install skill</a> and <a href="/llms.txt">llms.txt</a>, so Claude Code, Cursor or Codex can set it up for you.</span></li>
               <li><b>API &amp; MCP</b> <span class="tag">Coming</span><span>Drive Manul from your own agent or scripts: hand it a folder and a brief, get a film back.</span></li>
             </ul>
@@ -447,17 +533,19 @@ const paint = (name: string, pos = 'center', tint = '#e9e6da') => `--img:url(/pa
           </div>
           <div class="term" aria-label="Running Manul from source">
             <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span class="mono">manul</span></div>
-            <pre class="mono"><code><span class="c"># the agent, the editor, the skills: all of it</span>
+            <pre class="mono"><code><span class="c"># the agent, the editor, the worker, the skills</span>
 <span class="p">$</span> git clone https://github.com/hormuz-labs/manul
 <span class="p">$</span> cd manul &amp;&amp; npm install
 <span class="p">$</span> npm run setup:native
 <span class="p">$</span> npm run dev
 
-<span class="c"># the craft it knows, one folder each</span>
+<span class="c"># or run headless as a remote render worker</span>
+<span class="p">$</span> manul --worker
+
+<span class="c"># 12 craft skills in plain markdown</span>
 <span class="p">$</span> ls resources/skills
 talking-head   short-form    motion-design
-voiceover      music-generation  tutorials
-product-walkthrough   promos-and-montages  …</code></pre>
+product-walkthrough   tutorials   voiceover  …</code></pre>
           </div>
         </div>
       </div>
@@ -468,108 +556,102 @@ product-walkthrough   promos-and-montages  …</code></pre>
     <section class="get" id="get">
       <div class="wrap sh" data-r>
         <h2 class="slate">Free to start. One line to install.</h2>
-        <p>Version <span data-version>{version}</span>, for macOS 12+, Windows 10+ and Debian or Ubuntu. Free with your own keys; plans are in the app, under Settings → Keys → Manul key.</p>
+        <p>Version <span data-version>{version}</span>, for macOS 12+, Windows 10/11 (x64) and Debian or Ubuntu. Free with your own keys; plans and cloud workers are in the app, under Settings → Keys → Manul key.</p>
       </div>
       <div class="panel paint" style={paint('mist', 'center 80%', '#e4ebe2')}>
         <ol class="first">
-          <li class="sheet" data-r style="--d:0"><span class="num">01</span><h3>Open Manul</h3><p>Drop in a video, or start from a motion example.</p></li>
+          <li class="sheet" data-r style="--d:0"><span class="num">01</span><h3>Open Manul</h3><p>Drop in footage, point at a URL, or start from a motion example.</p></li>
           <li class="sheet" data-r style="--d:1"><span class="num">02</span><h3>Sign in, or add a key</h3><p>Sign in for {fmt(STARTER_CREDITS)} starter credits, or paste a Claude, Gemini or OpenAI key. Keys stay in your system’s keychain.</p></li>
-          <li class="sheet" data-r style="--d:2"><span class="num">03</span><h3>Give it a note</h3><p>Try <q>cut the silences</q>, then keep it or send it back.</p></li>
+          <li class="sheet" data-r style="--d:2"><span class="num">03</span><h3>Direct the film</h3><p>Give a note, pair your phone in Settings → Mobile, or keep/send back each cut.</p></li>
         </ol>
 
-        <div class="dl sheet">
-          <div class="dl-col" data-os="mac">
-            <div class="dl-head"><span data-plat-label>Platform</span><span>01</span></div>
-            <div class="dl-body">
+        <div class="dl">
+          <article class="dl-col sheet" data-os="mac">
+            <header class="dl-head">
               <div class="dl-os">
-                <span class="dl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.03 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" /></svg></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.1 1.7-3.1 1.8-3.2-1-1.5-2.5-1.7-3.1-1.7-1.3-.1-2.6.8-3.2.8-.7 0-1.7-.8-2.8-.7-1.4 0-2.7.8-3.5 2.1-1.5 2.6-.4 6.5 1.1 8.6.7 1 1.6 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7 1.3 0 1.7.7 2.8.7 1.2 0 1.9-1 2.6-2.1.8-1.2 1.2-2.4 1.2-2.4-.1 0-2.4-.9-2.4-3.5M14.2 6.3c.6-.7 1-1.7.9-2.8-.9 0-2 .6-2.6 1.3-.6.7-1.1 1.7-.9 2.7 1 .1 2-.5 2.6-1.2"/></svg>
                 <h3>macOS</h3>
+                <span class="dl-tag">Your system</span>
               </div>
-              <p class="dl-lead"><b>Disk image (Apple silicon)</b><span>For M1 and later Macs. Updates install themselves.</span></p>
-              <a class="dl-main" href={dl(`Manul-${version}-arm64.dmg`)}>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg><span>Standalone for macOS</span>
-              </a>
-              <p class="dl-note">Prefer Homebrew? <code>{brew}</code>. Until Apple notarization is done, open it the first time with right-click → Open.</p>
-              <div class="dl-more">
-                <p>Other files for macOS</p>
-                <a class="dl-row" href={dl(`Manul-${version}-x64.dmg`)}>
-                  <span class="t"><b>Disk image (Intel)</b><span>For Macs with an Intel processor.</span><code>Manul-{version}-x64.dmg</code></span>
-                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
-                </a>
-                <a class="dl-row" href={`${gh}/releases/latest`}>
-                  <span class="t"><b>All release files</b><span>Every build, checksum and note.</span><code>github.com/hormuz-labs/manul/releases</code></span>
-                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
-                </a>
+              <span class="dl-req">macOS 12+ · Apple silicon &amp; Intel</span>
+            </header>
+            <a class="btn dot dl-main" href={dl(`Manul-${version}-arm64.dmg`)}>
+              <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
+              <span>Download .dmg</span>
+              <small>Apple silicon</small>
+            </a>
+            <div class="dl-more">
+              <p>Or install with Homebrew</p>
+              <div class="dl-row">
+                <code>{brew}</code>
+                <button class="copy" data-copy={brew}>Copy</button>
               </div>
             </div>
-          </div>
+            <p class="dl-foot"><a href={dl(`Manul-${version}-x64.dmg`)}>Intel Mac (.dmg)</a> · First open: right-click → Open.</p>
+          </article>
 
-          <div class="dl-col" data-os="win">
-            <div class="dl-head"><span data-plat-label>Platform</span><span>02</span></div>
-            <div class="dl-body">
+          <article class="dl-col sheet" data-os="win">
+            <header class="dl-head">
               <div class="dl-os">
-                <span class="dl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6v5.9h7.4V4.3L3 5.6Zm8.6-1.4v7.3H21V3.1L11.6 4.2ZM3 12.5v5.9l7.4 1.3v-7.2H3Zm8.6 0v7.3L21 20.9v-8.4h-9.4Z" /></svg></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8.5v8.5H3V3m9.5 0H21v8.5h-8.5V3M3 12.5h8.5V21H3v-8.5m9.5 0H21V21h-8.5v-8.5"/></svg>
                 <h3>Windows</h3>
+                <span class="dl-tag">Your system</span>
               </div>
-              <p class="dl-lead"><b>Installer (64-bit)</b><span>Most Windows 10 and 11 PCs. Installs for your user, no admin rights.</span></p>
-              <a class="dl-main" href={dl(`Manul-${version}-windows-x64-Setup.exe`)}>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg><span>Standalone for Windows</span>
-              </a>
-              <p class="dl-note">Not signed by a public CA yet: SmartScreen may ask once — choose <b>More info</b> → <b>Run anyway</b>. Updates arrive inside the app after that.</p>
-              <div class="dl-more">
-                <p>Other files for Windows</p>
-                <a class="dl-row" href={dl('latest.yml')}>
-                  <span class="t"><b>Update feed</b><span>What the app reads to update itself.</span><code>latest.yml</code></span>
-                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
-                </a>
-                <a class="dl-row" href={`${gh}/releases/latest`}>
-                  <span class="t"><b>All release files</b><span>Every build, checksum and note.</span><code>github.com/hormuz-labs/manul/releases</code></span>
-                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
-                </a>
+              <span class="dl-req">Windows 10 &amp; 11 · 64-bit</span>
+            </header>
+            <a class="btn dot dl-main" href={dl(`Manul-${version}-windows-x64-Setup.exe`)}>
+              <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
+              <span>Download .exe</span>
+              <small>64-bit</small>
+            </a>
+            <div class="dl-more">
+              <p>Or install in PowerShell</p>
+              <div class="dl-row">
+                <code>iwr …/Manul-{version}-windows-x64-Setup.exe</code>
+                <button class="copy" data-copy={winPs}>Copy</button>
               </div>
             </div>
-          </div>
+            <p class="dl-foot">If SmartScreen asks: More info → Run anyway.</p>
+          </article>
 
-          <div class="dl-col" data-os="linux">
-            <div class="dl-head"><span data-plat-label>Platform</span><span>03</span></div>
-            <div class="dl-body">
+          <article class="dl-col sheet" data-os="linux">
+            <header class="dl-head">
               <div class="dl-os">
-                <span class="dl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="12" rx="1.6" /><path d="M9 20h6M12 16v4" /></svg></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" d="m5 8 5 4-5 4m7 0h7"/></svg>
                 <h3>Linux</h3>
+                <span class="dl-tag">Your system</span>
               </div>
-              <p class="dl-lead"><b>Debian package (x86_64)</b><span>Debian, Ubuntu and derivatives. apt keeps it current.</span></p>
-              <a class="dl-main" href={dl(`manul_${version}_amd64.deb`)}>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg><span>Standalone for Linux</span>
-              </a>
-              <p class="dl-note">Prefer apt? Add the signed repository once at <a href="https://apt.manul.si">apt.manul.si</a>, or paste the agent prompt below.</p>
-              <div class="dl-more">
-                <p>Other files for Linux</p>
-                <a class="dl-row" href={dl(`manul_${version}_arm64.deb`)}>
-                  <span class="t"><b>Debian package (ARM64)</b><span>Debian and Ubuntu on ARM.</span><code>manul_{version}_arm64.deb</code></span>
-                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
-                </a>
-                <a class="dl-row" href={dl(`manul_${version}_x86_64.AppImage`)}>
-                  <span class="t"><b>AppImage (x86_64)</b><span>Any distro. Mark it executable and run.</span><code>manul_{version}_x86_64.AppImage</code></span>
-                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
-                </a>
-                <a class="dl-row" href={dl(`manul_${version}_arm64.AppImage`)}>
-                  <span class="t"><b>AppImage (ARM64)</b><span>Any distro on ARM.</span><code>manul_{version}_arm64.AppImage</code></span>
-                  <svg class="dl-down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" /></svg>
-                </a>
+              <span class="dl-req">Debian, Ubuntu &amp; AppImage</span>
+            </header>
+            <a class="btn dot dl-main" href={dl(`manul_${version}_amd64.deb`)}>
+              <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
+              <span>Download .deb</span>
+              <small>x64</small>
+            </a>
+            <div class="dl-more">
+              <p>Or add the signed apt repository</p>
+              <div class="dl-row">
+                <code>curl -fsSL https://apt.manul.si/… &amp;&amp; sudo apt install manul</code>
+                <button class="copy" data-copy={apt}>Copy</button>
               </div>
             </div>
-          </div>
+            <p class="dl-foot">
+              <a href={dl(`manul_${version}_arm64.deb`)}>.deb ARM</a> ·
+              <a href={dl(`manul_${version}_x86_64.AppImage`)}>AppImage x64</a> ·
+              <a href={dl(`manul_${version}_arm64.AppImage`)}>AppImage ARM</a>
+            </p>
+          </article>
         </div>
 
         <div class="ask sheet">
-          <div class="dl-head"><span>Ask your agent</span><span>04</span></div>
-          <div class="ask-body">
-            <p class="ask-lead">Using Claude Code, Cursor or Codex? Paste this in and it installs Manul for this computer.</p>
-            <div class="agent">
-              <button class="agent-copy" type="button" data-copy={agentPrompt}>Copy</button>
-              <pre><code set:html={agentHtml} /></pre>
+          <div class="ask-head">
+            <div>
+              <h3>Ask your agent</h3>
+              <p>Using Claude Code, Cursor or Codex? Paste this and let it install Manul (or start a headless worker with <code>manul --worker</code>); pair your phone in <b>Settings → Mobile</b>.</p>
             </div>
+            <button class="copy" data-copy={agentPrompt}>Copy prompt</button>
           </div>
+          <pre class="agent"><code set:html={agentHtml} /></pre>
         </div>
       </div>
     </section>
@@ -583,10 +665,10 @@ product-walkthrough   promos-and-montages  …</code></pre>
         <a class="btn" href={gh}>Star us on GitHub</a>
       </div>
       <div class="bento">
-        <a class="tile t1 paint" data-r style={`${paint('steppe', 'center 70%', '#c9d3d6')};--d:0`} href={`${gh}/blob/main/LICENSE`}><span class="big">Apache-2.0</span><span class="what">Use it, change it, edit paid work with it</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="tile t1 paint" data-r style={`${paint('steppe', 'center 70%', '#c9d3d6')};--d:0`} href={`${gh}/blob/main/LICENSE`}><span class="big">Apache-2.0</span><span class="what">Use it, change it, make paid work with it</span><span class="go" aria-hidden="true">↗</span></a>
         <a class="tile t2 paint" data-r style={`${paint('dusk', '70% center', '#f1c79d')};--d:1`} href={`${gh}/releases/latest`}><span class="big">Free</span><span class="what">The whole app, with your own keys, for good</span><span class="go" aria-hidden="true">↗</span></a>
         <a class="tile t3 paint" data-r style={`${paint('grass', '20% 60%', '#d6dfcc')};--d:2`} href="#motion"><span class="big">233</span><span class="what">Motion examples, each with its prompt</span><span class="go" aria-hidden="true">↗</span></a>
-        <a class="tile t4 paint" data-r style={`${paint('rocks', '30% 70%', '#eadfcf')};--d:3`} href="#faq"><span class="big">0 bytes</span><span class="what">Of your footage uploaded</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="tile t4 paint" data-r style={`${paint('rocks', '30% 70%', '#eadfcf')};--d:3`} href="#anywhere"><span class="big">Mesh</span><span class="what">Local by default, or synced to your phone &amp; worker</span><span class="go" aria-hidden="true">↗</span></a>
         <a class="tile t5 paint" style={paint('peaks', 'center 60%', '#e3e6e6')} href={`${gh}/blob/main/ROADMAP.md`}><span class="big">Roadmap</span><span class="what">In the open, ideas welcome</span><span class="go" aria-hidden="true">↗</span></a>
       </div>
     </section>
@@ -620,7 +702,7 @@ product-walkthrough   promos-and-montages  …</code></pre>
       <div class="paint dusk" style={paint('dusk', 'center', '#f1c79d')}>
         <img src="/icon.png" width="116" height="116" alt="" loading="lazy" data-r />
         <h2 class="slate" data-r style="--d:1">Download Manul.</h2>
-        <p data-r style="--d:2">The open-source video agent. On your own computer, with any model.</p>
+        <p data-r style="--d:2">The open-source video agent for macOS, Windows and Linux — on your desk, phone or cloud worker.</p>
         <div class="cta-row" data-r style="--d:3">
           <a href="#get" class="btn dot">
             <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg></span>
@@ -655,10 +737,10 @@ product-walkthrough   promos-and-montages  …</code></pre>
       <div class="foot-top">
         <div class="foot-brand">
           <a class="brand" href="/" aria-label="Manul home"><img src="/icon-56.png" width="32" height="32" alt="" /><span>Manul</span></a>
-          <p>The open-source video agent you talk to, for macOS, Windows and Linux.</p>
+          <p>The open-source video agent you talk to — for macOS, Windows and Linux, with a mobile companion and cloud workers.</p>
         </div>
         <nav class="cols" aria-label="Footer">
-          <div><h3>Product</h3><a href="#try">Try it</a><a href="#films">What it makes</a><a href="#motion">Motion</a><a href="#fits">Compare</a><a href="/pricing/">Pricing</a><a href="#get">Install</a></div>
+          <div><h3>Product</h3><a href="#try">Try it</a><a href="#films">Make &amp; Edit</a><a href="#anywhere">Phone &amp; Cloud</a><a href="#motion">Motion</a><a href="#fits">Compare</a><a href="/pricing/">Pricing</a><a href="#get">Install</a></div>
           <div><h3>Project</h3><a href={gh}>GitHub</a><a href={`${gh}/blob/main/ROADMAP.md`}>Roadmap</a><a href="#build">Developers</a><a href={`${gh}/blob/main/CONTRIBUTING.md`}>Contributing</a><a href={`${gh}/releases`}>Releases</a><a href="https://apt.manul.si">apt.manul.si</a></div>
           <div><h3>Company</h3><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href={`${gh}/blob/main/LICENSE`}>License</a><a href="#faq">FAQ</a><a href="mailto:hello@hormuz-labs.dev">Contact</a></div>
         </nav>
@@ -674,25 +756,16 @@ product-walkthrough   promos-and-montages  …</code></pre>
     const root = document.documentElement
     const move = root.classList.contains('move')
 
-    // pick the visitor's platform: the black button, the "your system" label, and the CTA
+    // mark the card for this computer, and wire the download buttons to its installer
     const ua = navigator.userAgent
-    const os = /Windows/.test(ua) ? 'win' : /Mac/.test(ua) && !/iPhone|iPad/.test(ua) ? 'mac' : /Linux|X11/.test(ua) && !/Android/.test(ua) ? 'linux' : null
+    const os = /Mac/.test(ua) && !/iPhone|iPad/.test(ua) ? 'mac' : /Win/.test(ua) ? 'win' : /Linux|X11/.test(ua) && !/Android/.test(ua) ? 'linux' : null
     const label = os === 'mac' ? 'Download for Mac' : os === 'win' ? 'Download for Windows' : os === 'linux' ? 'Download for Linux' : 'Download Manul'
     document.querySelectorAll('[data-os-label]').forEach(el => (el.textContent = label))
-
-    if (os) {
-      const cols = [...document.querySelectorAll<HTMLElement>('.dl-col')]
-      const mine = cols.find(c => c.dataset.os === os)
-      cols.forEach(c => {
-        const me = c === mine
-        c.classList.toggle('me', me)
-        const h = c.querySelector('[data-plat-label]')
-        if (h) h.textContent = me ? 'Your system' : 'Platform'
-      })
-      // the big "Download" button goes straight to this computer's file
-      const file = mine?.querySelector<HTMLAnchorElement>('.dl-main')?.href
-      const cta = document.querySelector<HTMLAnchorElement>('.cta .btn.dot')
-      if (file && cta) cta.href = file
+    const col = os && document.querySelector<HTMLElement>(`.dl-col[data-os=${os}]`)
+    if (col) {
+      col.classList.add('here')
+      const href = col.querySelector<HTMLAnchorElement>('.dl-main')!.href
+      document.querySelectorAll<HTMLAnchorElement>('.cta .btn.dot').forEach(a => (a.href = href))
     }
 
     document.querySelectorAll<HTMLButtonElement>('[data-copy], [data-copy-from]').forEach(b => b.addEventListener('click', async () => {
@@ -841,12 +914,13 @@ product-walkthrough   promos-and-montages  …</code></pre>
     }
 
     /* header: links left, the cat in the middle, GitHub and Download right */
-    .top { position: sticky; top: 0; z-index: 30; background: rgba(253, 253, 246, .82); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); transition: box-shadow .2s; }
+    .top { position: sticky; top: 0; z-index: 30; background: rgba(253, 253, 246, .84); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); transition: box-shadow .2s; }
     .top.on { box-shadow: 0 1px 0 var(--line-2); }
     .top-in { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; height: 60px; padding: 0 20px; }
-    .top nav { display: flex; gap: 4px; }
-    .top nav a { padding: 8px 12px; border-radius: 8px; font: 500 14px/1 var(--sans); text-decoration: none; color: var(--ink); }
-    .top nav a:hover { background: rgba(38, 38, 38, .06); }
+    .top-in nav { display: flex; gap: 2px; }
+    .top-in nav a { padding: 8px 11px; border-radius: 8px; font: 500 14px/1 var(--sans); text-decoration: none; color: var(--ink); white-space: nowrap; }
+    .top-in nav a:hover { background: rgba(38, 38, 38, .06); }
+    .mob-nav { display: none; }
     .brand { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font: 800 19px/1 var(--sans); letter-spacing: -.02em; }
     .brand img { border-radius: 7px; }
     .acts { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
@@ -859,7 +933,8 @@ product-walkthrough   promos-and-montages  …</code></pre>
     .sky { border-radius: var(--r-lg); padding: clamp(28px, 4.2vh, 60px) clamp(12px, 4vw, 56px) clamp(16px, 3vw, 40px); }
     .hero-copy { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 860px; margin: 0 auto; }
     .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(255, 255, 255, .6); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font: 600 13.5px/1.2 var(--sans); text-decoration: none; }
-    .dot-live { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px var(--amber-soft); }
+    .dot-live { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px var(--amber-soft); animation: pulse-dot 2.4s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 3px var(--amber-soft); } 50% { box-shadow: 0 0 0 6px rgba(242, 165, 65, .12); } }
     h1 { margin: 16px 0 0; font-size: clamp(42px, min(6vw, 8.4vh), 76px); line-height: 1.02; letter-spacing: -.035em; }
     h1 .w { display: inline-block; }
     .move h1 .w { animation: blur-in .8s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * 90ms + 80ms); }
@@ -928,7 +1003,7 @@ product-walkthrough   promos-and-montages  …</code></pre>
     .edl .at { font-size: 13px; color: var(--amber-ink); }
     .edl .did { font-size: 15.5px; color: var(--ink-2); }
     .boxed { display: inline-block; vertical-align: .2em; margin-right: 8px; padding: 2px 8px; border: 2px dashed var(--amber); border-radius: 6px; color: var(--amber-ink); font: 700 12px/1.3 var(--sans); font-style: normal; }
-    .ref { font: 600 .82em/1 var(--mono); color: var(--amber-ink); background: var(--amber-soft); padding: 3px 7px; border-radius: 6px; white-space: nowrap; }
+    .ref { font: 600 13px/1 var(--mono); color: var(--amber-ink); background: var(--amber-soft); padding: 3px 7px; border-radius: 6px; white-space: nowrap; }
     .circled { padding: 0 .14em; box-shadow: inset 0 0 0 2.5px var(--amber); border-radius: 6px; }
 
     /* what it measures: all six tracks as rows; on a big screen the panel pins and scrolling steps through them */
@@ -1016,9 +1091,57 @@ product-walkthrough   promos-and-montages  …</code></pre>
 
     /* the harness, in three lines */
     .harness { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 32px; padding: 0; }
-    .harness li { display: grid; gap: 4px; padding: 18px 20px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+    .harness li { display: grid; gap: 4px; padding: 18px 20px; border-radius: 16px; background: rgba(255, 255, 255, .92); box-shadow: 0 0 0 1px var(--line), 0 18px 36px -28px rgba(25, 20, 10, .35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform .25s ease, box-shadow .25s ease; }
+    .harness li:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(242, 165, 65, .55), 0 22px 42px -26px rgba(25, 20, 10, .45); }
     .harness b { font: 700 16.5px/1.3 var(--sans); }
     .harness span { font-size: 14.5px; color: var(--ink-2); }
+
+    /* everywhere: mobile companion + cloud & home workers */
+    .any-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 20px; align-items: stretch; }
+    .any-card { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; padding: clamp(22px, 3vw, 32px); border-radius: 22px; background: rgba(255, 255, 255, .92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 0 0 1px rgba(255, 255, 255, .8), 0 28px 60px -36px rgba(20, 15, 10, .45); transition: transform .25s ease; }
+    .any-card:hover { transform: translateY(-2px); }
+    .any-head { display: grid; gap: 10px; justify-items: start; }
+    .any-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--bg-2); color: var(--ink-2); font: 600 12.5px/1.2 var(--mono); }
+    .any-card h3 { margin: 4px 0 0; font-size: clamp(24px, 2.5vw, 30px); letter-spacing: -.02em; }
+    .any-head p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink-2); }
+    .any-head code { font: 500 13.5px var(--mono); padding: 1px 6px; border-radius: 5px; background: var(--bg-2); color: var(--ink); }
+
+    /* phone companion mockup */
+    .phone-mock { display: grid; gap: 10px; padding: 14px; border-radius: 20px; background: #181715; color: #f4f2ec; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1), 0 24px 48px -24px rgba(15, 10, 5, .55); }
+    .pm-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font: 600 12.5px/1.3 var(--mono); }
+    .pm-host { display: inline-flex; align-items: center; gap: 7px; color: #e9e7df; }
+    .pm-host i { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 10px rgba(74, 222, 128, .8); }
+    .pm-code { padding: 4px 10px; border-radius: 999px; background: rgba(242, 165, 65, .18); color: var(--amber); font-size: 12px; }
+    .pm-stage { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 10px; align-items: stretch; }
+    .pm-frame { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 118px; padding: 11px 12px; border-radius: 12px; background: radial-gradient(120% 90% at 80% 15%, rgba(242, 165, 65, .28), transparent 60%), linear-gradient(145deg, #2b2722, #1f1d1a); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .09); }
+    .pm-time { font: 600 12px/1 var(--mono); color: #b8b5ac; }
+    .pm-box { align-self: flex-start; padding: 4px 9px; border-radius: 6px; border: 1.5px dashed var(--amber); background: rgba(242, 165, 65, .14); color: #fff; font: 600 12px/1.2 var(--sans); }
+    .pm-caption { margin: 0; font: 650 13.5px/1.3 var(--sans); color: #fff; }
+    .pm-upload { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .07); }
+    .pm-badge { width: fit-content; padding: 4px 9px; border-radius: 999px; background: rgba(74, 222, 128, .16); color: #86efac; font: 600 12px/1.2 var(--mono); }
+    .pm-upload span:last-child { font-size: 12.5px; line-height: 1.4; color: #c9c7be; }
+    .pm-bar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 8px 10px; border-radius: 12px; background: rgba(255, 255, 255, .06); }
+    .pm-bar > span { display: inline-flex; align-items: center; padding: 6px 11px; border-radius: 999px; font: 650 12px/1.2 var(--sans); white-space: nowrap; }
+    .pm-keep { background: var(--amber); color: var(--ink); }
+    .pm-undo, .pm-share { background: rgba(255, 255, 255, .11); color: #e9e7df; }
+    .pm-share { margin-left: auto; }
+
+    /* mesh worker mockup */
+    .mesh-mock { display: grid; gap: 10px; padding: 14px; border-radius: 20px; background: #181715; color: #f4f2ec; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1), 0 24px 48px -24px rgba(15, 10, 5, .55); }
+    .mm-nodes { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.1fr); gap: 8px; align-items: stretch; }
+    .mm-node { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 11px 12px; border-radius: 12px; background: rgba(255, 255, 255, .05); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
+    .mm-node.active { background: radial-gradient(120% 100% at 100% 0%, rgba(242, 165, 65, .24), transparent 65%), rgba(255, 255, 255, .06); box-shadow: inset 0 0 0 1px rgba(242, 165, 65, .42); }
+    .mm-node b { font: 700 13.5px/1.25 var(--sans); color: #fff; }
+    .mm-node span { font-size: 12.5px; line-height: 1.35; color: #b8b5ac; }
+    .mm-link { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px; padding: 4px 6px; text-align: center; }
+    .mm-link span { font: 600 12px/1.2 var(--mono); color: var(--amber); white-space: nowrap; }
+    .mm-link small { font: 500 12px/1.2 var(--sans); color: #9c9990; white-space: nowrap; }
+    .mm-term { border-radius: 12px; overflow: hidden; background: #10100e; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .07); }
+    .mm-term-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 12px; background: rgba(255, 255, 255, .05); font: 600 12px/1.2 var(--mono); color: #a9a8a1; }
+    .mm-live { display: inline-flex; align-items: center; gap: 6px; color: #86efac; }
+    .mm-term pre { margin: 0; padding: 12px 14px; overflow-x: auto; font: 450 12.5px/1.65 var(--mono); color: #e9e7df; }
+    .mm-term .c { color: #8d8c86; }
+    .mm-term .p { color: var(--amber); }
 
     /* build with: copy beside a terminal */
     .build-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); align-items: center; }
@@ -1031,7 +1154,7 @@ product-walkthrough   promos-and-montages  …</code></pre>
     .build-list b { color: var(--ink); }
     .build-list span:not(.tag) { display: block; margin-top: 2px; }
     .build-list a { color: var(--ink); text-underline-offset: 3px; text-decoration-color: var(--amber); }
-    .build-list .tag { margin-left: 6px; padding: 3px 9px; font-size: 11.5px; }
+    .build-list .tag { margin-left: 6px; padding: 3px 9px; font-size: 12px; }
     .cta-row.left { justify-content: flex-start; margin-top: 20px; }
     .term { border-radius: 18px; overflow: hidden; background: var(--dark); box-shadow: 0 40px 80px -40px rgba(20, 10, 40, .7); }
     .term-bar { display: flex; align-items: center; gap: 7px; padding: 12px 16px; background: #2a2a2a; }
@@ -1043,7 +1166,7 @@ product-walkthrough   promos-and-montages  …</code></pre>
 
     .cards .band { justify-content: space-between; }
     .cards .num { padding: 5px 9px; border-radius: 999px; background: rgba(255, 255, 255, .85); }
-    .cards code { font: 500 .88em var(--mono); padding: 1px 5px; border-radius: 5px; background: var(--bg-2); }
+    .cards code { font: 500 13.5px var(--mono); padding: 1px 5px; border-radius: 5px; background: var(--bg-2); }
 
     /* coming next: cards with a strip of painting */
     .cards { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
@@ -1062,54 +1185,45 @@ product-walkthrough   promos-and-montages  …</code></pre>
     .first li { padding: 24px; border-radius: 18px; }
     .num { font: 600 13px/1 var(--mono); color: var(--amber-ink); }
     .first h3 { margin-top: 14px; }
-    /* download: three platforms side by side, the visitor's own marked */
-    .dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 16px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
-    .dl-col { display: flex; flex-direction: column; border-left: 1px solid var(--line); }
-    .dl-col:first-child { border-left: 0; }
-    .dl-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 16px 22px; border-bottom: 1px solid var(--line); font: 500 10.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
-    .dl-col.me .dl-head [data-plat-label] { color: var(--amber-ink); font-weight: 600; }
-    .dl-body { display: flex; flex-direction: column; flex: 1; padding: 24px 22px 4px; }
-    .dl-os { display: flex; align-items: center; gap: 14px; }
-    .dl-os h3 { margin: 0; font-size: clamp(24px, 2.2vw, 28px); font-weight: 800; letter-spacing: -.03em; }
-    .dl-ic { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border: 1px solid var(--line); border-radius: 7px; background: rgba(255, 255, 255, .72); }
-    .dl-ic svg { width: 20px; height: 20px; }
-    .dl-lead { margin: 20px 0 0; }
-    .dl-lead b { display: block; font-size: 15.5px; font-weight: 600; }
-    .dl-lead span { display: block; margin-top: 3px; color: var(--ink-3); font-size: 14.5px; text-wrap: pretty; }
-    .dl-main { display: flex; align-items: center; justify-content: center; gap: 9px; height: 46px; margin-top: 16px; border: 1px solid var(--ink); border-radius: 5px; color: var(--ink); font: 600 11.5px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; text-decoration: none; transition: background .15s ease, color .15s ease; }
-    .dl-main:hover { background: rgba(38, 38, 38, .06); }
-    .dl-main svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .dl-col.me .dl-main { background: var(--ink); color: #fff; box-shadow: 0 14px 26px -18px rgba(38, 38, 38, .7); }
-    .dl-col.me .dl-main:hover { background: #000; }
-    .dl-note { margin: 14px 0 0; color: var(--ink-3); font-size: 13px; line-height: 1.5; text-wrap: pretty; }
-    .dl-note b { color: var(--ink-2); font-weight: 600; }
-    .dl-note code { font: 400 12px/1.5 var(--mono); color: var(--ink-2); overflow-wrap: anywhere; }
-    .dl-note a { color: var(--ink-2); text-underline-offset: 3px; }
-    .dl-more { margin-top: auto; padding-top: 28px; }
-    .dl-more > p { margin: 0; padding: 14px 0 12px; border-top: 1px solid var(--line); font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
-    .dl-row { display: flex; align-items: center; gap: 12px; padding: 13px 8px 13px 0; border-bottom: 1px solid var(--line-2); text-decoration: none; }
-    .dl-row:last-child { border-bottom: 0; }
-    .dl-row:hover { background: linear-gradient(90deg, rgba(38, 38, 38, .045), rgba(38, 38, 38, 0)); }
-    .dl-row .t { flex: 1; min-width: 0; }
-    .dl-row b { display: block; font-size: 14.5px; font-weight: 600; }
-    .dl-row .t > span { display: block; color: var(--ink-3); font-size: 13.5px; }
-    .dl-row code { display: block; margin-top: 5px; font: 400 11.5px/1.4 var(--mono); color: var(--ink-3); opacity: .82; overflow-wrap: anywhere; }
-    .dl-down { width: 16px; height: 16px; flex: none; fill: none; stroke: var(--ink-3); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .ask { margin-top: 16px; border-radius: 20px; }
-    .ask .dl-head { border-bottom: 1px solid var(--line); }
-    .ask-body { padding: 18px 22px 22px; }
-    .ask-lead { margin: 0 0 12px; color: var(--ink-2); font-size: 15px; }
-    .agent { position: relative; border-radius: 14px; background: var(--dark); }
-    .agent pre { margin: 0; padding: 18px 106px 18px 20px; overflow-x: auto; }
-    .agent code { display: block; font: 400 12.5px/1.9 var(--mono); color: #e9e7df; white-space: pre-wrap; overflow-wrap: anywhere; }
-    .agent .k { color: var(--amber); font-weight: 600; }
-    .agent .c { color: #a3c39d; }
-    .agent .u { color: #a7c8dd; text-decoration: underline; text-decoration-color: rgba(167, 200, 221, .3); text-underline-offset: 2px; }
-    .agent-copy { position: absolute; top: 12px; right: 12px; height: 30px; padding: 0 14px; border: 1px solid rgba(255, 255, 255, .18); border-radius: 999px; background: rgba(255, 255, 255, .09); color: #fff; font: 600 12.5px/1 var(--sans); cursor: pointer; }
-    .agent-copy:hover { background: rgba(255, 255, 255, .17); }
-    .agent-copy.ok { background: var(--amber); border-color: transparent; color: var(--ink); }
-    .qs a, .credit a, .faq-side a { color: var(--ink-2); text-underline-offset: 3px; }
-    .qs a:hover { color: var(--ink); }
+    .dl { margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .dl-col { display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 20px; transition: box-shadow .2s, background .2s; }
+    .dl-col.here { background: rgba(255, 255, 255, .97); box-shadow: inset 0 0 0 2px var(--amber), 0 22px 44px -26px rgba(40, 28, 12, .28); }
+    .dl-head { display: flex; flex-direction: column; gap: 4px; }
+    .dl-os { display: flex; align-items: center; gap: 9px; }
+    .dl-os svg { width: 20px; height: 20px; flex: none; }
+    .dl-os h3 { margin: 0; font-size: 20px; letter-spacing: -.02em; }
+    .dl-tag { display: none; margin-left: auto; padding: 4px 10px; border-radius: 999px; background: var(--amber); color: var(--ink); font: 700 12px/1 var(--sans); letter-spacing: .01em; }
+    .dl-col.here .dl-tag { display: inline-flex; }
+    .dl-req { font-size: 13px; color: var(--ink-3); }
+    .dl-main { width: 100%; justify-content: flex-start; padding-right: 16px; }
+    .dl-main small { margin-left: auto; padding-left: 8px; font: 500 12px/1 var(--mono); color: #b8b5ac; }
+    .dl-more { padding-top: 14px; border-top: 1px solid var(--line-2); }
+    .dl-more > p { margin: 0 0 8px; font: 600 12px/1.2 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+    .dl-row { display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 13px; border-radius: 12px; background: var(--dark); color: #f4f2ec; }
+    .dl-row code { flex: 1; min-width: 0; font: 500 12px/1.5 var(--mono); overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+    .dl-row code::-webkit-scrollbar { display: none; }
+    .dl-row code::before { content: '$ '; color: var(--amber); }
+    .dl-col[data-os=win] .dl-row code::before { content: 'PS> '; }
+    .dl-row .copy { height: 30px; min-width: 56px; padding: 0 12px; font-size: 12.5px; }
+    .dl-foot { margin: auto 0 0; font-size: 13px; line-height: 1.45; color: var(--ink-3); }
+    .dl-foot a, .qs a, .credit a, .faq-side a { color: var(--ink-2); text-underline-offset: 3px; }
+    .dl-foot a:hover, .qs a:hover { color: var(--ink); }
+    .ask { margin-top: 16px; padding: 20px 24px; border-radius: 20px; }
+    .ask-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .ask h3 { margin: 0; font-size: 16px; letter-spacing: -.015em; }
+    .ask p { margin: 3px 0 0; font-size: 14px; color: var(--ink-2); }
+    .ask .copy { background: var(--ink); color: #fff; }
+    .ask .copy:hover { background: #111; }
+    .ask .copy.ok { background: var(--amber); color: var(--ink); }
+    .agent { margin: 14px 0 0; padding: 14px 18px; border-radius: 14px; background: var(--dark); color: #e9e7df; overflow-x: auto; scrollbar-width: none; }
+    .agent::-webkit-scrollbar { display: none; }
+    .agent code { font: 500 12.5px/1.7 var(--mono); white-space: pre; }
+    .agent .c { color: #8d8c86; }
+    .agent .l { color: #fff; font-weight: 600; }
+    .agent .p { color: var(--amber); }
+    .copy { flex: none; height: 38px; min-width: 76px; padding: 0 16px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, .12); color: #fff; font: 600 13.5px/1 var(--sans); cursor: pointer; }
+    .copy:hover { background: rgba(255, 255, 255, .2); }
+    .copy.ok { background: var(--amber); color: var(--ink); }
 
     /* open source: painted tiles */
     .oss-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
@@ -1206,10 +1320,11 @@ product-walkthrough   promos-and-montages  …</code></pre>
       .cat .panel { grid-template-columns: 1fr; }
       .faq { grid-template-columns: 1fr; gap: 20px; }
       .film-panel { grid-template-columns: 1fr; gap: 22px; padding: 20px; }
+      .any-grid { grid-template-columns: 1fr; }
       .build-in { grid-template-columns: 1fr; }
       .harness { grid-template-columns: 1fr; }
       .faq-side { position: relative; top: auto; min-height: 180px; } /* not static: the painting layer is positioned against it */
-      .first { grid-template-columns: 1fr; }
+      .first, .dl { grid-template-columns: 1fr; }
       .bento { grid-template-columns: 1fr 1fr; grid-template-rows: none; grid-auto-rows: 180px; }
       .t1 { grid-column: 1 / 3; }
       .t2 { grid-row: auto; grid-column: auto; }
@@ -1217,8 +1332,12 @@ product-walkthrough   promos-and-montages  …</code></pre>
       .foot-top { grid-template-columns: 1fr; }
     }
     @media (max-width: 820px) {
-      .top-in { grid-template-columns: auto 1fr; padding: 0 14px; }
-      .top nav { display: none; }
+      .top-in { grid-template-columns: auto 1fr; height: 56px; padding: 0 14px; }
+      .top-in nav { display: none; }
+      .mob-nav { display: flex; align-items: center; gap: 6px; padding: 0 14px 10px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+      .mob-nav::-webkit-scrollbar { display: none; }
+      .mob-nav a { flex: none; padding: 7px 13px; border-radius: 999px; background: rgba(38, 38, 38, .055); box-shadow: inset 0 0 0 1px rgba(38, 38, 38, .07); color: var(--ink-2); font: 600 13px/1 var(--sans); text-decoration: none; white-space: nowrap; transition: background .18s, color .18s; }
+      .mob-nav a:hover, .mob-nav a:active { background: var(--ink); color: #fff; }
     }
     @media (max-width: 760px) {
       .hero, .cta, .say { padding-inline: 6px; }
@@ -1252,15 +1371,13 @@ product-walkthrough   promos-and-montages  …</code></pre>
       .cmp .row > [role=rowheader]::before { content: none; }
       .cards { grid-template-columns: 1fr; }
       .band { height: 96px; }
-      .dl { grid-template-columns: 1fr; gap: 12px; border: 0; border-radius: 0; overflow: visible; background: none; }
-      .dl-col { order: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: rgba(255, 255, 255, .6); }
-      .dl-col.me { order: -1; }
-      .dl-head { padding: 14px 18px; }
-      .dl-body { padding: 20px 18px 4px; }
-      .cmd code { font-size: 14px; }
-      .agent pre { padding: 16px 16px 56px; }
-      .agent code { font-size: 11.8px; }
-      .agent-copy { top: auto; bottom: 12px; }
+      .any-card { padding: 18px; border-radius: 18px; }
+      .pm-stage { grid-template-columns: 1fr; }
+      .mm-nodes { grid-template-columns: 1fr; }
+      .mm-link { flex-direction: row; justify-content: center; padding: 2px 0; }
+      .mm-line { width: 22px; }
+      .dl-col, .ask { padding: 18px; }
+      .agent code { font-size: 12px; }
       .prompt { margin-top: 14px; padding: 8px 8px 8px 14px; border-radius: 16px; }
       .prompt-text { font-size: 14.5px; min-height: 4.5em; }
       .chips { flex-wrap: nowrap; justify-content: flex-start; width: calc(100% + 24px); margin-inline: -12px; padding: 2px 12px; overflow-x: auto; scrollbar-width: none; }

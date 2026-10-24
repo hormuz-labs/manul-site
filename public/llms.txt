@@ -1,10 +1,17 @@
 # Manul
 
-> Manul is an open-source video agent (Apache-2.0) for macOS and Linux. You talk to it and it edits your footage, makes motion graphics and motion design, voiceover and music, and exports the film. It runs on your own computer, on your own files: footage is never uploaded, and the model only sees text and a few still frames. Bring your own Claude, Gemini or OpenAI key (or any OpenAI- or Anthropic-compatible endpoint) and it is free forever, or sign in for one Manul key paid in credits.
+> Manul is an open-source AI video agent (Apache-2.0) for macOS, Windows and Linux, with an iPhone and Android companion app and optional cloud or home workers. Start from a blank canvas, a link, or your own footage: talk to it and it designs motion graphics, films narrated product walkthroughs in Chrome, syncs screen and facecam demos, generates voiceover and music, edits footage on the word, and exports the film. It runs on your own computer by default (or on a paired home or cloud worker when you want to offload heavy renders). Bring your own Claude, Gemini or OpenAI key (or any OpenAI- or Anthropic-compatible endpoint) and it is free forever, or sign in for one Manul key paid in credits.
 
-What it does today: measures the footage before editing (word timings, who speaks, shots and camera shake, where the subject is, the music's beats and bars, loudness), cuts on transcribed words, punch-ins and reframes that follow the subject, titles, lower thirds and captions in real type, motion graphics built scene by scene (start from one of 233 examples, each with the prompt that made it, a reference video, or a description), voiceover and music, product walkthroughs filmed in your own Chrome, music ducked under speech, instructions typed right at a box or range on the film, @-mentions of the project's files, 16:9 / 9:16 / 1:1 exports, and every change as a new version you can compare before and after, then keep or send back. Craft skills (talking heads, Shorts, tutorials, promos, motion design, voiceover, music…) ship as SKILL.md files in the repo. Next: generated shots only where asked (labelled as generated), hand-off to Premiere/Resolve/Final Cut, publishing to YouTube, an API and MCP server, and Manul cloud for heavy compute.
+What it does today:
+- Create from nothing or from footage: motion graphics built scene by scene at 60 fps (start from one of 233 gallery examples with the prompt that made it, a reference video whose visual grammar it studies, or a plain-English brief), narrated product walkthroughs filmed live in Manul's browser or your Chrome (auto-zooms, cursor ripples, step-timed voiceover), synced screen + facecam demos (audio alignment, draggable circle/rounded PiP, dead-air cleanup), and full footage editing.
+- Measures before it cuts: local word timings (Whisper), speaker voice identification, shot boundaries and camera shake, face and subject tracking for 9:16 / 1:1 / 4:5 reframing, music beats and bars, and loudness (LUFS).
+- Direct on the picture: draw a box on a frame, drag across the timeline, or press N at a moment to attach an instruction to that exact spot and time; @-mention any project file, version or generated clip; generate voiceover and music (ElevenLabs, Gemini, OpenAI, or the Manul key); duck music under speech; export 16:9, 9:16 and 1:1 with burned-in or sidecar `.srt` captions; compare every edit as a before and after.
+- Mobile companion (iPhone, iPad & Android): pair in Settings → Mobile with a 6-digit code over Wi-Fi or Tailscale (encrypted and pinned to your computer's TLS certificate). Shoot and upload clips from your phone, browse projects, draw frame boxes, chat live with the agent, and review or share exports from anywhere.
+- Cloud & home workers (`manul --worker`): offload heavy rendering and agent edits to a leased Manul cloud worker or your own workstation running `manul --worker`, connected over a built-in userspace Headscale/WireGuard mesh (`manul-mesh`, no OS Tailscale install required) with peer-to-peer project delta-sync.
+- 12 craft skills (`talking-head`, `short-form`, `motion-design`, `product-walkthrough`, `demo-editor`, `promos-and-montages`, `tutorials`, `voiceover`, `music-generation`, `cleanup-and-repair`, `video-editing`, `browser-skill`) ship as `SKILL.md` files in the repo.
+- Next: generated camera shots only where asked (labelled as generated), timeline hand-off to Premiere/Resolve/Final Cut, direct YouTube publishing, and an API & MCP server.
 
-How it compares: timeline editors (Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut) are operated cut by cut; Descript edits through the transcript; HyperFrames and Remotion turn video into code an agent writes; AI generators (Runway, Sora, Veo) produce new footage; hosted video agents run in their own cloud on your uploads. Manul is an open-source agent on your own computer where you give notes and review each edit.
+How it compares: timeline editors (Premiere Pro, Final Cut Pro, DaVinci Resolve, CapCut) are operated cut by cut; Descript edits through the transcript; HyperFrames and Remotion turn video into code an agent writes; AI generators (Runway, Sora, Veo) replace your footage with generated frames; hosted video agents lock your workflow in their cloud. Manul is an open-source video agent for creation and editing: it runs on your computer (or a worker you pick), works from a blank canvas or your footage, and lets you review every change before keeping it.
 
 ## Pricing
 
@@ -22,8 +29,9 @@ Launch offer: model usage on the Manul key is billed at 50% off its list rate, f
 ## Install
 
 - [macOS (Homebrew)](https://github.com/hormuz-labs/homebrew-tap): `brew install hormuz-labs/tap/manul`
+- [Windows 10/11 x64](https://github.com/hormuz-labs/manul/releases/latest/download/Manul-windows-x64-Setup.exe): download and run `Manul-windows-x64-Setup.exe`
 - [Debian and Ubuntu (apt)](https://apt.manul.si): add the signed repository and install with the commands below
-- [All downloads (.dmg, .deb, AppImage)](https://github.com/hormuz-labs/manul/releases/latest)
+- [All downloads (.dmg, .exe, .deb, AppImage)](https://github.com/hormuz-labs/manul/releases/latest)
 
 ```bash
 curl -fsSL https://apt.manul.si/manul.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/manul.gpg &&
@@ -33,14 +41,13 @@ sudo apt update && sudo apt install manul
 
 ## Docs
 
-- [Install Manul (agent skill)](https://manul.si/skills/install-manul/SKILL.md): steps a coding agent can follow to install Manul on this machine
-
+- [Install Manul (agent skill)](https://manul.si/skills/install-manul/SKILL.md): steps a coding agent can follow to install Manul on macOS, Windows or Linux
 - [README](https://github.com/hormuz-labs/manul/blob/main/README.md): what Manul is, features, install, and a prompt to give a coding agent so it installs Manul for you
-- [Roadmap](https://github.com/hormuz-labs/manul/blob/main/ROADMAP.md): phases, what's done, what's next (generated shots, hand-off to Premiere/Resolve/Final Cut, publishing, cloud, Windows)
+- [Roadmap](https://github.com/hormuz-labs/manul/blob/main/ROADMAP.md): phases, what's done, what's next (generated shots, hand-off to Premiere/Resolve/Final Cut, publishing, API & MCP)
 - [Contributing](https://github.com/hormuz-labs/manul/blob/main/CONTRIBUTING.md): run Manul from source
 
 ## Optional
 
-- [Website](https://manul.si/): live demo, kinds of film, comparison, pricing, FAQ, and the 88-second film
+- [Website](https://manul.si/): live demo, kinds of film, mobile & cloud workers, comparison, pricing, FAQ, and the 88-second film
 - [Source code](https://github.com/hormuz-labs/manul)
 - [License (Apache-2.0)](https://github.com/hormuz-labs/manul/blob/main/LICENSE)
